@@ -42,8 +42,34 @@ const routes = [
       {
         path: "/tables",
         name: "tables",
-        component: () =>
-          import(/* webpackChunkName: "demo" */ "../views/RegularTables.vue"),
+        component: () => import("@/views/RegularTables.vue"),
+        redirect: "/tables/list",
+        children: [
+          {
+            path: "list",
+            name: "list",
+            component: () =>
+              import("@/views/Tables/RegularTables/BoardTable.vue"),
+          },
+          {
+            path: "write",
+            name: "write",
+            component: () =>
+              import("@/views/Tables/RegularTables/BoardWrite.vue"),
+          },
+          {
+            path: "detail",
+            name: "detail",
+            component: () =>
+              import("@/views/Tables/RegularTables/BoardDetail.vue"),
+          },
+          {
+            path: "modify",
+            name: "modify",
+            component: () =>
+              import("@/views/Tables/RegularTables/BoardModify.vue"),
+          },
+        ],
       },
     ],
   },

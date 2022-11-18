@@ -24,6 +24,7 @@ import VueCookies from "vue-cookies";
 
 // router setup
 import router from "./routes/router";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 // plugin setup
 Vue.use(DashboardPlugin);

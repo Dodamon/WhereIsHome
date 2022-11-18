@@ -1,4 +1,4 @@
-<template>
+<template slot-scope="scope">
   <b-card>
     <b-card-header class="border-0">
       <h3 class="mb-0">공지사항</h3>
@@ -8,6 +8,7 @@
       class="table-responsive table"
       header-row-class-name="thead-light"
       :data="boards"
+      @row-click="rowClick"
     >
       <!-- 글번호 -->
       <el-table-column label="글번호" prop="code" min-width="60px">
@@ -33,14 +34,23 @@
       <el-table-column label="유저코드" prop="user_code" min-width="50px">
       </el-table-column>
     </el-table>
+    <b-container class="bv-example-row bv-example-row-flex-cols">
+      <b-row align-self="end">
+        <b-col>
+          <b-button type="submit" class="m-1" variant="primary" @click="write"
+            >글쓰기</b-button
+          >
+        </b-col>
+      </b-row>
+    </b-container>
 
     <!-- 페이지 네비게이션 -->
     <b-card-footer class="py-4 d-flex justify-content-end">
-      <base-pagination
+      <b-pagination
         v-model="currentPage"
-        :per-page="10"
-        :total="50"
-      ></base-pagination>
+        :per-page="5"
+        :total-rows="50"
+      ></b-pagination>
     </b-card-footer>
   </b-card>
 </template>
@@ -58,6 +68,7 @@ export default {
   components: {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
+    // board,
   },
   data() {
     return {
@@ -67,11 +78,41 @@ export default {
     };
   },
   created() {
-    http.post("board/selectAll?pageNum=1&pageSize=5").then(({ data }) => {
-      console.log(data);
-      this.boards = data.list;
-      alert(this.boards[0].title);
-    });
+    http
+      .post("board/selectAll", null, {
+        params: { pageNum: this.currentPage, pageSize: 5 },
+      })
+      .then(({ data }) => {
+        console.log(data);
+        this.boards = data.list;
+        // alert(this.boards[0].title);
+      });
+  },
+  methods: {
+    write() {
+      this.$router.push({ name: "write" });
+    },
+    rowClick(row) {
+      // alert(row.code);
+      this.$router.push({ name: "detail", params: { code: row.code } });
+    },
+  },
+  watch: {
+    currentPage: {
+      deep: true,
+      handler() {
+        // alert(this.currentPage + "가 선택되었습니다.");
+        http
+          .post("board/selectAll", null, {
+            params: { pageNum: this.currentPage, pageSize: 5 },
+          })
+          .then(({ data }) => {
+            console.log(data);
+            this.boards = data.list;
+            // alert(this.boards[0].title);
+          });
+      },
+    },
   },
 };
 </script>

@@ -5,7 +5,7 @@
       <!-- Card stats -->
 
       <!-- todo -->
-      <b-jumbotron>
+      <!-- <b-jumbotron>
         <b-row>
           <todo-header></todo-header>
         </b-row>
@@ -18,13 +18,13 @@
         <b-row>
           <todo-footer :todos="todos" @deleteTodo="deleteTodo"></todo-footer>
         </b-row>
-      </b-jumbotron>
+      </b-jumbotron> -->
     </base-header>
 
     <b-container fluid class="mt--7">
       <b-row>
         <b-col>
-          <board-table />
+          <router-view></router-view>
         </b-col>
       </b-row>
     </b-container>
@@ -53,6 +53,7 @@ import projects from "./Tables/projects";
 import users from "./Tables/users";
 
 import BoardTable from "./Tables/RegularTables/BoardTable";
+import BoardWrite from "./Tables/RegularTables/BoardWrite";
 
 import TodoHeader from "@/components/todo/TodoHeader.vue";
 import TodoFooter from "@/components/todo/TodoFooter.vue";
@@ -62,6 +63,7 @@ import TodoList from "@/components/todo/TodoList.vue";
 export default {
   components: {
     BoardTable,
+    BoardWrite,
     [Dropdown.name]: Dropdown,
     [DropdownItem.name]: DropdownItem,
     [DropdownMenu.name]: DropdownMenu,
