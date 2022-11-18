@@ -19,7 +19,7 @@ public interface BoardMapper {
 	
 	public Board selectOne(String code);
 
-	public void modify(String code, String title, String content);
+	public void modify(String code, String title, String writer, String content);
 
 	public void delete(String code);
 

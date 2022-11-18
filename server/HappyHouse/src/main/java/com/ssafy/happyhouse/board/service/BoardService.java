@@ -30,8 +30,8 @@ public class BoardService {
 		return boardMapper.selectOne(code);
 	}
 
-	public void modify(String code, String title, String content) {
-		boardMapper.modify(code, title, content);
+	public void modify(String code, String title, String writer, String content) {
+		boardMapper.modify(code, title, writer, content);
 		
 	}
 

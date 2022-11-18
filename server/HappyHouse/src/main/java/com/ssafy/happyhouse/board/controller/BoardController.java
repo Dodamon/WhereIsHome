@@ -1,7 +1,7 @@
 package com.ssafy.happyhouse.board.controller;
 
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +37,7 @@ public class BoardController {
 //		return list;
 //	}
 	
+	@CrossOrigin(origins = "http://localhost:8080")
 	@PostMapping("/deleteArticle")
 	@ResponseBody
 	public void deleteArticle(@RequestParam String code, HttpServletRequest request){	
@@ -45,13 +45,17 @@ public class BoardController {
 		
 	}
 	
+	@CrossOrigin(origins = "http://localhost:8080")
 	@PostMapping("/modifyArticle")
 	@ResponseBody
-	public void modifyArticle(@RequestParam String code, String title, String content, HttpServletRequest request){	
-		 boardService.modify(code, title, content);
+	public void modifyArticle(@RequestParam String code, String title, String content, String writer, HttpServletRequest request){	
+		System.out.println(code +  title+ writer+ content);
+		
+		boardService.modify(code, title, writer, content);
 		
 	}
 	
+	@CrossOrigin(origins = "http://localhost:8080")
 	@PostMapping("/clickArticle")
 	@ResponseBody
 	public Board clickArticle(@RequestParam String code, HttpServletRequest request){	
@@ -66,7 +70,12 @@ public class BoardController {
 	@ResponseBody
 	public PageInfo<Board> selectAll(HttpServletRequest request) {
 		System.out.println("page no = "+request.getParameter("pageNum"));
-		PageHelper.startPage(request);
+		String pageNum = request.getParameter("pageNum");
+		String pageSize = request.getParameter("pageSize");
+		System.out.println(pageNum);
+		System.out.println(pageSize);
+		
+		PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
 		List<Board> list=boardService.selectAll();
 		
 		return PageInfo.of(list);
@@ -159,22 +168,36 @@ public class BoardController {
 
 	
 
-	@GetMapping("/write")
-	public String writeBoard(HttpSession session) {
-		// CSRF token 발행
-		String csrfToken = UUID.randomUUID().toString();
-		System.out.println(csrfToken);
-		session.setAttribute("CSRF_TOKEN", csrfToken);
-		
-		return "boardWrite";
-	}
+//	@GetMapping("/write")
+//	public String writeBoard(HttpSession session) {
+//		// CSRF token 발행
+//		String csrfToken = UUID.randomUUID().toString();
+//		System.out.println(csrfToken);
+//		session.setAttribute("CSRF_TOKEN", csrfToken);
+//		
+//		return "boardWrite";
+//	}
 	
 		
-	
+	@CrossOrigin(origins = "http://localhost:8080")
 	@PostMapping("/write")
 	@ResponseBody
-	public String writeBoard(Board board, HttpSession session, HttpServletRequest request) {
-		System.out.println(board);
+	public String writeBoard(HttpSession session, HttpServletRequest request) {
+//		System.out.println(board);
+		
+		String writer = request.getParameter("writer");
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		
+		System.out.println(writer);
+		System.out.println(title);
+		System.out.println(content);
+		
+		Board board = new Board(1, 1, title, content, writer, new Date());
+		
+		long i = boardService.write(board);
+		System.out.println(i);
+		
 		return null;
 //		System.out.println("받은 토큰" + csrf_token);
 		
