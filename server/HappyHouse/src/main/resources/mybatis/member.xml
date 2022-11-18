@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.member.mapper.MemberMapper">
+	
+	<resultMap type="member" id="member">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+	</resultMap>
+	
+	<resultMap type="SecVO" id="SecVO">
+		<result column="id" property="userId"/>
+		<result column="salt" property="salt"/>
+		<result column="myKey" property="secKey"/>
+	</resultMap>
+
+  	<select id="login" parameterType="map" resultMap="member">
+    	select id, name from member where id = #{id} and pw = #{pw}
+  	</select >
+  
+  	<insert id="register" parameterType="member">
+    		insert into member(id,pw,name) values(#{id},#{pw},#{name})
+   	</insert>
+   
+   	<select id="userinfo" parameterType="map" resultMap="member">
+    	select id, name, pw from member where id = #{id}
+  	</select>
+  
+  	<update id="update" parameterType="map">
+  		update member set pw = #{pw}, name = #{name} where id = #{id}
+  	</update>
+  
+  	<delete id="delete" parameterType="String">
+  		delete from member where id=#{id}
+  	</delete>
+  
+  
+  	<delete id="deleteSec" parameterType="String">
+  		delete from sec where id=#{id}
+  	</delete>
+  
+  	<select id="selectSecurity" parameterType="string" resultMap="SecVO">
+    	select * from sec where id = #{id}
+  	</select>
+  
+	<insert id="insertSecurity" parameterType="SecVO">
+    	insert into sec(id,salt,myKey) values(#{userId},#{salt},#{secKey})
+	</insert>
+	
+	<select id="checkId" parameterType="String" resultType="int">
+		select count(*) from member where id=#{id}
+	</select>
+  
+  
+</mapper>
