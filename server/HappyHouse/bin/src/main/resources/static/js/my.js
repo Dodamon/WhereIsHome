@@ -10,44 +10,71 @@ if(cookie_loginId) {
 
 $(document).on("click", "#loginBtn", login);
 $(document).on("click", "#logoutBtn", logout);
+$(document).on("click", "#checkIdBtn", checkId);
+$(document).on("input", "#user_pw", checkPassword);
 $(document).on("click", "#joinMember", memberInsert);
 $(document).on("click", "#boardListBtn", boardList);
 
 async function login() {
 	let id = $("#id").val();
     let pw = $("#pw").val();
-    
-    let data = {
-		method: "POST",
-		body: JSON.stringify({id, pw}),
-		headers: {"Content-Type" : "application/json"},
-	}
+
+	$.post('member/login',{id:id, pw:pw},function(data){
 	
-	data = await fetch("member/login", data);
-	data = await data.text();
-	if(data){
-		data = JSON.parse(data);
-		console.log(data.name)
-	}
+		if (data.name) {
+	        $.cookie("loginId", data.id);
+	        document.querySelector("#loginSpan").innerHTML =
+	            data.id + "님 환영합니다 "  +
+	            "<button id='logoutBtn' class='btn btn-primary'>로그아웃</button>  <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#mypageModal' style='margin-right: 5px;' id='mypageBtn'>마이페이지 </button>";
+	        $("#loginModal").modal("hide");
+	        $("#loginModalBtn").css("display", "none");
+	    } else {
+	        alert("login fail");
+	        location.reload();
+	    }
+		
+	});
 	
 
 	
-	if (data.name) {
-        $.cookie("loginId", data.id);
-        document.querySelector("#loginSpan").innerHTML =
-            data.name + "님 환영합니다 "  +
-            "<button id='logoutBtn' class='btn btn-primary'>로그아웃</button>  <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#mypageModal' style='margin-right: 5px;' id='mypageBtn'>마이페이지 </button>";
+}
+async function checkId() {
+	 
+	let userid = $("#user_id").val();
+	let resultDiv =  document.querySelector("#idcheckResult");
+	if(userid.length < 6 || userid.length > 16) {
+		resultDiv.className="text-danger m1-2"	
+		resultDiv.innerHTML = "아이디는 6자 이상 16자 이하 입니다.";
+	} else {
+		$.post('member/checkid',{id:userid},function(data){
+			if (data== "1") {
+		        resultDiv.className="text-primary m1-2";
+				resultDiv.innerHTML = "사용가능한 아이디 입니다";
+				return;
+		    } else {
+		        resultDiv.className="text-danger m1-2";	
+				resultDiv.nnerHTML = "사용 불가능한 아이디 입니다";
+				return;
+		    }
+		});
+	}
 
-        $("#loginModal").modal("hide");
-        $("#loginModalBtn").css("display", "none");
-    } else {
-        alert("login fail");
-    }
+}
+
+function checkPassword() {
+	var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+	var pw = $("#user_pw").val();
+	let resultDiv =  document.querySelector("#pwcheckResult");
+	if(false === reg.test(pw)) {
+		resultDiv.className="text-danger m1-2";	
+		resultDiv.innerHTML = '비밀번호는 8자 이상이어야 하며, 숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.';
+	}else {
+		resultDiv.className="text-primary m1-2";
+		resultDiv.innerHTML = "사용가능한 비밀번호입니다";
+	}
 }
 
 async function logout(){
-	//let data = JSON.stringify({sign:"logout"});
- 	//data = await fetch("main", {method:"POST", body:data});
  	fetch("member/logout", {method:"POST"});
  	$.removeCookie("loginId");
  	location.reload();
@@ -164,7 +191,7 @@ function board_click(code){
 </div>
 
 		`;
-		$("#main").html(inner);
+		$("#board_cotent").html(inner);
 		
 	});
 }
@@ -191,13 +218,13 @@ function boardModifyForm(code, title, content){
 </div>
 	`;
 	
-	$("#main").html(inner);
+	$("#board_cotent").html(inner);
 }
 
 function boardModify(code, title, content){
 	$.post('board/modifyArticle',{code, title, content},function(){});
 	alert("글 수정 완료");
-	
+	board_click(code);
 	boardList();
 }
 

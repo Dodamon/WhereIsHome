@@ -104,7 +104,7 @@
                         sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p>
                     <a href="" class="btn btn-primary py-3 px-5 me-3 animated fadeIn">Get Started</a>
                 </div>
-                <div class="col-md-6 animated fadeIn">
+                <!-- <div class="col-md-6 animated fadeIn">
                     <div class="owl-carousel header-carousel">
                         <div class="owl-carousel-item">
                             <img class="img-fluid" src="img/carousel-1.jpg" alt="">
@@ -113,7 +113,7 @@
                             <img class="img-fluid" src="img/carousel-2.jpg" alt="">
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- Header End -->
@@ -153,6 +153,8 @@
             </div>
         </div>
         <!-- Search End -->
+        <div class="container-xxl py-5" id="board_cotent">
+        </div>
 
 
         <!-- Category Start -->
@@ -365,13 +367,30 @@
                                 <td><input type="text" class="form-control" id="user_id" placeholder="" value=""
                                         required>
                                 </td>
+                                <td>
+                                	<button type="button" class="btn btn-primary" id="checkIdBtn">아이디검사</button>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td></td>
+	                            <td>
+	                            	<span id="idcheckResult" class="text-danger ml-2"></span>  
+	                            </td>
                             </tr>
                             <tr>
                                 <td style="text-align: right;">비밀번호&nbsp
                                     <d style="color:red"> * &nbsp</d>
                                 </td>
                                 <td><input type="text" class="form-control" id="user_pw" placeholder="영문 6자리 이상"
-                                        value="" required></td>
+                                        value="" required>
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                            	<td></td>
+	                            <td>
+	                            	<span id="pwcheckResult" class="text-danger ml-2"></span>  
+	                            </td>
                             </tr>
                             <tr>
                                 <td style="text-align: right;">이름&nbsp
@@ -397,7 +416,7 @@
                             <tr>
                                 <td></td>
                                 <td style="text-align: right;">
-                                    <button type="button" class="btn btn-warning " id="joinMember">등록</button>
+                                    <button type="button" class="btn btn-primary " id="joinMember">등록</button>
                                 </td>
                             </tr>
                         </table>

@@ -25,7 +25,7 @@ public class Board{
 
 	public Board() {
 		super();
-		// TODO Auto-generated constructor stub
+		// TODO Auto-generated constructor stub 
 	}
 
 	public int getCode() {

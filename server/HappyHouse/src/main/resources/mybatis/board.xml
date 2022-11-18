@@ -15,6 +15,36 @@
 		SELECT DISTINCT sidoName
 		FROM dongcode
 	</select>
+	
+	<select id="getGugun" parameterType="string" resultType="dongcode">
+		SELECT DISTINCT gugunName
+		FROM dongcode
+		WHERE sidoName = #{sidoName} and gugunName is not null
+	</select>
+	
+	<select id="getDong" parameterType="string" resultType="dongcode">
+		SELECT DISTINCT dongName
+		FROM dongcode
+		WHERE sidoName = #{sidoName} and gugunName = #{gugunName} and dongName is not null
+	</select>
+	
+	<select id="getDongcode" parameterType="string" resultType="string">
+		SELECT dongCode
+		FROM dongcode
+		WHERE sidoName = #{sidoName} and gugunName = #{gugunName} and dongName = #{dongName} and dongCode is not null
+	</select>
+	
+	<select id="getHouseinfo"  resultType="houseinfo">
+		SELECT *
+		FROM houseinfo
+		WHERE dongCode=#{dongcode}
+	</select>
+	
+	<select id="getHousedeal"  resultType="housedeal">
+		SELECT *
+		FROM housedeal
+		WHERE aptCode=#{aptCode}
+	</select>
   
   
 	<insert id="write" parameterType="board" >

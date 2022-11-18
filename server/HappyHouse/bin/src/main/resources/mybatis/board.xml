@@ -6,9 +6,14 @@
 <mapper namespace="com.ssafy.happyhouse.board.mapper.BoardMapper">
 
 	<select id="selectAll"  resultType="board">
-		SELECT code,originNo,groupOrd, groupLayer, concat(LPAD('>' ,groupLayer * 4,'-' ) ,title) title, content,writer, reg_datetime 
+		SELECT code, title, content, writer, reg_datetime, user_code 
 		FROM board 
-		ORDER BY originNo DESC, groupOrd ASC
+	<!-- 	ORDER BY originNo DESC, groupOrd ASC -->
+	</select>
+	
+	<select id="getSido" resultType="dongcode">
+		SELECT DISTINCT sidoName
+		FROM dongcode
 	</select>
   
   

@@ -20,6 +20,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ssafy.happyhouse.board.dto.Board;
 import com.ssafy.happyhouse.board.dto.Dongcode;
+import com.ssafy.happyhouse.board.dto.Housedeal;
+import com.ssafy.happyhouse.board.dto.Houseinfo;
 import com.ssafy.happyhouse.board.service.BoardService;
 
 
@@ -73,14 +75,85 @@ public class BoardController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@GetMapping("/sido")
 	@ResponseBody
-	public PageInfo<Dongcode> getSido(HttpSession session) {
-		System.out.println("sido 진입");
+	public PageInfo<Dongcode> getSido() {
+//		System.out.println("sido 진입");
 		
 		List<Dongcode> list = boardService.getSido();
 		
-		System.out.println(list.get(1));
+		System.out.println("DB에서 가져온 시도 갯수 : " + list.size());
 		
 		
+		return PageInfo.of(list);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:8080")
+	@GetMapping("/gugun")
+	@ResponseBody
+	public PageInfo<Dongcode> getGugun(HttpServletRequest request) {
+//		System.out.println("gugun 진입");
+		String sidoName = request.getParameter("sidoName");
+		 
+//		System.out.println(sidoName);
+		List<Dongcode> list = boardService.getGugun(sidoName);
+		System.out.println("DB에서 가져온 구군이 갯수 : " + list.size());
+//		System.out.println("DB에서 가져온 구군이름 첫번째 : " + list.get(1));
+		
+		
+		return PageInfo.of(list);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:8080")
+	@GetMapping("/dong")
+	@ResponseBody
+	public PageInfo<Dongcode> getDong(HttpServletRequest request) {
+//		System.out.println("gugun 진입");
+		String sidoName = request.getParameter("sidoName");
+		String gugunName = request.getParameter("gugunName");
+		
+		 
+//		System.out.println(sidoName);
+		List<Dongcode> list = boardService.getDong(sidoName, gugunName);
+		System.out.println("DB에서 가져온 동 갯수 : " + list.size());
+//		System.out.println("DB에서 가져온 구군이름 첫번째 : " + list.get(1));
+		
+		
+		return PageInfo.of(list);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:8080")
+	@GetMapping("/houseinfo")
+	@ResponseBody
+	public PageInfo<Houseinfo> getHouseinfo(HttpServletRequest request) {
+		System.out.println("getHouseinfo 진입");
+		String sidoName = request.getParameter("sidoName");
+		String gugunName = request.getParameter("gugunName");
+		String dongName = request.getParameter("dongName");
+		
+		String dongcode = boardService.getDongcode(sidoName, gugunName, dongName);
+		 
+		System.out.println("DB에서 가져온 동코드 : " + dongcode);
+		
+		List<Houseinfo> list = boardService.getHouseinfo(dongcode);
+		System.out.println("DB에서 가져온 아파트 갯수 : " + list.size());
+//		System.out.println("DB에서 가져온 구군이름 첫번째 : " + list.get(1));
+		
+
+		return PageInfo.of(list);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:8080")
+	@GetMapping("/housedeal")
+	@ResponseBody
+	public PageInfo<Housedeal> getHousedeal(HttpServletRequest request) {
+		System.out.println("getHouseinfo 진입");
+		String aptCode = request.getParameter("aptCode");
+		
+		List<Housedeal> list = boardService.getHousedeal(aptCode);
+		 
+		System.out.println("DB에서 가져온 아파트 갯수 : " + list.size());
+//		System.out.println("DB에서 가져온 구군이름 첫번째 : " + list.get(1));
+		
+
 		return PageInfo.of(list);
 	}
 

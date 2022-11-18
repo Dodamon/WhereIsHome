@@ -15,41 +15,42 @@
 		<result column="myKey" property="secKey"/>
 	</resultMap>
 
-  <select id="login" parameterType="map" resultMap="member">
-    select id, name from member where id = #{id} and pw = #{pw}
-  </select >
+  	<select id="login" parameterType="map" resultMap="member">
+    	select id, name from member where id = #{id} and pw = #{pw}
+  	</select >
   
-  <insert id="register" parameterType="member">
-    	insert into member(id,pw,name) values(#{id},#{pw},#{name})
-   </insert>
+  	<insert id="register" parameterType="member">
+    		insert into member(id,pw,name) values(#{id},#{pw},#{name})
+   	</insert>
    
-   <select id="userinfo" parameterType="map" resultMap="member">
-    select id, name, pw from member where id = #{id}
-  </select>
+   	<select id="userinfo" parameterType="map" resultMap="member">
+    	select id, name, pw from member where id = #{id}
+  	</select>
   
-  <update id="update" parameterType="map">
-  	update member set pw = #{pw}, name = #{name} where id = #{id}
-  </update>
+  	<update id="update" parameterType="map">
+  		update member set pw = #{pw}, name = #{name} where id = #{id}
+  	</update>
   
-  <delete id="delete" parameterType="String">
-  	delete from member where id=#{id}
-  </delete>
+  	<delete id="delete" parameterType="String">
+  		delete from member where id=#{id}
+  	</delete>
   
   
-  <delete id="deleteSec" parameterType="String">
-  	delete from sec where id=#{id}
-  </delete>
+  	<delete id="deleteSec" parameterType="String">
+  		delete from sec where id=#{id}
+  	</delete>
   
-  <select id="selectSecurity" parameterType="string" resultMap="SecVO">
-    select *
-    from sec
-    where id = #{id}
-  </select>
-  
+  	<select id="selectSecurity" parameterType="string" resultMap="SecVO">
+    	select * from sec where id = #{id}
+  	</select>
   
 	<insert id="insertSecurity" parameterType="SecVO">
     	insert into sec(id,salt,myKey) values(#{userId},#{salt},#{secKey})
 	</insert>
+	
+	<select id="checkId" parameterType="String" resultType="int">
+		select count(*) from member where id=#{id}
+	</select>
   
   
 </mapper>
