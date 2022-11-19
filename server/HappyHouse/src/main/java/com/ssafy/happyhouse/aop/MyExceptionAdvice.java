@@ -16,7 +16,7 @@ public class MyExceptionAdvice {
 	@ExceptionHandler(NullPointerException.class)// 모든 익셉션이 발생했을 때 이렇게 하겠다.
 	public String a (NullPointerException e){  
 		e.printStackTrace();
-		return	"fail null";    // 이 리턴은 뷰 페이지로 가는 것이다.
+		return	"fail null";     // 이 리턴은 뷰 페이지로 가는 것이다.
 	}
 	
 	@ExceptionHandler(java.sql.SQLSyntaxErrorException.class)// 모든 익셉션이 발생했을 때 이렇게 하겠다.

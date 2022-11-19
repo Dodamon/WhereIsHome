@@ -100,7 +100,7 @@ public class BoardController {
 	@ResponseBody
 	public PageInfo<Dongcode> getGugun(HttpServletRequest request) {
 //		System.out.println("gugun 진입");
-		String sidoName = request.getParameter("sidoName");
+		String sidoName = request.getParameter("sidoName"); 
 		 
 //		System.out.println(sidoName);
 		List<Dongcode> list = boardService.getGugun(sidoName);
