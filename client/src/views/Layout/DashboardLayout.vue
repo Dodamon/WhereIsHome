@@ -20,6 +20,78 @@
           }"
         >
         </sidebar-item> -->
+        <!-- 사용자 프로필 사진 클릭시 DropDown -->
+        <sicebar-item>
+          <b-navbar-nav class="align-items-right ml-auto ml-md-3">
+            <!-- <base-dropdown
+              menu-on-left
+              class="nav-item"
+              tag="li"
+              title-tag="a"
+              title-classes="nav-link pr-0"
+            >
+              <a
+                href="#"
+                class="nav-link pr-0"
+                @click.prevent
+                slot="title-container"
+              > -->
+            <b-media
+              v-if="log_session == false"
+              no-body
+              class="align-items-center"
+            >
+              <span class="avatar avatar-xl rounded-circle">
+                <img alt="Image placeholder" src="img/theme/team-0.png" />
+              </span>
+              <b-media-body class="ml-2 d-none d-lg-block">
+                <span class="mb-0 text-sm font-weight-bold"
+                  >로그인이 필요합니다</span
+                >
+              </b-media-body>
+            </b-media>
+
+            <b-media v-else no-body class="align-items-center">
+              <span class="avatar avatar-xl rounded-circle">
+                <img alt="Image placeholder" src="img/theme/team-4.jpg" />
+              </span>
+              <b-media-body class="ml-2 d-none d-lg-block">
+                <span class="mb-0 text-sm font-weight-bold">
+                  {{ id }}
+                </span>
+              </b-media-body>
+            </b-media>
+            <!-- </a> -->
+            <!-- Drop Down 부분 -->
+            <!-- <template>
+                <b-dropdown-header class="noti-title">
+                  <h6 class="text-overflow m-0">Welcome!</h6>
+                </b-dropdown-header>
+                <b-dropdown-item href="#!">
+                  <i class="ni ni-single-02"></i>
+                  <span>My profile</span>
+                </b-dropdown-item>
+                <b-dropdown-item href="#!">
+                  <i class="ni ni-settings-gear-65"></i>
+                  <span>Settings</span>
+                </b-dropdown-item>
+                <b-dropdown-item href="#!">
+                  <i class="ni ni-calendar-grid-58"></i>
+                  <span>Activity</span>
+                </b-dropdown-item>
+                <b-dropdown-item href="#!">
+                  <i class="ni ni-support-16"></i>
+                  <span>Support</span>
+                </b-dropdown-item>
+                <div class="dropdown-divider"></div>
+                <b-dropdown-item href="#!">
+                  <i class="ni ni-user-run"></i>
+                  <span>Logout</span>
+                </b-dropdown-item>
+              </template> -->
+            <!-- </base-dropdown> -->
+          </b-navbar-nav>
+        </sicebar-item>
 
         <sidebar-item
           :link="{
@@ -155,6 +227,8 @@ export default {
   data() {
     return {
       log_session: this.$cookies.isKey("loggedin"),
+      //log_session: this.$session.isKey("loggedin"),
+      id: this.$cookies.get("loggedin"),
     };
   },
   components: {
@@ -163,6 +237,7 @@ export default {
     DashboardContent,
     FadeTransition,
   },
+  // created() {},
   methods: {
     initScrollbar() {
       let isWindows = navigator.platform.startsWith("Win");

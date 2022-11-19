@@ -63,7 +63,7 @@
                 v-slot="{ handleSubmit }"
                 ref="formValidator"
               >
-                <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
+                <b-form role="form" @submit.prevent="handleSubmit(login)">
                   <base-input
                     alternative
                     class="mb-3"
@@ -121,12 +121,15 @@
 </template>
 <script>
 // 아래와 같이 로그인 했을 때 로그인이 성공하도록 확인하기 위한 변수(DB 대용)
+import http from "@/api/http";
+
 const saved_model = {
   email: "edu@ssafy.com",
   password: "123123",
   rememberMe: false,
 };
 export default {
+  name: "login",
   data() {
     return {
       model: {
@@ -137,19 +140,38 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      if (
-        saved_model.email == this.model.email &&
-        saved_model.password == this.model.password
-      ) {
-        alert("로그인 성공\n홈 화면으로 이동합니다.");
-        this.$cookies.set("loggedin", this.model.email, "60");
-
-        this.$router.push({ name: "dashboard" });
-      } else {
-        alert("로그인 실패\n이메일 및 비밀번호를 다시 입력하세요.");
-      }
-      // this will be called only after form is valid. You can do api call here to login
+    // onSubmit() {
+    //   if (
+    //     saved_model.email == this.model.email &&
+    //     saved_model.password == this.model.password
+    //   ) {
+    //     alert("로그인 성공\n홈 화면으로 이동합니다.");
+    //     this.$cookies.set("loggedin", this.model.email, "60");
+    //     this.$router.push({ name: "maps" });
+    //   } else {
+    //     alert("로그인 실패\n이메일 및 비밀번호를 다시 입력하세요.");
+    //   }
+    //   // this will be called only after form is valid. You can do api call here to login
+    // },
+    login() {
+      http
+        .post("member/login", null, {
+          params: {
+            id: this.model.email,
+            pw: this.model.password,
+          },
+        })
+        .then(({ data }) => {
+          console.log(data.name);
+          if (data.name != null) {
+            alert("로그인 성공\n홈 화면으로 이동합니다.");
+            this.$cookies.set("loggedin", this.model.email, "60");
+            //this.$session.set("loggedin", this.model.email, "60");
+            this.$router.push({ name: "maps" });
+          } else {
+            alert("로그인 실패\n이메일 및 비밀번호를 다시 입력하세요.");
+          }
+        });
     },
   },
 };

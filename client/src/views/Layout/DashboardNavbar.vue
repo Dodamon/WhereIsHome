@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <!-- nav bar 추가한부분 -->
     <b-navbar
@@ -133,4 +133,4 @@ export default {
     },
   },
 };
-</script>
+</script> -->

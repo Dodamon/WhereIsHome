@@ -64,7 +64,9 @@ public class MemberController {
 	@Transactional
 	@PostMapping("/login")
 	@ResponseBody
-	public Member login(@RequestParam String id, @RequestParam String pw, HttpServletRequest req) throws Exception {
+	public Member login(HttpServletRequest request) throws Exception {
+    	String id = request.getParameter("id");
+    	String pw = request.getParameter("pw");
 		System.out.println("id=" + id);
 		System.out.println("pw=" + pw);
 		
@@ -77,9 +79,9 @@ public class MemberController {
 	
 		if(m != null) {
 			System.out.println(1);
-			HttpSession session = req.getSession();
+			HttpSession session = request.getSession();
 			session.setAttribute("member", m);	
-			return new Member(m.getName(), m.getId());
+			return m;
 		} else {
 			 return new Member();
 		}

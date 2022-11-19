@@ -13,7 +13,6 @@ public class SecVO {
 		setUserId(userId);
 		setSalt(salt);
 		setSecKey(secKey);
-		
 	}
 	public String getUserId() {
 		return userId;

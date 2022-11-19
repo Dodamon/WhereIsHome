@@ -34,6 +34,7 @@
     "vue-cookies": "^1.8.2",
     "vue-flatpickr-component": "^8.1.2",
     "vue-router": "^3.0.6",
+    "vue-session": "^1.0.0",
     "vue2-transitions": "^0.2.3",
     "vuex": "^4.1.0"
   },

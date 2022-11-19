@@ -10,9 +10,9 @@
 	</resultMap>
 	
 	<resultMap type="SecVO" id="SecVO">
-		<result column="id" property="userId"/>
+		<result column="userId" property="userId"/>
 		<result column="salt" property="salt"/>
-		<result column="myKey" property="secKey"/>
+		<result column="secKey" property="secKey"/>
 	</resultMap>
 
   	<select id="login" parameterType="map" resultMap="member">

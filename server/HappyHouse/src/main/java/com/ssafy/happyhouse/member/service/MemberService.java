@@ -20,16 +20,14 @@ public class MemberService {
     public Member login(Map<String, String> map) throws Exception {
     	String id = map.get("id");
     	String pw = map.get("pw");
-    	
+
     	SecVO sec=memberMapper.selectSecurity(id);
     	if(sec != null) {
-    	
-	    	String encPw = pw_to_sha(id, pw);
+	    	String encPw = pw_to_sha(sec, pw);
 	    	map.put("pw", encPw);
-	    	
 	    	Member result = memberMapper.login(map);
 	    	try {
-	    		result.setName( OpenCrypt.aesDecrypt(result.getName(), OpenCrypt.hexToByteArray(sec.getSecKey()  )   ) );
+	    		result.setName( OpenCrypt.aesDecrypt(result.getName(), OpenCrypt.hexToByteArray(sec.getSecKey())));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -38,19 +36,12 @@ public class MemberService {
     	return null;
     }
     public int register(Member m) throws Exception {
-//    	byte[] key=OpenCrypt.generateKey("AES",128);
-//    	SecVO sec=new SecVO(m.getId(), UUID.randomUUID().toString(), OpenCrypt.byteArrayToHex(key));
-//    	memberMapper.insertSecurity(sec);
-//    	m.setName(OpenCrypt.aesEncrypt(m.getName(), key)); // 멤버 네임을 암호화, key는 vo에 저장되어 있음 (바로 위 코드 )
-//    	String pw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(m.getPw(), sec.getSalt()));
-//        m.setPw(pw);
-//        System.out.println("2" + m);
-//    	return memberMapper.register(m);
     	byte[] key=OpenCrypt.generateKey("AES",128);
     	SecVO sec=new SecVO(m.getId(), UUID.randomUUID().toString(), OpenCrypt.byteArrayToHex(key));
     	memberMapper.insertSecurity(sec);
-//    	m.setName(OpenCrypt.aesEncrypt(m.getName(), key)); // 멤버 네임을 암호화, key는 vo에 저장되어 있음 (바로 위 코드 )
-//        m.setPw(new String(OpenCrypt.getSHA256(m.getPw(), sec.getSalt())));
+    	m.setName(OpenCrypt.aesEncrypt(m.getName(), key)); // 멤버 네임을 암호화, key는 vo에 저장되어 있음 (바로 위 코드 )
+    	String pw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(m.getPw(), sec.getSalt()));
+    	m.setPw(pw);
     	return memberMapper.register(m);
     }
     public Member userinfo(Member m) throws Exception {
@@ -64,8 +55,6 @@ public class MemberService {
 	public int update(Map<String, String> map) throws Exception {
 		SecVO sec=memberMapper.selectSecurity(map.get("id"));
 		
-		
-		
 		map.put("pw", new String(OpenCrypt.getSHA256(map.get("pw"), sec.getSalt())));
 		map.put("name", OpenCrypt.aesEncrypt(map.get("name"),OpenCrypt.hexToByteArray(sec.getSecKey())));
 		
@@ -77,12 +66,8 @@ public class MemberService {
 		
 	}
 	
-	public String pw_to_sha(String id, String pw) {
-//        SecVO sec=memberDao.selectSecurity(id);
-        SecVO sec=memberMapper.selectSecurity(id);
-        
-        String encrypted_pw = new String(OpenCrypt.getSHA256(pw, sec.getSalt()));
-        
+	public String pw_to_sha(SecVO sec, String pw) {
+        String encrypted_pw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(pw, sec.getSalt()));
         return encrypted_pw;
     }
 	
