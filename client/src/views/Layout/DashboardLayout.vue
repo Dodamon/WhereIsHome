@@ -225,12 +225,8 @@ export default {
       // log_session: this.$cookies.isKey("loggedin"),
       //log_session: this.$session.isKey("loggedin"),
       // id: this.$cookies.get("loggedin"),
-<<<<<<< HEAD
-      id: this.$session.get("loggedin"),
-=======
       // id: this.$session.get("loggedin"),
       id: sessionStorage.getItem("loggedin"),
->>>>>>> branch 'main' of https://lab.ssafy.com/s08/a19/14_finalproject/pair08_leeyeeun_jisunho.git
     };
   },
   components: {
@@ -249,12 +245,8 @@ export default {
     },
     logout() {
       // this.$cookies.remove("loggedin");
-<<<<<<< HEAD
-      this.$session.remove("loggedin");
-=======
       // this.$session.remove("loggedin");
       sessionStorage.removeItem("loggedin");
->>>>>>> branch 'main' of https://lab.ssafy.com/s08/a19/14_finalproject/pair08_leeyeeun_jisunho.git
       alert("로그아웃 완료\n새로고침합니다.");
       location.reload();
     },

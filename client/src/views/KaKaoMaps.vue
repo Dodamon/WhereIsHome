@@ -395,7 +395,6 @@ export default {
 .b-sidebar {
   width: 600px !important;
   height: 85%;
-  margin-top: 95px;
   margin-bottom: 1000px;
 }
 #mapContainer {
