@@ -24,6 +24,8 @@
     <b-container fluid class="mt--7">
       <b-row>
         <b-col>
+          <b-button @click="clr">세션 clear</b-button>
+          <b-button>현재 로그인한 사용자 : {{ cur_session }}</b-button>
           <router-view></router-view>
         </b-col>
       </b-row>
@@ -80,7 +82,17 @@ export default {
       projects,
       users,
       todos: [],
+      cur_session: 0,
     };
+  },
+  created() {
+    // this.$session.clear();
+    // alert("before" + this.$session.get("id"));
+    // this.$session.set("id", "hoya");
+    // alert("after" + this.$session.get("id"));
+    // alert(this.$session.get("id"));
+    // this.cur_session = this.$session.get("loggedin");
+    this.cur_session = sessionStorage.getItem("loggedin");
   },
   methods: {
     addTodo(item) {
@@ -89,6 +101,10 @@ export default {
     },
     deleteTodo(arr) {
       this.todos = arr;
+    },
+    clr() {
+      this.$session.clear();
+      alert("현재 session 값 모두 클리어");
     },
   },
 };

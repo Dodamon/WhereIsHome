@@ -165,8 +165,9 @@ export default {
           console.log(data.name);
           if (data.name != null) {
             alert("로그인 성공\n홈 화면으로 이동합니다.");
-            this.$cookies.set("loggedin", this.model.email, "60");
-            //this.$session.set("loggedin", this.model.email, "60");
+            // this.$cookies.set("loggedin", this.model.email, "60");
+            // this.$session.set("loggedin", this.model.email, "60");
+            sessionStorage.setItem("loggedin", this.model.email);
             this.$router.push({ name: "maps" });
           } else {
             alert("로그인 실패\n이메일 및 비밀번호를 다시 입력하세요.");
