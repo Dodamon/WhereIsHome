@@ -9,17 +9,18 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.member.dto.Member;
 import com.ssafy.happyhouse.member.service.MemberService;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -30,24 +31,22 @@ public class MemberController {
 	@Transactional
 	@PostMapping("/register")
     @ResponseBody
-    public Member register(@RequestParam String id, 
-    		@RequestParam String pw, 
-    		@RequestParam String name) throws Exception {
+    public int register(HttpServletRequest request) throws Exception {
+    	String id = request.getParameter("id");
+    	String pw = request.getParameter("pw");
+    	String name = request.getParameter("name");
+    	String phone = request.getParameter("phone");
+    	String address = request.getParameter("address");
     	
-		try {
-			int idx= memberService.register(new Member(name, id, pw));
-			if(idx >0) {
-				System.out.println("회원가입 성공");
-	            return new Member("sign in success", "");
-	        }else {
-	        	System.out.println("회원가입 실패1");
-	            return new Member("sign in fail", "");
-	        }
-			
-		}catch(Exception e){
-			System.out.println("회원가입 실패2");
-            return new Member("sign in fail", "");
-		}
+		
+		int idx= memberService.register(new Member(2, id, pw, name, phone, address));
+		if(idx >0) {
+			System.out.println("회원가입 성공");
+            return 1;
+        }else {
+        	System.out.println("회원가입 실패1");
+            return 0;
+        }
     }
 	
 	@PostMapping("/checkid")
@@ -55,7 +54,7 @@ public class MemberController {
 	public int checkId(@RequestParam String id) {
 		try {
 			int i = memberService.checkId(id);
-			if(i == 0) return 1;
+			return i;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

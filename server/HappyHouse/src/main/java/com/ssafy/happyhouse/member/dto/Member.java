@@ -8,55 +8,69 @@ import lombok.RequiredArgsConstructor;
 
 public class Member {
 	
-	private String name,id;
-	private String pw;
+	private int code;
+	private String id,pw, name, phone, address;
 	
-	public Member(String name, String id, String pw) {
+	
+	public Member(int code, String id, String pw, String name, String phone, String address) {
 		super();
-		this.name = name;
+		this.code = code;
 		this.id = id;
 		this.pw = pw;
-	}
-
-	public Member(String name, String id) {
-		super();
 		this.name = name;
-		this.id = id;
+		this.phone = phone;
+		this.address = address;
 	}
 	public Member() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-
-	public String getName() {
-		return name;
+	public int getCode() {
+		return code;
 	}
-
-	public void setName(String name) {
-		if(name != null)
-			this.name = name;
+	public void setCode(int code) {
+		this.code = code;
 	}
-
 	public String getId() {
 		return id;
 	}
-
 	public void setId(String id) {
-		if(id != null)
-			this.id = id;
+		this.id = id;
 	}
-
 	public String getPw() {
 		return pw;
 	}
-
 	public void setPw(String pw) {
-		if(id != null)
-			this.pw = pw;
+		this.pw = pw;
 	}
-
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	@Override
 	public String toString() {
-		return "Member [name=" + name + ", id=" + id + ", pw=" + pw + "]";
+		return "Member [code=" + code + ", id=" + id + ", pw=" + pw + ", name=" + name + ", phone=" + phone
+				+ ", address=" + address + "]";
 	}
+	
+	
+
+	
+	
+	
 
 }
