@@ -37,15 +37,15 @@
   
   
   	<delete id="deleteSec" parameterType="String">
-  		delete from sec where id=#{id}
+  		delete from openeg_security where userId =#{id}
   	</delete>
   
   	<select id="selectSecurity" parameterType="string" resultMap="SecVO">
-    	select * from sec where id = #{id}
+    	select * from openeg_security where userId = #{id}
   	</select>
   
 	<insert id="insertSecurity" parameterType="SecVO">
-    	insert into sec(id,salt,myKey) values(#{userId},#{salt},#{secKey})
+    	insert into openeg_security(userId,salt,secKey) values(#{userId},#{salt},#{secKey})
 	</insert>
 	
 	<select id="checkId" parameterType="String" resultType="int">

@@ -42,7 +42,9 @@ public class MemberService {
     	SecVO sec=new SecVO(m.getId(), UUID.randomUUID().toString(), OpenCrypt.byteArrayToHex(key));
     	memberMapper.insertSecurity(sec);
     	m.setName(OpenCrypt.aesEncrypt(m.getName(), key)); // 멤버 네임을 암호화, key는 vo에 저장되어 있음 (바로 위 코드 )
-        m.setPw(new String(OpenCrypt.getSHA256(m.getPw(), sec.getSalt())));
+    	String pw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(m.getPw(), sec.getSalt()));
+        m.setPw(pw);
+        System.out.println("2" + m);
     	return memberMapper.register(m);
     }
     public Member userinfo(Member m) throws Exception {

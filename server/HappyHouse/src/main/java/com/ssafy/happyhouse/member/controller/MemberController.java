@@ -30,10 +30,12 @@ public class MemberController {
 	@Transactional
 	@PostMapping("/register")
     @ResponseBody
-    public Member register(@RequestBody Map<String, String> map) throws Exception {
+    public Member register(@RequestParam String id, 
+    		@RequestParam String pw, 
+    		@RequestParam String name) throws Exception {
     	
 		try {
-			int idx= memberService.register(new Member(map.get("name"), map.get("id"), map.get("pw")));
+			int idx= memberService.register(new Member(name, id, pw));
 			if(idx >0) {
 				System.out.println("회원가입 성공");
 	            return new Member("sign in success", "");
