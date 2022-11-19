@@ -21,7 +21,7 @@
         >
         </sidebar-item> -->
         <!-- 사용자 프로필 사진 클릭시 DropDown -->
-        <sicebar-item>
+        <sidebar-item>
           <b-navbar-nav class="align-items-right ml-auto ml-md-3">
             <!-- <base-dropdown
               menu-on-left
@@ -87,7 +87,7 @@
               </template> -->
             <!-- </base-dropdown> -->
           </b-navbar-nav>
-        </sicebar-item>
+        </sidebar-item>
 
         <sidebar-item
           :link="{
@@ -182,7 +182,7 @@
       </template>
     </side-bar>
     <div class="main-content">
-      <dashboard-navbar :type="$route.meta.navbarType"></dashboard-navbar>
+      <!-- <dashboard-navbar :type="$route.meta.navbarType"></dashboard-navbar> -->
 
       <div @click="$sidebar.displaySidebar(false)">
         <fade-transition :duration="200" origin="center top" mode="out-in">
@@ -225,7 +225,12 @@ export default {
       // log_session: this.$cookies.isKey("loggedin"),
       //log_session: this.$session.isKey("loggedin"),
       // id: this.$cookies.get("loggedin"),
+<<<<<<< HEAD
       id: this.$session.get("loggedin"),
+=======
+      // id: this.$session.get("loggedin"),
+      id: sessionStorage.getItem("loggedin"),
+>>>>>>> branch 'main' of https://lab.ssafy.com/s08/a19/14_finalproject/pair08_leeyeeun_jisunho.git
     };
   },
   components: {
@@ -244,7 +249,12 @@ export default {
     },
     logout() {
       // this.$cookies.remove("loggedin");
+<<<<<<< HEAD
       this.$session.remove("loggedin");
+=======
+      // this.$session.remove("loggedin");
+      sessionStorage.removeItem("loggedin");
+>>>>>>> branch 'main' of https://lab.ssafy.com/s08/a19/14_finalproject/pair08_leeyeeun_jisunho.git
       alert("로그아웃 완료\n새로고침합니다.");
       location.reload();
     },
