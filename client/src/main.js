@@ -22,6 +22,15 @@ import App from "./App.vue";
 // 로그인 유지를 위한 쿠키 설정
 import VueCookies from "vue-cookies";
 
+// 로그인 유지를 위한 세션 설정
+import VueSession from "vue-session";
+
+var sessionOptions = {
+  persist: true,
+};
+Vue.use(VueSession, sessionOptions);
+///////////////////////////////////
+
 // router setup
 import router from "./routes/router";
 import "bootstrap-vue/dist/bootstrap-vue.css";

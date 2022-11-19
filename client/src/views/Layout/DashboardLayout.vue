@@ -36,11 +36,7 @@
                 @click.prevent
                 slot="title-container"
               > -->
-            <b-media
-              v-if="log_session == false"
-              no-body
-              class="align-items-center"
-            >
+            <b-media v-if="id == undefined" no-body class="align-items-center">
               <span class="avatar avatar-xl rounded-circle">
                 <img alt="Image placeholder" src="img/theme/team-0.png" />
               </span>
@@ -122,7 +118,7 @@
 
         <!-- 로그인 되지 않았으면 로그인 버튼 표시 -->
         <sidebar-item
-          v-if="log_session == false"
+          v-if="id == undefined"
           :link="{
             name: 'Login',
             path: '/login',
@@ -133,7 +129,7 @@
 
         <!-- 로그인 되지 않았으면 회원가입 버튼 표시 -->
         <sidebar-item
-          v-if="log_session == false"
+          v-if="id == undefined"
           :link="{
             name: 'Register',
             path: '/register',
@@ -145,7 +141,7 @@
         <!-- 로그인 되었으면 로그아웃 버튼 표시 -->
         <div @click="logout">
           <sidebar-item
-            v-if="log_session == true"
+            v-if="id != undefined"
             :link="{
               name: '로그아웃',
               path: '#',
@@ -226,9 +222,10 @@ import { FadeTransition } from "vue2-transitions";
 export default {
   data() {
     return {
-      log_session: this.$cookies.isKey("loggedin"),
+      // log_session: this.$cookies.isKey("loggedin"),
       //log_session: this.$session.isKey("loggedin"),
-      id: this.$cookies.get("loggedin"),
+      // id: this.$cookies.get("loggedin"),
+      id: this.$session.get("loggedin"),
     };
   },
   components: {
@@ -246,7 +243,8 @@ export default {
       }
     },
     logout() {
-      this.$cookies.remove("loggedin");
+      // this.$cookies.remove("loggedin");
+      this.$session.remove("loggedin");
       alert("로그아웃 완료\n새로고침합니다.");
       location.reload();
     },
