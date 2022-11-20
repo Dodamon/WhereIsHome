@@ -2,7 +2,7 @@
   <card>
     <b-row align-v="center" slot="header">
       <b-col cols="8">
-        <h3 class="mb-0">회원정보 수정</h3>
+        <h3 class="mb-0">회원정보 상세보기</h3>
       </b-col>
     </b-row>
 
@@ -21,6 +21,7 @@
               <b-form-input
                 id="input-default"
                 v-model="user.name"
+                disabled
               ></b-form-input>
             </b-form-group>
           </b-col>
@@ -52,6 +53,7 @@
               <b-form-input
                 id="input-default"
                 v-model="user.password"
+                disabled
               ></b-form-input>
             </b-form-group>
           </b-col>
@@ -67,6 +69,7 @@
               <b-form-input
                 id="input-default"
                 v-model="user.password_check"
+                disabled
               ></b-form-input>
             </b-form-group>
           </b-col>
@@ -82,6 +85,7 @@
               <b-form-input
                 id="input-default"
                 v-model="user.address"
+                disabled
               ></b-form-input>
             </b-form-group>
           </b-col>
@@ -95,13 +99,21 @@
               <b-form-input
                 id="input-default"
                 v-model="user.phone"
+                disabled
               ></b-form-input>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
           <b-button type="button" class="m-1" variant="primary" @click="modify"
-            >수정</b-button
+            >수정하기</b-button
+          >
+          <b-button
+            type="button"
+            class="m-1"
+            variant="primary"
+            @click="del_account"
+            >탈퇴하기</b-button
           >
         </b-row>
       </div>
@@ -129,21 +141,18 @@ export default {
   },
   methods: {
     modify() {
-      if (this.user.password !== this.user.password_check) {
-        alert("비밀번호와 비밀번호 확인의 값이 다릅니다.");
-      } else {
-        http.post(`member/update`, null, {
-          params: {
-            id: this.user.id,
-            password: this.user.password,
-            name: this.user.name,
-            address: this.user.address,
-            phone: this.user.phone,
-          },
-        });
-        alert("회원 정보 수정 완료");
-        this.$router.push({ name: "maps" });
-      }
+      this.$router.push({ name: "profile_modify" });
+    },
+    del_account() {
+      http.post(`member/delete`, null, {
+        params: { id: sessionStorage.getItem("loggedin") },
+      });
+
+      alert("탈퇴 완료");
+      sessionStorage.removeItem("loggedin");
+
+      this.$router.push({ name: "maps" });
+      this.$router.go();
     },
   },
   created() {

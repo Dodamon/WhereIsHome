@@ -28,10 +28,22 @@ const routes = [
       {
         path: "/profile",
         name: "profile",
-        component: () =>
-          import(
-            /* webpackChunkName: "demo" */ "../views/Pages/UserProfile.vue"
-          ),
+        component: () => import("../views/Pages/UserProfile.vue"),
+        redirect: "/profile/profile_detail",
+        children: [
+          {
+            path: "profile_detail",
+            name: "profile_detail",
+            component: () =>
+              import("@/views/Pages/UserProfile/DetailProfile.vue"),
+          },
+          {
+            path: "profile_modify",
+            name: "profile_modify",
+            component: () =>
+              import("@/views/Pages/UserProfile/EditProfileForm.vue"),
+          },
+        ],
       },
       // {
       //   path: "/maps",
