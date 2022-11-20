@@ -50,15 +50,17 @@ public class MemberService {
     	SecVO sec=memberMapper.selectSecurity(m.getId());
     	
     	result.setName(OpenCrypt.aesDecrypt(result.getName(), OpenCrypt.hexToByteArray(sec.getSecKey())));
+    	
     	return result;
     }
-	public int update(Map<String, String> map) throws Exception {
-		SecVO sec=memberMapper.selectSecurity(map.get("id"));
+	public int update(String id, String password, String name, String address, String phone) throws Exception {
+		SecVO sec=memberMapper.selectSecurity(id);
 		
-		map.put("pw", new String(OpenCrypt.getSHA256(map.get("pw"), sec.getSalt())));
-		map.put("name", OpenCrypt.aesEncrypt(map.get("name"),OpenCrypt.hexToByteArray(sec.getSecKey())));
+		String encrypted_pw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(password, sec.getSalt()));
+		String encrypted_name = OpenCrypt.aesEncrypt(name,OpenCrypt.hexToByteArray(sec.getSecKey()));
+
 		
-		return memberMapper.update(map);
+		return memberMapper.update(new Member(0, id, encrypted_pw, encrypted_name, phone, address));
 	}
 	public void delete(String id) throws Exception {
 		memberMapper.delete(id);

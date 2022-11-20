@@ -100,34 +100,44 @@ public class MemberController {
         return "로그아웃 되었습니다.";
     }
     
-    @GetMapping("/userinfo")
+    @PostMapping("/userinfo")
     @ResponseBody
     public Member userInfo(HttpServletRequest request) {
-    	System.out.println("유저정보가져오기");
-    	HttpSession session = request.getSession(false);
-		if(session != null) {
-			Member m = (Member) session.getAttribute("member");
-			System.out.println("before try" + m);
-			try {
-				m = memberService.userinfo(m);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+//    	System.out.println("유저정보가져오기");
+//    	HttpSession session = request.getSession(false);
+//		if(session != null) {
+//			Member m = (Member) session.getAttribute("member");
+//			System.out.println("before try" + m);
+//			try {
+//				m = memberService.userinfo(m);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			System.out.println(m);
+//			return m;			
+//		}else {
+//			return null;
+//		}
+    	String id = request.getParameter("id");
+    	try {
+			Member m = memberService.userinfo(new Member(0, id, "", "", "", ""));
 			System.out.println(m);
-			return m;			
-		}else {
+			return m;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return null;
 		}
+    	
+    	
     }
     
     @PostMapping("/update")
     @ResponseBody
-    public Member update(@RequestBody Map<String, String> map, HttpServletRequest request) {
-    	//System.out.println("유저정보 업데이트하기");
+    public Member update(String id, String password, String name, String address, String phone, HttpServletRequest request) {
     
 		try {
-			System.out.println(map);
-			int i = memberService.update(map);
+			int i = memberService.update(id, password, name, address, phone);
 			if(i >0) {
 				System.out.println("업데이트 성공");
 				Member m = userInfo(request);
@@ -149,20 +159,25 @@ public class MemberController {
         System.out.println("회원 삭제" + id);
         
         // 회원삭제를 다시 확인한다
-        HttpSession session=request.getSession(false);
-        if(session != null) {
-            Member m = (Member) session.getAttribute("member");
-            if(m.getId().equals(id)) {
-                try {
-                    memberService.delete(id);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                session.invalidate();
-                return true;
-            }
-        }
-        System.out.println("해킹 시도감지!!!!");
+//        HttpSession session=request.getSession(false);
+//        if(session != null) {
+//            Member m = (Member) session.getAttribute("member");
+//            if(m.getId().equals(id)) {
+//                try {
+//                    memberService.delete(id);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                session.invalidate();
+//                return true;
+//            }
+//        }
+        try {
+			memberService.delete(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+//        System.out.println("해킹 시도감지!!!!");
         return false;
     }
     

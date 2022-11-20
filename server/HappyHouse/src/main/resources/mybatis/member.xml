@@ -24,11 +24,11 @@
    	</insert>
    
    	<select id="userinfo" parameterType="map" resultMap="member">
-    	select id, name, pw from member where id = #{id}
+    	select id, name, pw, phone, address from member where id = #{id}
   	</select>
   
-  	<update id="update" parameterType="map">
-  		update member set pw = #{pw}, name = #{name} where id = #{id}
+  	<update id="update" parameterType="member">
+  		update member set pw = #{pw}, name = #{name}, phone = #{phone}, address = #{address} where id = #{id}
   	</update>
   
   	<delete id="delete" parameterType="String">
