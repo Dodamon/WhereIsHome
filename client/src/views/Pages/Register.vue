@@ -78,6 +78,30 @@
                   >
                   </base-input>
 
+                  <!-- 주소 입력 구역 -->
+                  <base-input
+                    alternative
+                    class="mb-3"
+                    prepend-icon="ni ni-hat-3"
+                    placeholder="Address"
+                    name="Address"
+                    :rules="{ required: true }"
+                    v-model="model.address"
+                  >
+                  </base-input>
+
+                  <!-- 전화번호 입력 구역 -->
+                  <base-input
+                    alternative
+                    class="mb-3"
+                    prepend-icon="ni ni-hat-3"
+                    placeholder="Phone"
+                    name="Phone"
+                    :rules="{ required: true }"
+                    v-model="model.phone"
+                  >
+                  </base-input>
+
                   <!-- 이메일 입력 구역 -->
                   <base-input
                     alternative
@@ -143,13 +167,7 @@
   </div>
 </template>
 <script>
-// 아래와 같은 정보로 입력되면 중복 이메일로 회원가입 안되는 것을 확인하기 위한 데이터
-const saved_model = {
-  name: "ssafy",
-  email: "edu@ssafy.com",
-  password: "123123",
-  agree: true,
-};
+import http from "@/api/http";
 
 export default {
   name: "register",
@@ -159,35 +177,63 @@ export default {
         name: "",
         email: "",
         password: "",
+        address: "",
+        phone: "",
         agree: false,
       },
     };
   },
   methods: {
     onSubmit() {
-      alert(
-        "이름 : " +
-          this.model.name +
-          "\n이메일 : " +
-          this.model.email +
-          "\n비밀번호 : " +
-          this.model.password +
-          "\n약관동의여부 : " +
-          this.model.agree +
-          "\n--------------------------------" +
-          "\n위와 같은 정보로 회원가입 시도합니다."
-      );
+      // alert(
+      //   "이름 : " +
+      //     this.model.name +
+      //     "\n이메일 : " +
+      //     this.model.email +
+      //     "\n비밀번호 : " +
+      //     this.model.password +
+      //     "\n약관동의여부 : " +
+      //     this.model.agree +
+      //     "\n--------------------------------" +
+      //     "\n위와 같은 정보로 회원가입 시도합니다."
+      // );
 
-      if (saved_model.email != this.model.email) {
-        alert("회원가입 성공\n");
-        alert("로그인 화면으로 이동합니다.");
-
-        this.$router.push({ name: "login" });
-      } else {
-        alert("이미 존재하는 이메일입니다. 다시 시도하세요.");
-      }
-
+      http
+        .post("member/checkid", null, {
+          params: { id: this.model.email },
+        })
+        .then(({ data }) => {
+          console.log(data);
+          if (data == 0) {
+            this.register();
+          } else {
+            alert("이미 존재하는 이메일입니다. 다시 시도하세요.");
+          }
+          // alert(this.boards[0].title);
+        });
       // this will be called only after form is valid. You can do an api call here to register users
+    },
+    register() {
+      http
+        .post("member/register", null, {
+          params: {
+            id: this.model.email,
+            pw: this.model.password,
+            name: this.model.name,
+            phone: this.model.phone,
+            address: this.model.address,
+          },
+        })
+        .then(({ data }) => {
+          console.log(data);
+          if (data == 0) {
+            alert("이미 존재하는 이메일입니다. 다시 시도하세요.");
+          } else {
+            alert("회원가입 성공\n 로그인 페이지로 이동합니다");
+            this.$router.push({ name: "login" });
+          }
+          // alert(this.boards[0].title);
+        });
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="mapContainer" class="p-0 m-0">
-      <b-container fluid id="map" class="map-canvas" style="height: 1100px">
+      <b-container fluid id="map" class="map-canvas" style="height: 1200px">
         <b-row id="detailContainer">
           <b-sidebar
             id="sidebar-right"
@@ -50,9 +50,10 @@
                 >
               </b-row>
             </b-container>
-            <!-- -------------- -->
+
             <b-container v-else>
-              <b-container v-if="selected_house" class="bv-example-row">
+              <!-- 매물 마커를 클릭 -->
+              <b-container v-if="selected_house_btn" class="bv-example-row">
                 <b-row>
                   <b-col
                     ><h3>{{ marker.apartName }}</h3></b-col
@@ -103,23 +104,64 @@
                     >
                   </b-col>
                 </b-row>
+
+                <b-container
+                  v-if="housedeals && housedeals.length != 0"
+                  class="bv-example-row mt-3"
+                >
+                  <house-list-item
+                    v-for="(house, index) in housedeals"
+                    :key="index"
+                    :house="house"
+                    :marker="marker"
+                    @selectHouse="selectHouse"
+                  />
+                </b-container>
+                <b-container v-else class="bv-example-row mt-3">
+                  <b-row>
+                    <b-col><b-alert show>주택 목록이 없습니다.</b-alert></b-col>
+                  </b-row>
+                </b-container>
               </b-container>
 
-              <b-container
-                v-if="housedeals && housedeals.length != 0"
-                class="bv-example-row mt-3"
-              >
-                <house-list-item
-                  v-for="(house, index) in housedeals"
-                  :key="index"
-                  :house="house"
-                  :marker="marker"
-                  @selectHouse="selectHouse"
-                />
-              </b-container>
-              <b-container v-else class="bv-example-row mt-3">
+              <!-- 임장모임 마커를 클릭 -->
+              <b-container v-else>
+                <h1>임장정보</h1>
                 <b-row>
-                  <b-col><b-alert show>주택 목록이 없습니다.</b-alert></b-col>
+                  <b-col>
+                    <b-alert show variant="secondary"
+                      >제목 : {{ selected_imjang.title }}</b-alert
+                    >
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="secondary"
+                      >일시 : {{ selected_imjang.date }}</b-alert
+                    >
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="danger"
+                      >최대인원 : {{ selected_imjang.max_people }}</b-alert
+                    >
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="primary"
+                      >최소인원 : {{ selected_imjang.min_people }}</b-alert
+                    >
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col>
+                    <b-button>참여하기</b-button>
+                  </b-col>
                 </b-row>
               </b-container>
             </b-container>
@@ -159,36 +201,6 @@
               </option>
             </b-form-select>
           </div>
-
-          <div id="location_select">
-            <b-form-select v-model="selected_sido" class="w-25">
-              <option
-                v-for="(item, index) in sidos"
-                :key="index"
-                :value="item.sidoName"
-              >
-                {{ item.sidoName }}
-              </option>
-            </b-form-select>
-            <b-form-select v-model="selected_gugun" class="w-25">
-              <option
-                v-for="(item, index) in guguns"
-                :key="index"
-                :value="item.name"
-              >
-                {{ item.name }}
-              </option>
-            </b-form-select>
-            <b-form-select v-model="selected_dong" class="w-25">
-              <option
-                v-for="(item, index) in dongs"
-                :key="index"
-                :value="item.name"
-              >
-                {{ item.name }}
-              </option>
-            </b-form-select>
-          </div>
           <b-button @click="showImjang">임장 모임 등록</b-button>
         </b-row>
       </b-container>
@@ -207,11 +219,15 @@ export default {
   data() {
     return {
       markerPositions: [],
+      markerImjangs: [],
       marker: Object,
       house: Object,
       isColor: true,
+      isSideBar: false,
       selected_house: Object,
+      selected_imjang: Object,
       selected_imjang_btn: false,
+      selected_house_btn: false,
 
       selected_sido: "시도 선택",
       selected_gugun: "구군 선택",
@@ -223,7 +239,10 @@ export default {
       houseinfos: [],
       housedeals: [],
 
+      imjanginfos: [],
+
       markers: [],
+      markers_imjang: [],
       infowindow: null,
       geocoder: null,
 
@@ -231,6 +250,9 @@ export default {
       min_people: null,
       max_people: null,
       gather_date: null,
+      imjang_sido: null,
+      imjang_gugun: null,
+      imjang_dong: null,
 
       minP: [
         { value: null, text: "최소인원" },
@@ -272,6 +294,8 @@ export default {
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
+      // 주소-좌표 변환 객체를 생성합니다
+      this.geocoder = new kakao.maps.services.Geocoder();
     },
     changeSize(size) {
       const container = document.getElementById("map");
@@ -279,15 +303,20 @@ export default {
       container.style.height = `${size}px`;
       this.map.relayout();
     },
-    displayMarker(markerPositions) {
+    displayMarker() {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
 
-      const positions = markerPositions.map(
+      const positions = this.markerPositions.map(
         (position) => new kakao.maps.LatLng(...position)
       );
 
+      const positionsImjang = this.markerImjangs.map(
+        (position) => new kakao.maps.LatLng(...position)
+      );
+
+      // 매물 마커 생성하기
       if (positions.length > 0) {
         this.markers = positions.map((position, index) => {
           const marker = new kakao.maps.Marker({
@@ -297,21 +326,51 @@ export default {
           kakao.maps.event.addListener(marker, "click", () => {
             // 마커를 클릭했을때 sidebar가 나오도록한다.
             this.selected_imjang_btn = false;
-            console.log("open", index);
+            this.selected_house_btn = true;
             this.marker = this.houseinfos[index];
             this.openSidebar();
             this.search_deals(this.marker.aptCode);
           });
           return marker;
         });
+      }
 
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
+      if (positionsImjang.length > 0) {
+        var imageSrc =
+            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png", // 마커이미지의 주소입니다
+          imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+          imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+        var markerImage = new kakao.maps.MarkerImage(
+          imageSrc,
+          imageSize,
+          imageOption
         );
 
-        this.map.setBounds(bounds);
+        this.markers_imjang = positionsImjang.map((position, index) => {
+          const marker = new kakao.maps.Marker({
+            map: this.map,
+            position,
+            image: markerImage,
+          });
+
+          kakao.maps.event.addListener(marker, "click", () => {
+            // 마커를 클릭했을때 sidebar가 나오도록한다.
+            this.selected_imjang_btn = false;
+            this.selected_house_btn = false;
+            this.selected_imjang = this.imjanginfos[index];
+            this.openSidebar();
+            // this.search_imjang(this.marker.aptCode);
+          });
+          return marker;
+        });
       }
+      const bounds = positions.reduce(
+        (bounds, latlng) => bounds.extend(latlng),
+        new kakao.maps.LatLngBounds()
+      );
+      this.map.setBounds(bounds);
     },
     displayInfoWindow() {
       if (this.infowindow && this.infowindow.getMap()) {
@@ -373,14 +432,23 @@ export default {
     },
     makeMarkerPositions() {
       this.houseinfos.forEach((element) => {
-        //console.log(element.lat, element.lng);
         this.markerPositions.push([element.lat, element.lng]);
       });
-      console.log(this.markerPositions);
-      this.displayMarker(this.markerPositions);
+
+      console.log(this.markerImjangs);
+      this.imjanginfos.forEach((element) => {
+        console.log(element);
+        this.markerImjangs.push([element.latitude, element.longitude]);
+        // this.markerPositionsImjang.push([element.latitude, element.longitude]);
+      });
+
+      this.displayMarker();
     },
     openSidebar() {
-      this.$root.$emit("bv::toggle::collapse", "sidebar-right");
+      if (this.isSideBar == false) {
+        this.isSideBar = true;
+        this.$root.$emit("bv::toggle::collapse", "sidebar-right");
+      }
     },
     selectHouse(house) {
       console.log("here", house);
@@ -390,15 +458,12 @@ export default {
       this.selected_imjang_btn = true;
       this.openSidebar();
     },
+    searchDetailAddrFromCoords(coords, callback) {
+      // 좌표로 법정동 상세 주소 정보를 요청합니다
+      this.geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+    },
     selectPlace() {
       alert("지도에서 위치를 선택해주세요");
-      // var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-      //   mapOption = {
-      //     center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-      //     level: 3, // 지도의 확대 레벨
-      //   };
-
-      // var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
       var map = this.map;
       // // 지도를 클릭한 위치에 표출할 마커입니다
       var imageSrc =
@@ -422,17 +487,29 @@ export default {
       // 지도에 클릭 이벤트를 등록합니다
       // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
       var tt = "";
-      kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+      kakao.maps.event.addListener(map, "click", (mouseEvent) => {
         // 클릭한 위도, 경도 정보를 가져옵니다
         var latlng = mouseEvent.latLng;
-        tt = latlng.getLat();
-        // latitude = latlng.getLat();
-        // alert(this.latitude);
-        // console.log(latitude);
+
         // 마커 위치를 클릭한 위치로 옮깁니다
         marker.setPosition(latlng);
         localStorage.setItem("lat", latlng.getLat());
         localStorage.setItem("lng", latlng.getLng());
+        console.log(latlng);
+
+        // 위도 경도를 바탕으로 시동구군 얻어오기
+        this.searchDetailAddrFromCoords(latlng, (result, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            // console.log(result);
+            var detailAddr = result[0].address.address_name.split(" ");
+            var roadAddr = result[0].road_address.address_name.split(" ");
+            // console.log(detailAddr, roadAddr);
+            this.imjang_sido = roadAddr[0];
+            this.imjang_gugun = detailAddr[1];
+            this.imjang_dong = detailAddr[2];
+          }
+        });
+
         // var message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
         // message += "경도는 " + latlng.getLng() + " 입니다";
 
@@ -450,6 +527,9 @@ export default {
             date: this.gather_date,
             latitude: localStorage.getItem("lat"),
             longitude: localStorage.getItem("lng"),
+            sido: this.imjang_sido,
+            gugun: this.imjang_gugun,
+            dong: this.imjang_dong,
           },
         })
         .catch();
@@ -505,12 +585,20 @@ export default {
           })
           .then(({ data }) => {
             console.log(data);
-            this.houseinfos = data.list;
+            this.houseinfos = data.houses;
+            this.imjanginfos = data.imjangs;
             console.log(this.houseinfos);
+            console.log(this.imjanginfos);
 
             alert(
-              "해당 지역 아파트는" + this.houseinfos.length + " 건 입니다."
+              "해당 지역 아파트는" +
+                this.houseinfos.length +
+                " 건 입니다." +
+                "해당 지역 임장모임는" +
+                this.imjanginfos.length +
+                " 건 입니다."
             );
+
             this.makeMarkerPositions();
           });
       },
@@ -540,8 +628,7 @@ export default {
 <style>
 .b-sidebar {
   width: 600px !important;
-  height: 85%;
-  margin-bottom: 1000px;
+  height: 100%;
 }
 #mapContainer {
   position: relative;

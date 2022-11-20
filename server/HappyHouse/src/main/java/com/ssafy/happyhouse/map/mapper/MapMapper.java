@@ -26,4 +26,6 @@ public interface MapMapper {
 
 	public long writeImjang(Site_gathering site_gathering);
 
+	public List<Site_gathering> getGatheringinfo(String sidoName, String gugunName, String dongName);
+
 }

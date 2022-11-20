@@ -42,8 +42,16 @@
 	</select>
 	
 	<insert id="writeImjang" parameterType="site_gathering" >
-	 		insert into site_gathering(title, date, latitude, longitude, max_people, min_people) values(#{title}, #{date}, #{latitude}, #{longitude}, #{max_people}, #{min_people})
+	 	INSERT 
+	 	INTO site_gathering(title, date, latitude, longitude, max_people, min_people, sidoName, gugunName, dongName) 
+	 	VALUES(#{title}, #{date}, #{latitude}, #{longitude}, #{max_people}, #{min_people}, #{sidoName}, #{gugunName}, #{dongName})
 	</insert>
+	
+	<select id="getGatheringinfo"  resultType="site_gathering">
+		SELECT *
+		FROM site_gathering
+		WHERE sidoName = #{sidoName} and gugunName = #{gugunName} and dongName = #{dongName}
+	</select>
   
 
 		

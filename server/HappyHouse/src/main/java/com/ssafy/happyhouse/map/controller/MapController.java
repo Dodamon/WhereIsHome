@@ -2,6 +2,7 @@ package com.ssafy.happyhouse.map.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.github.pagehelper.PageInfo;
 import com.ssafy.happyhouse.map.dto.Dongcode;
 import com.ssafy.happyhouse.map.dto.Housedeal;
 import com.ssafy.happyhouse.map.dto.Houseinfo;
+import com.ssafy.happyhouse.map.dto.Infomation;
 import com.ssafy.happyhouse.map.dto.Site_gathering;
 import com.ssafy.happyhouse.map.service.MapService;
 
@@ -78,7 +80,7 @@ public class MapController {
 	
 	@GetMapping("/houseinfo")
 	@ResponseBody
-	public PageInfo<Houseinfo> getHouseinfo(HttpServletRequest request) {
+	public Infomation getHouseinfo(HttpServletRequest request) {
 		System.out.println("getHouseinfo 진입");
 		String sidoName = request.getParameter("sidoName");
 		String gugunName = request.getParameter("gugunName");
@@ -89,11 +91,12 @@ public class MapController {
 		System.out.println("DB에서 가져온 동코드 : " + dongcode);
 		
 		List<Houseinfo> list = mapService.getHouseinfo(dongcode);
+		List<Site_gathering>listg = mapService.getGatheringinfo(sidoName, gugunName, dongName);
 		System.out.println("DB에서 가져온 아파트 갯수 : " + list.size());
+		System.out.println("DB에서 가져온 모임 갯수 : " + listg.size());
 //		System.out.println("DB에서 가져온 구군이름 첫번째 : " + list.get(1));
 		
-
-		return PageInfo.of(list);
+		return new Infomation(list, listg);
 	}
 	
 	@GetMapping("/housedeal")
@@ -122,8 +125,12 @@ public class MapController {
 		String date_string = request.getParameter("date");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = formatter.parse(date_string);
-//		System.out.println(date_time);
-		long i = mapService.writeImjang(new Site_gathering(0, title, latitude, longitude, date, max_people, min_people, 0));
+		String sido = request.getParameter("sido");
+		String gugun = request.getParameter("gugun");
+		String dong = request.getParameter("dong");
+		System.out.println(sido + " " + gugun + " " + dong );
+		
+		long i = mapService.writeImjang(new Site_gathering(0, title, latitude, longitude, date, max_people, min_people, 0, sido, gugun, dong));
 		 
 //		System.out.println("DB에서 가져온 아파트 갯수 : " + list.size());
 //		System.out.println("DB에서 가져온 구군이름 첫번째 : " + list.get(1));

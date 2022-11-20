@@ -46,4 +46,8 @@ public class MapService {
 		return mapMapper.writeImjang(site_gathering);
 	}
 
+	public List<Site_gathering> getGatheringinfo(String sidoName, String gugunName, String dongName) {
+		return mapMapper.getGatheringinfo(sidoName, gugunName, dongName);
+	}
+
 }
