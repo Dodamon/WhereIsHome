@@ -10,75 +10,118 @@
             right
             shadow
           >
-            <b-container v-if="selected_house" class="bv-example-row">
+            <!-- 임장 모임 등록 -->
+            <b-container v-if="selected_imjang_btn" class="bv-example-row">
               <b-row>
-                <b-col
-                  ><h3>{{ marker.apartName }}</h3></b-col
+                <b-input
+                  v-model="imjang_title"
+                  placeholder="임장 모임 제목"
+                ></b-input>
+              </b-row>
+              <b-row>
+                <b-input v-model="gather_date" type="date"></b-input>
+              </b-row>
+              <b-row>
+                <b-form-select
+                  v-model="min_people"
+                  :options="minP"
+                  class="w-25"
+                >
+                </b-form-select>
+              </b-row>
+              <b-row>
+                <b-form-select
+                  v-model="max_people"
+                  :options="maxP"
+                  class="w-25"
+                >
+                </b-form-select>
+              </b-row>
+              <b-row>
+                <b-button @click="selectPlace">위치 선택</b-button>
+              </b-row>
+              <b-row>
+                <b-button
+                  type="button"
+                  class="m-1"
+                  variant="primary"
+                  @click="regist_imjang"
+                  >등록</b-button
                 >
               </b-row>
-              <b-row class="mb-2 mt-1">
-                <b-col>
-                  <b-img
-                    thumbnail
-                    src="https://picsum.photos/250/250/?image=58"
-                    alt="Image 1"
-                  ></b-img>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col>
-                  <b-alert show variant="secondary"
-                    >일련번호 : {{ selected_house.aptCode }}</b-alert
-                  >
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col>
-                  <b-alert show variant="secondary"
-                    >아파트 이름 : {{ marker.apartmentName }}
-                  </b-alert>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col>
-                  <b-alert show variant="secondary"
-                    >법정동 : {{ marker.dongName }}
-                  </b-alert>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col>
-                  <b-alert show variant="secondary"
-                    >층수 : {{ selected_house.floor }}층</b-alert
-                  >
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col>
-                  <b-alert show variant="danger"
-                    >거래금액 :
-                    {{ parseInt(selected_house.dealAmount) }}원</b-alert
-                  >
-                </b-col>
-              </b-row>
             </b-container>
+            <!-- -------------- -->
+            <b-container v-else>
+              <b-container v-if="selected_house" class="bv-example-row">
+                <b-row>
+                  <b-col
+                    ><h3>{{ marker.apartName }}</h3></b-col
+                  >
+                </b-row>
+                <b-row class="mb-2 mt-1">
+                  <b-col>
+                    <b-img
+                      thumbnail
+                      src="https://picsum.photos/250/250/?image=58"
+                      alt="Image 1"
+                    ></b-img>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="secondary"
+                      >일련번호 : {{ selected_house.aptCode }}</b-alert
+                    >
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="secondary"
+                      >아파트 이름 : {{ marker.apartmentName }}
+                    </b-alert>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="secondary"
+                      >법정동 : {{ marker.dongName }}
+                    </b-alert>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="secondary"
+                      >층수 : {{ selected_house.floor }}층</b-alert
+                    >
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="danger"
+                      >거래금액 :
+                      {{ parseInt(selected_house.dealAmount) }}원</b-alert
+                    >
+                  </b-col>
+                </b-row>
+              </b-container>
 
-            <b-container
-              v-if="housedeals && housedeals.length != 0"
-              class="bv-example-row mt-3"
-            >
-              <house-list-item
-                v-for="(house, index) in housedeals"
-                :key="index"
-                :house="house"
-                :marker="marker"
-                @selectHouse="selectHouse"
-              />
-            </b-container>
-            <b-container v-else class="bv-example-row mt-3">
-              <b-row>
-                <b-col><b-alert show>주택 목록이 없습니다.</b-alert></b-col>
-              </b-row>
+              <b-container
+                v-if="housedeals && housedeals.length != 0"
+                class="bv-example-row mt-3"
+              >
+                <house-list-item
+                  v-for="(house, index) in housedeals"
+                  :key="index"
+                  :house="house"
+                  :marker="marker"
+                  @selectHouse="selectHouse"
+                />
+              </b-container>
+              <b-container v-else class="bv-example-row mt-3">
+                <b-row>
+                  <b-col><b-alert show>주택 목록이 없습니다.</b-alert></b-col>
+                </b-row>
+              </b-container>
             </b-container>
           </b-sidebar>
         </b-row>
@@ -146,6 +189,7 @@
               </option>
             </b-form-select>
           </div>
+          <b-button @click="showImjang">임장 모임 등록</b-button>
         </b-row>
       </b-container>
     </div>
@@ -167,6 +211,7 @@ export default {
       house: Object,
       isColor: true,
       selected_house: Object,
+      selected_imjang_btn: false,
 
       selected_sido: "시도 선택",
       selected_gugun: "구군 선택",
@@ -181,6 +226,26 @@ export default {
       markers: [],
       infowindow: null,
       geocoder: null,
+
+      imjang_title: null,
+      min_people: null,
+      max_people: null,
+      gather_date: null,
+
+      minP: [
+        { value: null, text: "최소인원" },
+        { value: 1, text: 1 },
+        { value: 2, text: 2 },
+        { value: 3, text: 3 },
+        { value: 4, text: 4 },
+        { value: 5, text: 5 },
+        { value: 6, text: 6 },
+        { value: 7, text: 7 },
+        { value: 8, text: 8 },
+        { value: 9, text: 9 },
+        { value: 10, text: 10 },
+      ],
+      maxP: [{ value: null, text: "최대인원" }],
     };
   },
   mounted() {
@@ -231,6 +296,7 @@ export default {
           });
           kakao.maps.event.addListener(marker, "click", () => {
             // 마커를 클릭했을때 sidebar가 나오도록한다.
+            this.selected_imjang_btn = false;
             console.log("open", index);
             this.marker = this.houseinfos[index];
             this.openSidebar();
@@ -299,7 +365,7 @@ export default {
     },
     search_deals(aptcode) {
       http
-        .get("board/housedeal", { params: { aptCode: aptcode } })
+        .get("map/housedeal", { params: { aptCode: aptcode } })
         .then(({ data }) => {
           console.log("housedeal", data.list);
           this.housedeals = data.list;
@@ -320,6 +386,76 @@ export default {
       console.log("here", house);
       this.selected_house = house;
     },
+    showImjang() {
+      this.selected_imjang_btn = true;
+      this.openSidebar();
+    },
+    selectPlace() {
+      alert("지도에서 위치를 선택해주세요");
+      // var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+      //   mapOption = {
+      //     center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+      //     level: 3, // 지도의 확대 레벨
+      //   };
+
+      // var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+      var map = this.map;
+      // // 지도를 클릭한 위치에 표출할 마커입니다
+      var imageSrc =
+          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png", // 마커이미지의 주소입니다
+        imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+        imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      var markerImage = new kakao.maps.MarkerImage(
+        imageSrc,
+        imageSize,
+        imageOption
+      );
+      var marker = new kakao.maps.Marker({
+        // 지도 중심좌표에 마커를 생성합니다
+        position: map.getCenter(),
+        image: markerImage,
+      });
+
+      // 지도에 마커를 표시합니다
+      marker.setMap(map);
+
+      // 지도에 클릭 이벤트를 등록합니다
+      // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+      var tt = "";
+      kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+        // 클릭한 위도, 경도 정보를 가져옵니다
+        var latlng = mouseEvent.latLng;
+        tt = latlng.getLat();
+        // latitude = latlng.getLat();
+        // alert(this.latitude);
+        // console.log(latitude);
+        // 마커 위치를 클릭한 위치로 옮깁니다
+        marker.setPosition(latlng);
+        localStorage.setItem("lat", latlng.getLat());
+        localStorage.setItem("lng", latlng.getLng());
+        // var message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
+        // message += "경도는 " + latlng.getLng() + " 입니다";
+
+        // var resultDiv = document.getElementById("clickLatlng");
+        // resultDiv.innerHTML = message;
+      });
+    },
+    regist_imjang() {
+      http
+        .post("map/writeImjang", null, {
+          params: {
+            title: this.imjang_title,
+            min_people: this.min_people,
+            max_people: this.max_people,
+            date: this.gather_date,
+            latitude: localStorage.getItem("lat"),
+            longitude: localStorage.getItem("lng"),
+          },
+        })
+        .catch();
+      alert("임장 모임 등록 완료");
+      this.$router.go();
+    },
   },
   watch: {
     selected_sido: {
@@ -328,7 +464,7 @@ export default {
         // alert(this.selected_sido + "가 선택되었습니다.");
 
         http
-          .get("board/gugun", { params: { sidoName: this.selected_sido } })
+          .get("map/gugun", { params: { sidoName: this.selected_sido } })
           .then(({ data }) => {
             console.log(data);
             this.guguns = data.list;
@@ -341,7 +477,7 @@ export default {
       handler() {
         // alert(this.selected_gugun + "가 선택되었습니다.");
         http
-          .get("board/dong", {
+          .get("map/dong", {
             params: {
               sidoName: this.selected_sido,
               gugunName: this.selected_gugun,
@@ -360,7 +496,7 @@ export default {
         // alert(this.selected_dong + "가 선택되었습니다.");
 
         http
-          .get("board/houseinfo", {
+          .get("map/houseinfo", {
             params: {
               sidoName: this.selected_sido,
               gugunName: this.selected_gugun,
@@ -379,10 +515,20 @@ export default {
           });
       },
     },
+    min_people: {
+      deep: true,
+      handler() {
+        this.maxP = [{ value: null, text: "최대인원" }];
+
+        for (var i = this.min_people; i <= 10; i++) {
+          this.maxP.push({ value: i, text: i });
+        }
+      },
+    },
   },
   created() {
     // alert("create 시작");
-    http.get("board/sido").then(({ data }) => {
+    http.get("map/sido").then(({ data }) => {
       // alert("sido 포스트 끝");
       console.log(data);
       this.sidos = data.list;
