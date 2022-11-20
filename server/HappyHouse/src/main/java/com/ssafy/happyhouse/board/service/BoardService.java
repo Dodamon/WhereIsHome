@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.board.dto.Board;
-import com.ssafy.happyhouse.board.dto.Dongcode;
-import com.ssafy.happyhouse.board.dto.Housedeal;
-import com.ssafy.happyhouse.board.dto.Houseinfo;
 import com.ssafy.happyhouse.board.mapper.BoardMapper;
+import com.ssafy.happyhouse.map.dto.Dongcode;
+import com.ssafy.happyhouse.map.dto.Housedeal;
+import com.ssafy.happyhouse.map.dto.Houseinfo;
 
 @Service
 public class BoardService {
@@ -40,28 +40,28 @@ public class BoardService {
 		
 	}
 
-	public List<Dongcode> getSido() {
-		return boardMapper.getSido();
-	}
-
-	public List<Dongcode> getGugun(String selected_sido) {
-		return boardMapper.getGugun(selected_sido);
-	}
-
-	public List<Dongcode> getDong(String sidoName, String gugunName) {
-		return boardMapper.getDong(sidoName, gugunName);
-	}
-
-	public String getDongcode(String sidoName, String gugunName, String dongName) {
-		return boardMapper.getDongcode(sidoName, gugunName, dongName);
-	}
-
-	public List<Houseinfo> getHouseinfo(String dongcode) {
-		return boardMapper.getHouseinfo(dongcode);
-	}
-
-	public List<Housedeal> getHousedeal(String aptCode) {
-		return boardMapper.getHousedeal(aptCode);
-	}
+//	public List<Dongcode> getSido() {
+//		return boardMapper.getSido();
+//	}
+//
+//	public List<Dongcode> getGugun(String selected_sido) {
+//		return boardMapper.getGugun(selected_sido);
+//	}
+//
+//	public List<Dongcode> getDong(String sidoName, String gugunName) {
+//		return boardMapper.getDong(sidoName, gugunName);
+//	}
+//
+//	public String getDongcode(String sidoName, String gugunName, String dongName) {
+//		return boardMapper.getDongcode(sidoName, gugunName, dongName);
+//	}
+//
+//	public List<Houseinfo> getHouseinfo(String dongcode) {
+//		return boardMapper.getHouseinfo(dongcode);
+//	}
+//
+//	public List<Housedeal> getHousedeal(String aptCode) {
+//		return boardMapper.getHousedeal(aptCode);
+//	}
 
 }

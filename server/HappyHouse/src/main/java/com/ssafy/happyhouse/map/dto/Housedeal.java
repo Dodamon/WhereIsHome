@@ -1,4 +1,4 @@
-package com.ssafy.happyhouse.board.dto;
+package com.ssafy.happyhouse.map.dto;
 
 public class Housedeal {
 	private long no, aptCode;
