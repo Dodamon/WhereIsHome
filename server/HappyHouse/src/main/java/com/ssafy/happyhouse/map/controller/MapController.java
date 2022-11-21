@@ -46,7 +46,7 @@ public class MapController {
 //			//System.out.println(c.getValue());
 //		}
 		
-		HttpSession s = request.getSession();
+//		HttpSession s = request.getSession();
 		//System.out.println("session : " + s.getId());
 		
 		//System.out.println(Arrays.toString(cookies));

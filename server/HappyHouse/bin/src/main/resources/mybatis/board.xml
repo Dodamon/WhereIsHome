@@ -11,18 +11,48 @@
 	<!-- 	ORDER BY originNo DESC, groupOrd ASC -->
 	</select>
 	
-	<select id="getSido" resultType="dongcode">
+	<!-- <select id="getSido" resultType="dongcode">
 		SELECT DISTINCT sidoName
 		FROM dongcode
 	</select>
+	
+	<select id="getGugun" parameterType="string" resultType="dongcode">
+		SELECT DISTINCT gugunName
+		FROM dongcode
+		WHERE sidoName = #{sidoName} and gugunName is not null
+	</select>
+	
+	<select id="getDong" parameterType="string" resultType="dongcode">
+		SELECT DISTINCT dongName
+		FROM dongcode
+		WHERE sidoName = #{sidoName} and gugunName = #{gugunName} and dongName is not null
+	</select>
+	
+	<select id="getDongcode" parameterType="string" resultType="string">
+		SELECT dongCode
+		FROM dongcode
+		WHERE sidoName = #{sidoName} and gugunName = #{gugunName} and dongName = #{dongName} and dongCode is not null
+	</select>
+	
+	<select id="getHouseinfo"  resultType="houseinfo">
+		SELECT *
+		FROM houseinfo
+		WHERE dongCode=#{dongcode}
+	</select>
+	
+	<select id="getHousedeal"  resultType="housedeal">
+		SELECT *
+		FROM housedeal
+		WHERE aptCode=#{aptCode}
+	</select> -->
   
   
 	<insert id="write" parameterType="board" >
-	 		insert into board(writer, title, content, groupLayer, file_name) values(#{writer}, #{title}, #{content}, 0, #{file_name})
+	 		insert into board(title, content, writer, user_code) values(#{title}, #{content}, #{writer}, #{user_code})
 	</insert>
 		
 	<select id="selectOne"  parameterType="string"  resultType="board">
-	    SELECT code,originNo,groupOrd, groupLayer, concat(LPAD('>' ,groupLayer * 4,'-' ) ,title) title, content,writer, reg_datetime, file_name
+	    SELECT code, title, content, writer, reg_datetime, user_code
 	    FROM board 
 	    WHERE code = #{code}
 	</select>
@@ -30,7 +60,7 @@
 	
 	<update id="modify" parameterType="string">
 		update board
-		set title=#{title}, content=#{content}
+		set title=#{title}, writer=#{writer}, content=#{content}
 		where code=#{code}
 	</update>
 	

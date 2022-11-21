@@ -3,13 +3,11 @@
     <div id="mapContainer" class="p-0 m-0">
       <b-container fluid id="map" class="map-canvas" style="height: 1200px">
         <b-row id="detailContainer">
-          <b-sidebar
-            id="sidebar-right"
-            title="Sidebar"
-            style="width: 600px"
-            right
-            shadow
-          >
+          <b-sidebar v-model="isSidebarOpen" style="width: 600px" right shadow>
+            <div>
+              <b-button size="sm" @click="closeSideBar">Close</b-button>
+            </div>
+
             <!-- 임장 모임 등록 -->
             <b-container v-if="selected_imjang_btn" class="bv-example-row">
               <b-row>
@@ -223,7 +221,7 @@ export default {
       marker: Object,
       house: Object,
       isColor: true,
-      isSideBar: false,
+      isSidebarOpen: false,
       selected_house: Object,
       selected_imjang: Object,
       selected_imjang_btn: false,
@@ -445,9 +443,13 @@ export default {
       this.displayMarker();
     },
     openSidebar() {
-      if (this.isSideBar == false) {
-        this.isSideBar = true;
-        this.$root.$emit("bv::toggle::collapse", "sidebar-right");
+      if (this.isSidebarOpen == false) {
+        this.isSidebarOpen = true;
+      }
+    },
+    closeSideBar() {
+      if (this.isSidebarOpen == true) {
+        this.isSidebarOpen = false;
       }
     },
     selectHouse(house) {

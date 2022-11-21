@@ -16,11 +16,11 @@
 	</resultMap>
 
   	<select id="login" parameterType="map" resultMap="member">
-    	select id, name from member where id = #{id} and pw = #{pw}
+    	select * from member where id = #{id} and pw = #{pw}
   	</select >
   
   	<insert id="register" parameterType="member">
-    		insert into member(id,pw,name, phone, address) values(#{id},#{pw},#{name}, #{phone}, #{address})
+    		insert into member(id, pw, name, phone, address) values(#{id},#{pw},#{name}, #{phone}, #{address})
    	</insert>
    
    	<select id="userinfo" parameterType="map" resultMap="member">

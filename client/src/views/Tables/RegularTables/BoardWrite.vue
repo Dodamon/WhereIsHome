@@ -10,10 +10,12 @@
           <b-form @submit="write">
             <b-form-group label="작성자" label-for="writer">
               <b-form-input
+                readonly
                 id="writer"
                 placeholder="작성자"
                 v-model="article.writer"
-              ></b-form-input>
+                >{{ article.writer }}</b-form-input
+              >
             </b-form-group>
 
             <b-form-group label="제목" label-for="title">
@@ -61,6 +63,9 @@ export default {
       article: { writer: "", title: "", content: "" },
     };
   },
+  created() {
+    this.article.writer = sessionStorage.getItem("loggedin");
+  },
   methods: {
     write() {
       console.log(this.article.title);
@@ -74,6 +79,9 @@ export default {
             title: this.article.title,
             content: this.article.content,
           },
+        })
+        .then(({ data }) => {
+          alert(data);
         })
         .catch();
       this.$router.push({ name: "list" });

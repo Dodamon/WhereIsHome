@@ -19,8 +19,7 @@ public class ServletInitializer extends SpringBootServletInitializer implements 
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MyInterceptor())
-//        .addPathPatterns("/test/a","/board/*")//해당 경로에 접근하기 전에 인터셉터가 가로챈다
-        .addPathPatterns("/board/selectAll" )//해당 경로에 접근하기 전에 인터셉터가 가로챈다
+        .addPathPatterns("/board/selectAllaaa" )//해당 경로에 접근하기 전에 인터셉터가 가로챈다
         .excludePathPatterns("/test/b");//해당 경로는 인터셉터가 가로채지 않는다.
     }
 }

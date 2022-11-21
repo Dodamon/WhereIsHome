@@ -81,6 +81,7 @@ public class MemberController {
             System.out.println(1);
             HttpSession session = request.getSession();
             session.setAttribute("member", m);    
+            System.out.println("로그인 시 생성한 세션 : " + session.getId());
             return m;
         } else {
              return new Member();
@@ -96,6 +97,7 @@ public class MemberController {
         if(session != null) {
             System.out.println("session invalidate");
             session.invalidate();
+            System.out.println("로그아웃 완료" + request.getSession(false));
         }
         return "로그아웃 되었습니다.";
     }
@@ -118,7 +120,7 @@ public class MemberController {
 //        }else {
 //            return null;
 //        }
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         String id = request.getParameter("id");
         try {
             Member m = memberService.userinfo(new Member(0, id, "", "", "", ""));

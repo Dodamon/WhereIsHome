@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,9 +18,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ssafy.happyhouse.board.dto.Board;
 import com.ssafy.happyhouse.board.service.BoardService;
-import com.ssafy.happyhouse.map.dto.Dongcode;
-import com.ssafy.happyhouse.map.dto.Housedeal;
-import com.ssafy.happyhouse.map.dto.Houseinfo;
+import com.ssafy.happyhouse.member.dto.Member;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @Controller
@@ -69,7 +66,7 @@ public class BoardController {
 	@PostMapping("/selectAll")
 	@ResponseBody
 	public PageInfo<Board> selectAll(HttpServletRequest request) {
-		System.out.println("selectAll session : " + request.getSession().getId());
+//		System.out.println("selectAll session : " + request.getSession().getId());
 		System.out.println("page no = "+request.getParameter("pageNum"));
 		String pageNum = request.getParameter("pageNum");
 		String pageSize = request.getParameter("pageSize");
@@ -192,14 +189,24 @@ public class BoardController {
 		
 		System.out.println(writer);
 		System.out.println(title);
-		System.out.println(content);
 		
-		Board board = new Board(1, 1, title, content, writer, new Date());
+		if(session!=null) {
+			session = request.getSession();
+			System.out.println(session);
 		
-		long i = boardService.write(board);
-		System.out.println(i);
+			Member m = (Member) session.getAttribute("member");
+			System.out.println(m);
 		
-		return null;
+			if((m.getId()).equals(writer)) {
+				Board board = new Board(1, m.getCode(), title, content, writer, new Date());
+				long i = boardService.write(board);
+				System.out.println(i);
+				if(i > 0) {
+					return "ok";
+				}
+			}
+		} 
+		return "fail";
 //		System.out.println("받은 토큰" + csrf_token);
 		
 		

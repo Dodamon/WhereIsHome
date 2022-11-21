@@ -10,9 +10,9 @@
 	</resultMap>
 	
 	<resultMap type="SecVO" id="SecVO">
-		<result column="id" property="userId"/>
+		<result column="userId" property="userId"/>
 		<result column="salt" property="salt"/>
-		<result column="myKey" property="secKey"/>
+		<result column="secKey" property="secKey"/>
 	</resultMap>
 
   	<select id="login" parameterType="map" resultMap="member">
@@ -20,15 +20,15 @@
   	</select >
   
   	<insert id="register" parameterType="member">
-    		insert into member(id,pw,name) values(#{id},#{pw},#{name})
+    		insert into member(id,pw,name, phone, address) values(#{id},#{pw},#{name}, #{phone}, #{address})
    	</insert>
    
    	<select id="userinfo" parameterType="map" resultMap="member">
-    	select id, name, pw from member where id = #{id}
+    	select id, name, pw, phone, address from member where id = #{id}
   	</select>
   
-  	<update id="update" parameterType="map">
-  		update member set pw = #{pw}, name = #{name} where id = #{id}
+  	<update id="update" parameterType="member">
+  		update member set pw = #{pw}, name = #{name}, phone = #{phone}, address = #{address} where id = #{id}
   	</update>
   
   	<delete id="delete" parameterType="String">
@@ -37,15 +37,15 @@
   
   
   	<delete id="deleteSec" parameterType="String">
-  		delete from sec where id=#{id}
+  		delete from openeg_security where userId =#{id}
   	</delete>
   
   	<select id="selectSecurity" parameterType="string" resultMap="SecVO">
-    	select * from sec where id = #{id}
+    	select * from openeg_security where userId = #{id}
   	</select>
   
 	<insert id="insertSecurity" parameterType="SecVO">
-    	insert into sec(id,salt,myKey) values(#{userId},#{salt},#{secKey})
+    	insert into openeg_security(userId,salt,secKey) values(#{userId},#{salt},#{secKey})
 	</insert>
 	
 	<select id="checkId" parameterType="String" resultType="int">

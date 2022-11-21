@@ -20,9 +20,9 @@ public class MyInterceptor implements HandlerInterceptor{
 		HttpSession session=request.getSession(false); 
 		Cookie[] cookies = request.getCookies();
         boolean isCookiesHasJsessionid = false;
-        
+
         System.out.println("interceptor cookie : " + cookies);
-        if(cookies != null) {
+        if(cookies != null && session != null) {
 	        for(Cookie c : cookies) {
 	            if(c.getValue().equals(session.getId())) {
 	                isCookiesHasJsessionid = true;
@@ -32,7 +32,7 @@ public class MyInterceptor implements HandlerInterceptor{
         }
 		
 		
-		System.out.println("interceptor session : " + session);
+		System.out.println("interceptor session : " + session.getId());
 		if(session!=null) {
 			Member vo =(Member) session.getAttribute("member");
 			
@@ -44,7 +44,6 @@ public class MyInterceptor implements HandlerInterceptor{
 				return false;
 			}
 		}
-		response.sendRedirect("/");
 		return false;
 	}
 	@Override
