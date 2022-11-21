@@ -58,6 +58,16 @@
 	 	INTO enrolled_site_gathering(user_code, site_gathering_code, isWriter) 
 	 	VALUES(#{user_code}, #{site_gathering_code}, #{isWriter})
 	</insert>
+	
+	<select id="getEnrolledGathering"  resultType="int">
+		SELECT count(*) 
+		FROM enrolled_site_gathering
+		WHERE user_code = #{user_code} and site_gathering_code = #{site_gathering_code}
+	</select>
+	
+	<update id="updateCount" parameterType="int">
+  		update site_gathering set cur_people = cur_people + 1 where code = #{code}
+  	</update>
   
 
 		

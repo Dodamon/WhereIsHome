@@ -54,4 +54,13 @@ public class MapService {
 		return mapMapper.joinImjang(user_code, site_gathering_code, isWriter);
 	}
 
+	public int getEnrolledGathering(int user_code, int site_gathering_code) {
+		return mapMapper.getEnrolledGathering(user_code, site_gathering_code);
+	}
+
+	public void updateCount(int code) {
+		mapMapper.updateCount(code);
+		
+	}
+
 }

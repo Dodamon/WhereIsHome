@@ -160,5 +160,59 @@ public class MapController {
 		
 		return i;
 	}
+	
+	@PostMapping("/enrolledGathering")
+	@ResponseBody
+	public int getEnrolledGathering(HttpServletRequest request) {
+		System.out.println("getEnrolledGathering 진입");
+		HttpSession session = request.getSession(false);
+		
+		Member member = (Member) session.getAttribute("member");
+		int user_code = member.getCode();
+		
+		int site_gathering_code = Integer.parseInt(request.getParameter("site_gathering_code"));
+		
+		System.out.println(user_code + "---------" + site_gathering_code);
+		int result = mapService.getEnrolledGathering(user_code, site_gathering_code);
+		
+		System.out.println("result : " + result);
+		
+		return result;
+	}
+	
+	@PostMapping("/joinImjang")
+	@ResponseBody
+	public long joinImjang(HttpServletRequest request) {
+		System.out.println("joinGathering 진입");
+		
+		int duplicated = getEnrolledGathering(request);
+		System.out.println("duplicate = " + duplicated);
+		
+		if(duplicated > 0) {
+			return -1;
+		}else {
+			HttpSession session = request.getSession(false);
+			Member member = (Member) session.getAttribute("member");
+			int user_code = member.getCode();
+			
+			int site_gathering_code = Integer.parseInt(request.getParameter("site_gathering_code"));
+			
+			long i = mapService.joinImjang(user_code, site_gathering_code, 0);
+			
+			mapService.updateCount(site_gathering_code);
+			
+			return i;
+		}
+		
+//		int user_code = Integer.parseInt(request.getParameter("user_code"));
+//		int site_gathering_code = Integer.parseInt(request.getParameter("site_gathering_code"));
+//		
+//		System.out.println(user_code + "---------" + site_gathering_code);
+//		int result = mapService.getEnrolledGathering(user_code, site_gathering_code);
+//		
+//		System.out.println("result : " + result);
+//		
+//		return result;
+	}
 
 }

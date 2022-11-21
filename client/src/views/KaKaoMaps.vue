@@ -143,6 +143,14 @@
                 <b-row>
                   <b-col>
                     <b-alert show variant="danger"
+                      >최소인원 : {{ selected_imjang.min_people }}</b-alert
+                    >
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col>
+                    <b-alert show variant="primary"
                       >최대인원 : {{ selected_imjang.max_people }}</b-alert
                     >
                   </b-col>
@@ -151,14 +159,14 @@
                 <b-row>
                   <b-col>
                     <b-alert show variant="primary"
-                      >최소인원 : {{ selected_imjang.min_people }}</b-alert
+                      >현재인원 : {{ selected_imjang.cur_people }}</b-alert
                     >
                   </b-col>
                 </b-row>
 
                 <b-row>
                   <b-col>
-                    <b-button>참여하기</b-button>
+                    <b-button @click="joinImjang">참여하기</b-button>
                   </b-col>
                 </b-row>
               </b-container>
@@ -226,6 +234,8 @@ export default {
       selected_imjang: Object,
       selected_imjang_btn: false,
       selected_house_btn: false,
+
+      myCode: null,
 
       selected_sido: "시도 선택",
       selected_gugun: "구군 선택",
@@ -537,6 +547,26 @@ export default {
         .catch();
       alert("임장 모임 등록 완료");
       this.$router.go();
+    },
+    joinImjang() {
+      if (this.selected_imjang.max_people > this.selected_imjang.cur_people) {
+        http
+          .post("map/joinImjang", null, {
+            params: {
+              site_gathering_code: this.selected_imjang.code,
+            },
+          })
+          .then(({ data }) => {
+            if (data == -1) {
+              alert("이미 신청한 모임입니다.");
+            } else {
+              alert("모임 신청 완료!");
+              this.isSidebarOpen = false;
+            }
+          });
+      } else {
+        alert("인원 초과!");
+      }
     },
   },
   watch: {

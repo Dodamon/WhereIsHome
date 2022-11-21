@@ -30,4 +30,8 @@ public interface MapMapper {
 
 	public long joinImjang(int user_code, int site_gathering_code, int isWriter);
 
+	public int getEnrolledGathering(int user_code, int site_gathering_code);
+
+	public void updateCount(int code);
+
 }
