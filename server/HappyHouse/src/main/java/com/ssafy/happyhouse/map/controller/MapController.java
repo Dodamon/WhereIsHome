@@ -40,21 +40,21 @@ public class MapController {
 	public PageInfo<Dongcode> getSido(HttpServletRequest request) {
 //		System.out.println("sido 진입");
 		
-		Cookie[] cookies = request.getCookies();
+		//Cookie[] cookies = request.getCookies();
 		
-		for(Cookie c: cookies) {
-			System.out.println(c.getValue());
-		}
+//		for(Cookie c: cookies) {
+//			//System.out.println(c.getValue());
+//		}
 		
 		HttpSession s = request.getSession();
-		System.out.println("session : " + s.getId());
+		//System.out.println("session : " + s.getId());
 		
-		System.out.println(Arrays.toString(cookies));
+		//System.out.println(Arrays.toString(cookies));
 		
 		
 		List<Dongcode> list = mapService.getSido();
 		
-		System.out.println("DB에서 가져온 시도 갯수 : " + list.size());
+		//System.out.println("DB에서 가져온 시도 갯수 : " + list.size());
 		
 		
 		return PageInfo.of(list);

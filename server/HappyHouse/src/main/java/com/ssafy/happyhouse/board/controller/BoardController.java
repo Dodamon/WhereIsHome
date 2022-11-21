@@ -69,6 +69,7 @@ public class BoardController {
 	@PostMapping("/selectAll")
 	@ResponseBody
 	public PageInfo<Board> selectAll(HttpServletRequest request) {
+		System.out.println("selectAll session : " + request.getSession().getId());
 		System.out.println("page no = "+request.getParameter("pageNum"));
 		String pageNum = request.getParameter("pageNum");
 		String pageSize = request.getParameter("pageSize");

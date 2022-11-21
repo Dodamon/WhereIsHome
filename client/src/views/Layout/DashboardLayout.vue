@@ -133,6 +133,7 @@
 
 <script>
 /* eslint-disable no-new */
+import http from "@/api/http";
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 
@@ -185,6 +186,9 @@ export default {
       // this.$session.remove("loggedin");
       sessionStorage.removeItem("loggedin");
       alert("로그아웃 완료\n새로고침합니다.");
+      http.post("member/logout", null, {
+        params: {},
+      });
       location.reload();
     },
   },

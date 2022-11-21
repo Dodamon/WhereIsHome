@@ -24,77 +24,77 @@ import com.ssafy.happyhouse.member.service.MemberService;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-	
-	@Autowired
-	MemberService memberService;
-	
-	@Transactional
-	@PostMapping("/register")
+    
+    @Autowired
+    MemberService memberService;
+    
+    @Transactional
+    @PostMapping("/register")
     @ResponseBody
     public int register(HttpServletRequest request) throws Exception {
-    	String id = request.getParameter("id");
-    	String pw = request.getParameter("pw");
-    	String name = request.getParameter("name");
-    	String phone = request.getParameter("phone");
-    	String address = request.getParameter("address");
-    	
-		
-		int idx= memberService.register(new Member(2, id, pw, name, phone, address));
-		if(idx >0) {
-			System.out.println("회원가입 성공");
+        String id = request.getParameter("id");
+        String pw = request.getParameter("pw");
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        
+        
+        int idx= memberService.register(new Member(2, id, pw, name, phone, address));
+        if(idx >0) {
+            System.out.println("회원가입 성공");
             return 1;
         }else {
-        	System.out.println("회원가입 실패1");
+            System.out.println("회원가입 실패1");
             return 0;
         }
     }
-	
-	@PostMapping("/checkid")
-	@ResponseBody
-	public int checkId(@RequestParam String id) {
-		try {
-			int i = memberService.checkId(id);
-			return i;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	
-	@Transactional
-	@PostMapping("/login")
-	@ResponseBody
-	public Member login(HttpServletRequest request) throws Exception {
-    	String id = request.getParameter("id");
-    	String pw = request.getParameter("pw");
-		System.out.println("id=" + id);
-		System.out.println("pw=" + pw);
-		
-		HashMap<String, String> map = new HashMap<>();
-		map.put("id", id);
-		map.put("pw", pw);
-		Member m = memberService.login(map);
-		System.out.println(m);
+    
+    @PostMapping("/checkid")
+    @ResponseBody
+    public int checkId(@RequestParam String id) {
+        try {
+            int i = memberService.checkId(id);
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    @Transactional
+    @PostMapping("/login")
+    @ResponseBody
+    public Member login(HttpServletRequest request) throws Exception {
+        String id = request.getParameter("id");
+        String pw = request.getParameter("pw");
+        System.out.println("id=" + id);
+        System.out.println("pw=" + pw);
+        
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id", id);
+        map.put("pw", pw);
+        Member m = memberService.login(map);
+        System.out.println(m);
 
-	
-		if(m != null) {
-			System.out.println(1);
-			HttpSession session = request.getSession();
-			session.setAttribute("member", m);	
-			return m;
-		} else {
-			 return new Member();
-		}
-		
-	}
-	
+    
+        if(m != null) {
+            System.out.println(1);
+            HttpSession session = request.getSession();
+            session.setAttribute("member", m);    
+            return m;
+        } else {
+             return new Member();
+        }
+        
+    }
+    
     @PostMapping("/logout")
     @ResponseBody
     public String logout(HttpServletRequest request) {
-    	System.out.println("로그아웃 시작");
+        System.out.println("로그아웃 시작");
         HttpSession session = request.getSession(false);
         if(session != null) {
-        	System.out.println("session invalidate");
+            System.out.println("session invalidate");
             session.invalidate();
         }
         return "로그아웃 되었습니다.";
@@ -103,53 +103,55 @@ public class MemberController {
     @PostMapping("/userinfo")
     @ResponseBody
     public Member userInfo(HttpServletRequest request) {
-//    	System.out.println("유저정보가져오기");
-//    	HttpSession session = request.getSession(false);
-//		if(session != null) {
-//			Member m = (Member) session.getAttribute("member");
-//			System.out.println("before try" + m);
-//			try {
-//				m = memberService.userinfo(m);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			System.out.println(m);
-//			return m;			
-//		}else {
-//			return null;
-//		}
-    	String id = request.getParameter("id");
-    	try {
-			Member m = memberService.userinfo(new Member(0, id, "", "", "", ""));
-			System.out.println(m);
-			return m;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-    	
-    	
+//        System.out.println("유저정보가져오기");
+//        HttpSession session = request.getSession(false);
+//        if(session != null) {
+//            Member m = (Member) session.getAttribute("member");
+//            System.out.println("before try" + m);
+//            try {
+//                m = memberService.userinfo(m);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            System.out.println(m);
+//            return m;            
+//        }else {
+//            return null;
+//        }
+        HttpSession session = request.getSession();
+        String id = request.getParameter("id");
+        try {
+            Member m = memberService.userinfo(new Member(0, id, "", "", "", ""));
+            System.out.println(m);
+            System.out.println("userinfo from session : " + session.getAttribute("member"));
+            return m;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        
+        
     }
     
     @PostMapping("/update")
     @ResponseBody
     public Member update(String id, String password, String name, String address, String phone, HttpServletRequest request) {
     
-		try {
-			int i = memberService.update(id, password, name, address, phone);
-			if(i >0) {
-				System.out.println("업데이트 성공");
-				Member m = userInfo(request);
-				return m;
-	        }else {
-	        	System.out.println("업데이트실패1");
-	           return null;
-	        }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+        try {
+            int i = memberService.update(id, password, name, address, phone);
+            if(i >0) {
+                System.out.println("업데이트 성공");
+                Member m = userInfo(request);
+                return m;
+            }else {
+                System.out.println("업데이트실패1");
+               return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     
     
@@ -173,10 +175,10 @@ public class MemberController {
 //            }
 //        }
         try {
-			memberService.delete(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            memberService.delete(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        System.out.println("해킹 시도감지!!!!");
         return false;
     }
