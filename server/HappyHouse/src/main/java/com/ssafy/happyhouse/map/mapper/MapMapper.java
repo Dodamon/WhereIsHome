@@ -28,4 +28,6 @@ public interface MapMapper {
 
 	public List<Site_gathering> getGatheringinfo(String sidoName, String gugunName, String dongName);
 
+	public long joinImjang(int user_code, int site_gathering_code, int isWriter);
+
 }

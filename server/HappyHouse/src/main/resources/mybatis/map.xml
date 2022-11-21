@@ -41,7 +41,7 @@
 		WHERE aptCode=#{aptCode}
 	</select>
 	
-	<insert id="writeImjang" parameterType="site_gathering" >
+	<insert id="writeImjang" useGeneratedKeys="true" keyProperty="code" parameterType="site_gathering" >
 	 	INSERT 
 	 	INTO site_gathering(title, date, latitude, longitude, max_people, min_people, sidoName, gugunName, dongName) 
 	 	VALUES(#{title}, #{date}, #{latitude}, #{longitude}, #{max_people}, #{min_people}, #{sidoName}, #{gugunName}, #{dongName})
@@ -52,6 +52,12 @@
 		FROM site_gathering
 		WHERE sidoName = #{sidoName} and gugunName = #{gugunName} and dongName = #{dongName}
 	</select>
+	
+	<insert id="joinImjang" parameterType="int" >
+	 	INSERT 
+	 	INTO enrolled_site_gathering(user_code, site_gathering_code, isWriter) 
+	 	VALUES(#{user_code}, #{site_gathering_code}, #{isWriter})
+	</insert>
   
 
 		

@@ -50,4 +50,8 @@ public class MapService {
 		return mapMapper.getGatheringinfo(sidoName, gugunName, dongName);
 	}
 
+	public long joinImjang(int user_code, int site_gathering_code, int isWriter) {
+		return mapMapper.joinImjang(user_code, site_gathering_code, isWriter);
+	}
+
 }

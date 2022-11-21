@@ -25,6 +25,7 @@ import com.ssafy.happyhouse.map.dto.Houseinfo;
 import com.ssafy.happyhouse.map.dto.Infomation;
 import com.ssafy.happyhouse.map.dto.Site_gathering;
 import com.ssafy.happyhouse.map.service.MapService;
+import com.ssafy.happyhouse.member.dto.Member;
 
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -144,7 +145,15 @@ public class MapController {
 		String dong = request.getParameter("dong");
 		System.out.println(sido + " " + gugun + " " + dong );
 		
-		long i = mapService.writeImjang(new Site_gathering(0, title, latitude, longitude, date, max_people, min_people, 0, sido, gugun, dong));
+		Site_gathering s = new Site_gathering(0, title, latitude, longitude, date, max_people, min_people, 0, sido, gugun, dong);
+		
+		long i = mapService.writeImjang(s);
+		
+		HttpSession session = request.getSession(false);
+		Member m = (Member) session.getAttribute("member");
+		System.out.println(m);
+		
+		i = mapService.joinImjang(m.getCode(), s.getCode(), 1);
 		 
 //		System.out.println("DB에서 가져온 아파트 갯수 : " + list.size());
 //		System.out.println("DB에서 가져온 구군이름 첫번째 : " + list.get(1));
