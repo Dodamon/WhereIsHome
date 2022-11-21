@@ -503,7 +503,7 @@ export default {
             // console.log(result);
             var detailAddr = result[0].address.address_name.split(" ");
             var roadAddr = result[0].road_address.address_name.split(" ");
-            // console.log(detailAddr, roadAddr);
+            console.log(detailAddr, roadAddr);
             this.imjang_sido = roadAddr[0];
             this.imjang_gugun = detailAddr[1];
             this.imjang_dong = detailAddr[2];

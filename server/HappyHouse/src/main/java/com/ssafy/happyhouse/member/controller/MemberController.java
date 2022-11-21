@@ -75,7 +75,7 @@ public class MemberController {
 		map.put("pw", pw);
 		Member m = memberService.login(map);
 		System.out.println(m);
-//		Map<String, String> map = new HashMap<>();
+
 	
 		if(m != null) {
 			System.out.println(1);

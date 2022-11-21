@@ -2,11 +2,13 @@ package com.ssafy.happyhouse.map.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,8 +37,20 @@ public class MapController {
 	
 	@GetMapping("/sido")
 	@ResponseBody
-	public PageInfo<Dongcode> getSido() {
+	public PageInfo<Dongcode> getSido(HttpServletRequest request) {
 //		System.out.println("sido 진입");
+		
+		Cookie[] cookies = request.getCookies();
+		
+		for(Cookie c: cookies) {
+			System.out.println(c.getValue());
+		}
+		
+		HttpSession s = request.getSession();
+		System.out.println("session : " + s.getId());
+		
+		System.out.println(Arrays.toString(cookies));
+		
 		
 		List<Dongcode> list = mapService.getSido();
 		

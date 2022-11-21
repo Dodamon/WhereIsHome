@@ -162,7 +162,7 @@ export default {
           },
         })
         .then(({ data }) => {
-          console.log(data.name);
+          console.log(data);
           if (data.name != null) {
             alert("로그인 성공\n홈 화면으로 이동합니다.");
             // this.$cookies.set("loggedin", this.model.email, "60");
