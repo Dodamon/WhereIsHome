@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ssafy.happyhouse.board.dto.Board;
 import com.ssafy.happyhouse.board.service.BoardService;
 import com.ssafy.happyhouse.map.dto.Site_gathering;
 import com.ssafy.happyhouse.map.service.MapService;
@@ -146,18 +145,6 @@ public class AdminController {
 		int i = mapService.getImjangSize();
 		
 		return i;
-	}
-	
-	@GetMapping("/selectBoards")
-	@ResponseBody
-	public PageInfo<Board> getBoards(int pageNum, int pageSize, HttpServletRequest request) throws Exception {
-		System.out.println("getBoards 진입");
-		
-		PageHelper.startPage(pageNum, pageSize);
-		List<Board> list=boardService.selectAll();
-				
-		
-		return PageInfo.of(list);
 	}
 	
 

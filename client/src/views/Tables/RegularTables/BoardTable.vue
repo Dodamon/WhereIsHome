@@ -92,6 +92,10 @@ export default {
         console.log(data);
         this.boards = data.list;
         // alert(this.boards[0].title);
+      })
+      .catch((err) => {
+        //alert(err);
+        this.$router.push({ name: "error" });
       });
   },
   methods: {

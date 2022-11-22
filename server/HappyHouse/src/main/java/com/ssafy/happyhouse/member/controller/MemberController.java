@@ -1,7 +1,6 @@
 package com.ssafy.happyhouse.member.controller;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,14 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssafy.happyhouse.member.dto.Member;
+import com.ssafy.happyhouse.member.dto.Role;
 import com.ssafy.happyhouse.member.service.MemberService;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -79,6 +77,15 @@ public class MemberController {
     
         if(m != null) {
             System.out.println(1);
+            
+            // 관리자일 경우 임의로 설정
+            // 나중에 무조건 지워야하는 코드!!!!!!!!!!!!!!!!!!
+            if("admin@admin.com".equals(id)) {
+            	m.setRole(Role.ADMIN);
+            } else {
+            	m.setRole(Role.USER);
+            }
+            
             HttpSession session = request.getSession();
             session.setAttribute("member", m);    
             System.out.println("로그인 시 생성한 세션 : " + session.getId());

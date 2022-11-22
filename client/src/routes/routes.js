@@ -122,8 +122,12 @@ const routes = [
       {
         path: "/register",
         name: "register",
-        component: () =>
-          import(/* webpackChunkName: "demo" */ "../views/Pages/Register.vue"),
+        component: () => import("../views/Pages/Register.vue"),
+      },
+      {
+        path: "/error",
+        name: "error",
+        component: () => import("../views/ErrorPage.vue"),
       },
       { path: "*", component: NotFound },
     ],

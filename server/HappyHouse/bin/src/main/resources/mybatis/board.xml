@@ -69,5 +69,11 @@
 		from board
 		where code=#{code}
 	</delete>
+	
+	<select id="getSize"  resultType="int">
+		SELECT count(*)
+		FROM board 
+	<!-- 	ORDER BY originNo DESC, groupOrd ASC -->
+	</select>
 		
 </mapper>

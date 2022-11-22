@@ -10,6 +10,7 @@ public class Member {
 	
 	private int code;
 	private String id,pw, name, phone, address;
+	private Role role;
 	
 	
 	public Member(int code, String id, String pw, String name, String phone, String address) {
@@ -65,6 +66,12 @@ public class Member {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public Role getRole() {
+		return this.role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	@Override
 	public String toString() {

@@ -41,7 +41,7 @@
 		WHERE aptCode=#{aptCode}
 	</select>
 	
-	<insert id="writeImjang" parameterType="site_gathering" >
+	<insert id="writeImjang" useGeneratedKeys="true" keyProperty="code" parameterType="site_gathering" >
 	 	INSERT 
 	 	INTO site_gathering(title, date, latitude, longitude, max_people, min_people, sidoName, gugunName, dongName) 
 	 	VALUES(#{title}, #{date}, #{latitude}, #{longitude}, #{max_people}, #{min_people}, #{sidoName}, #{gugunName}, #{dongName})
@@ -51,6 +51,49 @@
 		SELECT *
 		FROM site_gathering
 		WHERE sidoName = #{sidoName} and gugunName = #{gugunName} and dongName = #{dongName}
+	</select>
+	
+	<insert id="joinImjang" parameterType="int" >
+	 	INSERT 
+	 	INTO enrolled_site_gathering(user_code, site_gathering_code, isWriter) 
+	 	VALUES(#{user_code}, #{site_gathering_code}, #{isWriter})
+	</insert>
+	
+	<select id="getEnrolledGathering"  resultType="int">
+		SELECT count(*) 
+		FROM enrolled_site_gathering
+		WHERE user_code = #{user_code} and site_gathering_code = #{site_gathering_code}
+	</select>
+	
+	<update id="updateCount" parameterType="int">
+  		update site_gathering set cur_people = cur_people + 1 where code = #{code}
+  	</update>
+  	
+  	<select id="getGatherings"  resultType="site_gathering">
+		SELECT *
+		FROM site_gathering
+	</select>
+	
+	<select id="clickImjang"  resultType="site_gathering">
+		SELECT *
+		FROM site_gathering
+		WHERE code = #{code}
+		
+	</select>
+	
+	<update id="modifyImjang" parameterType="site_gathering">
+  		update site_gathering set title = #{title} where code = #{code}
+  	</update>
+  	
+  	<delete id="deleteImjang" parameterType="int">
+		delete
+		from site_gathering
+		where code=#{code}
+	</delete>
+	
+	<select id="getImjangSize"  resultType="int">
+		SELECT count(*)
+		FROM site_gathering
 	</select>
   
 
