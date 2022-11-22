@@ -226,7 +226,7 @@ export default {
       });
 
     http
-      .post("board/selectAll", null, {
+      .get("admin/selectBoards", {
         params: { pageNum: this.boardCurrentPage, pageSize: 5 },
       })
       .then(({ data }) => {
@@ -286,7 +286,7 @@ export default {
       handler() {
         // alert(this.currentPage + "가 선택되었습니다.");
         http
-          .post("board/selectAll", null, {
+          .get("admin/selectBoards", {
             params: { pageNum: this.boardCurrentPage, pageSize: 5 },
           })
           .then(({ data }) => {
