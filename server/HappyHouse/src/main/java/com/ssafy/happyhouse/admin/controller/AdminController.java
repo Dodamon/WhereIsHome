@@ -19,7 +19,11 @@ import com.ssafy.happyhouse.board.service.BoardService;
 import com.ssafy.happyhouse.map.dto.Site_gathering;
 import com.ssafy.happyhouse.map.service.MapService;
 import com.ssafy.happyhouse.member.dto.Member;
+import com.ssafy.happyhouse.member.dto.MySecured;
+import com.ssafy.happyhouse.member.dto.Role;
 import com.ssafy.happyhouse.member.service.MemberService;
+
+
 
 @CrossOrigin(origins = "http://localhost:8080")
 @Controller
@@ -32,7 +36,7 @@ public class AdminController {
 	
 	@Autowired BoardService boardService;
 
-	
+	@MySecured(role = Role.ADMIN)
 	@PostMapping("/selectMembers")
 	@ResponseBody
 	public PageInfo<Member> getMembers(HttpServletRequest request) throws Exception {
@@ -51,6 +55,7 @@ public class AdminController {
 		return PageInfo.of(list);
 	}
 	
+	@MySecured(role = Role.ADMIN)
 	@PostMapping("/updateMember")
 	@ResponseBody
 	public void updateMember(HttpServletRequest request) throws Exception {
@@ -66,6 +71,7 @@ public class AdminController {
 		
 	}
 	
+	@MySecured(role = Role.ADMIN)
 	@PostMapping("/selectImjang")
 	@ResponseBody
 	public PageInfo<Site_gathering> getImjangs(String pageNum, String pageSize, HttpServletRequest request) throws Exception {
@@ -83,6 +89,7 @@ public class AdminController {
 		
 	}
 	
+	@MySecured(role = Role.ADMIN)
 	@PostMapping("/clickImjang")
 	@ResponseBody
 	public Site_gathering clickImjang(int code, HttpServletRequest request) throws Exception {
@@ -95,6 +102,7 @@ public class AdminController {
 		
 	}
 	
+	@MySecured(role = Role.ADMIN)
 	@PostMapping("/modifyImjang")
 	@ResponseBody
 	public int modifyImjang(int code, String title, HttpServletRequest request) throws Exception {
@@ -107,6 +115,7 @@ public class AdminController {
 		return i;
 	}
 	
+	@MySecured(role = Role.ADMIN)
 	@PostMapping("/deleteImjang")
 	@ResponseBody
 	public int deleteImjang(int code, HttpServletRequest request) throws Exception {
@@ -117,6 +126,7 @@ public class AdminController {
 		return i;
 	}
 	
+	@MySecured(role = Role.ADMIN)
 	@GetMapping("/getBoardSize")
 	@ResponseBody
 	public int getBoardSize(HttpServletRequest request) throws Exception {
@@ -127,6 +137,7 @@ public class AdminController {
 		return i;
 	}
 	
+	@MySecured(role = Role.ADMIN)
 	@GetMapping("/getMemberSize")
 	@ResponseBody
 	public int getMemberSize(HttpServletRequest request) throws Exception {
@@ -137,6 +148,7 @@ public class AdminController {
 		return i;
 	}
 	
+	@MySecured(role = Role.ADMIN)
 	@GetMapping("/getImjangSize")
 	@ResponseBody
 	public int getImjangSize(HttpServletRequest request) throws Exception {

@@ -197,23 +197,41 @@ export default {
     };
   },
   created() {
-    http.get("admin/getMemberSize").then(({ data }) => {
-      console.log(data);
-      this.memberTotal = data;
-      // alert(this.boards[0].title);
-    });
+    http
+      .get("admin/getMemberSize")
+      .then(({ data }) => {
+        console.log(data);
+        this.memberTotal = data;
+        // alert(this.boards[0].title);
+      })
+      .catch((err) => {
+        //alert(err);
+        this.$router.push({ name: "error" });
+      });
 
-    http.get("admin/getBoardSize").then(({ data }) => {
-      console.log(data);
-      this.boardTotal = data;
-      // alert(this.boards[0].title);
-    });
+    http
+      .get("admin/getBoardSize")
+      .then(({ data }) => {
+        console.log(data);
+        this.boardTotal = data;
+        // alert(this.boards[0].title);
+      })
+      .catch((err) => {
+        //alert(err);
+        this.$router.push({ name: "error" });
+      });
 
-    http.get("admin/getImjangSize").then(({ data }) => {
-      console.log(data);
-      this.imjangTotal = data;
-      // alert(this.boards[0].title);
-    });
+    http
+      .get("admin/getImjangSize")
+      .then(({ data }) => {
+        console.log(data);
+        this.imjangTotal = data;
+        // alert(this.boards[0].title);
+      })
+      .catch((err) => {
+        //alert(err);
+        this.$router.push({ name: "error" });
+      });
 
     http
       .post("admin/selectMembers", null, {
@@ -223,6 +241,10 @@ export default {
         console.log(data);
         this.members = data.list;
         // alert(this.boards[0].title);
+      })
+      .catch((err) => {
+        //alert(err);
+        this.$router.push({ name: "error" });
       });
 
     http
@@ -233,6 +255,10 @@ export default {
         console.log(data);
         this.boards = data.list;
         // alert(this.boards[0].title);
+      })
+      .catch((err) => {
+        //alert(err);
+        this.$router.push({ name: "error" });
       });
 
     http
@@ -243,6 +269,10 @@ export default {
         console.log(data);
         this.imjangs = data.list;
         // alert(this.boards[0].title);
+      })
+      .catch((err) => {
+        //alert(err);
+        this.$router.push({ name: "error" });
       });
   },
   methods: {
