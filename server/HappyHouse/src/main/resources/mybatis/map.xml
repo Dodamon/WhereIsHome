@@ -68,6 +68,33 @@
 	<update id="updateCount" parameterType="int">
   		update site_gathering set cur_people = cur_people + 1 where code = #{code}
   	</update>
+  	
+  	<select id="getGatherings"  resultType="site_gathering">
+		SELECT *
+		FROM site_gathering
+	</select>
+	
+	<select id="clickImjang"  resultType="site_gathering">
+		SELECT *
+		FROM site_gathering
+		WHERE code = #{code}
+		
+	</select>
+	
+	<update id="modifyImjang" parameterType="site_gathering">
+  		update site_gathering set title = #{title} where code = #{code}
+  	</update>
+  	
+  	<delete id="deleteImjang" parameterType="int">
+		delete
+		from site_gathering
+		where code=#{code}
+	</delete>
+	
+	<select id="getImjangSize"  resultType="int">
+		SELECT count(*)
+		FROM site_gathering
+	</select>
   
 
 		

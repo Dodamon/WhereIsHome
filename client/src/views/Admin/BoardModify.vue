@@ -1,28 +1,26 @@
 <template>
   <b-card>
     <b-card-header class="border-0">
-      <h3 class="mb-0">글쓰기</h3>
+      <h3 class="mb-0">글수정</h3>
     </b-card-header>
 
     <b-container>
       <b-row>
         <b-col style="text-align: left">
-          <b-form @submit="write">
-            <b-form-group label="작성자" label-for="writer">
-              <b-form-input
-                readonly
-                id="writer"
-                placeholder="작성자"
-                v-model="article.writer"
-                >{{ article.writer }}</b-form-input
-              >
-            </b-form-group>
-
+          <b-form @submit="modify">
             <b-form-group label="제목" label-for="title">
               <b-form-input
                 id="title"
                 placeholder="제목"
                 v-model="article.title"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="작성자" label-for="writer">
+              <b-form-input
+                id="writer"
+                placeholder="작성자"
+                v-model="article.writer"
               ></b-form-input>
             </b-form-group>
 
@@ -36,10 +34,14 @@
 
             <div>
               <b-button type="submit" class="m-1" variant="primary"
-                >글등록</b-button
+                >수정</b-button
               >
-              <b-button type="reset" class="m-1" variant="danger"
-                >초기화</b-button
+              <b-button
+                type="reset"
+                class="m-1"
+                variant="danger"
+                @click="deleteArticle"
+                >삭제</b-button
               >
               <b-button @click="gotoList">목록</b-button>
             </div>
@@ -61,34 +63,52 @@ export default {
   data() {
     return {
       article: { writer: "", title: "", content: "" },
+      code: 0,
     };
   },
-  created() {
-    this.article.writer = sessionStorage.getItem("id");
-  },
   methods: {
-    write() {
+    modify() {
       console.log(this.article.title);
       console.log(this.article.writer);
       console.log(this.article.content);
 
       http
-        .post("board/write", null, {
+        .post("board/modifyArticle", null, {
           params: {
+            code: this.code,
             writer: this.article.writer,
             title: this.article.title,
             content: this.article.content,
           },
         })
-        .then(({ data }) => {
-          alert(data);
-        })
         .catch();
-      this.$router.push({ name: "list" });
+      alert("게시글 수정 완료");
+      this.$router.push({ name: "admin" });
     },
     gotoList() {
-      this.$router.push({ name: "list" });
+      this.$router.push({ name: "admin" });
     },
+    deleteArticle() {
+      http
+        .post("board/deleteArticle", null, {
+          params: {
+            code: this.code,
+          },
+        })
+        .catch();
+      alert("삭제 완료");
+      this.$router.push({ name: "admin" });
+    },
+  },
+  created() {
+    this.code = this.$route.params.code;
+    http
+      .post(`board/clickArticle`, null, {
+        params: { code: this.code },
+      })
+      .then(({ data }) => {
+        this.article = data;
+      });
   },
 };
 </script>

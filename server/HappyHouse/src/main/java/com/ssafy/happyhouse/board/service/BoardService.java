@@ -40,6 +40,11 @@ public class BoardService {
 		
 	}
 
+	public int getSize() {
+		
+		return boardMapper.getSize();
+	}
+
 //	public List<Dongcode> getSido() {
 //		return boardMapper.getSido();
 //	}

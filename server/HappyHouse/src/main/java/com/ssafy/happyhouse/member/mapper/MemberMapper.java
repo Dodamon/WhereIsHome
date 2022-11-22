@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.member.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -18,5 +19,8 @@ public interface MemberMapper {
 	public SecVO selectSecurity(String id);
 	public void insertSecurity(SecVO secVo);
 	public void deleteSec(String id);
-	public int checkId(String id)throws Exception;;
+	public int checkId(String id)throws Exception;
+	public List<Member> getMembers();
+	public void updateMemberByAdmin(Member member);
+	public int getMemberSize();
 }

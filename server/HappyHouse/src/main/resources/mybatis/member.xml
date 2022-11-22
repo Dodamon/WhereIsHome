@@ -51,6 +51,18 @@
 	<select id="checkId" parameterType="String" resultType="int">
 		select count(*) from member where id=#{id}
 	</select>
+	
+	<select id="getMembers" resultType="member">
+		select * from member
+	</select>
+	
+	<update id="updateMemberByAdmin" parameterType="member">
+  		update member set name = #{name}, phone = #{phone}, address = #{address} where id = #{id}
+  	</update>
+  	
+  	<select id="getMemberSize" resultType="int">
+		select count(*) from member
+	</select>
   
   
 </mapper>

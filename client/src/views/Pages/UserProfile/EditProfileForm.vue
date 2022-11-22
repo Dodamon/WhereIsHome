@@ -149,7 +149,7 @@ export default {
   created() {
     http
       .post(`member/userinfo`, null, {
-        params: { id: sessionStorage.getItem("loggedin") },
+        params: { id: sessionStorage.getItem("id") },
       })
       .then(({ data }) => {
         console.log(data);

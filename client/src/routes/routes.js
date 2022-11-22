@@ -13,17 +13,40 @@ const routes = [
       {
         path: "/maps",
         name: "maps",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(/* webpackChunkName: "demo" */ "../views/KaKaoMaps.vue"),
+        component: () => import("../views/KaKaoMaps.vue"),
+      },
+      {
+        path: "/admin",
+        name: "admin",
+        component: () => import("../views/AdminPage.vue"),
+        redirect: "/admin/admin_list",
+        children: [
+          {
+            path: "admin_list",
+            name: "admin_list",
+            component: () => import("@/views/Admin/AdminList.vue"),
+          },
+          {
+            path: "member_modify",
+            name: "member_modify",
+            component: () => import("@/views/Admin/MemberModify.vue"),
+          },
+          {
+            path: "board_modify",
+            name: "board_modify",
+            component: () => import("@/views/Admin/BoardModify.vue"),
+          },
+          {
+            path: "imjang_modify",
+            name: "imjang_modify",
+            component: () => import("@/views/Admin/ImjangModify.vue"),
+          },
+        ],
       },
       {
         path: "/icons",
         name: "icons",
-        component: () =>
-          import(/* webpackChunkName: "demo" */ "../views/Icons.vue"),
+        component: () => import("../views/Icons.vue"),
       },
       {
         path: "/profile",

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,7 +76,7 @@ public class BoardController {
 		
 		PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
 		List<Board> list=boardService.selectAll();
-		
+		System.out.println("size = " + list.size());
 		return PageInfo.of(list);
 	}
 	
@@ -242,5 +243,14 @@ public class BoardController {
 //			System.out.println(request.getRemoteAddr()+" 해킹 시도 감지");
 //			return "fail";
 //		}
+	}
+	
+	@GetMapping("/getSize")
+	@ResponseBody
+	public int getSize(HttpServletRequest request) {
+//		
+		int len = boardService.getSize();
+
+		return len;
 	}
 }

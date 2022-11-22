@@ -33,5 +33,15 @@ public interface MapMapper {
 	public int getEnrolledGathering(int user_code, int site_gathering_code);
 
 	public void updateCount(int code);
+	
+	public List<Site_gathering> getGatherings();
+
+	public Site_gathering clickImjang(int code);
+
+	public int modifyImjang(Site_gathering site_gathering);
+
+	public int deleteImjang(int code);
+
+	public int getImjangSize();
 
 }

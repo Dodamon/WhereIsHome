@@ -167,8 +167,9 @@ export default {
             alert("로그인 성공\n홈 화면으로 이동합니다.");
             // this.$cookies.set("loggedin", this.model.email, "60");
             // this.$session.set("loggedin", this.model.email, "60");
-            sessionStorage.setItem("loggedin", this.model.email);
-            this.$router.push({ name: "maps" });
+            sessionStorage.setItem("code", data.code);
+            sessionStorage.setItem("id", data.id);
+            this.$router.push({ name: "maps" }).catch(() => {});
           } else {
             alert("로그인 실패\n이메일 및 비밀번호를 다시 입력하세요.");
           }

@@ -23,6 +23,8 @@ public interface BoardMapper {
 
 	public void delete(String code);
 
+	public int getSize();
+
 //	public List<Dongcode> getSido();
 //
 //	public List<Dongcode> getGugun(String selected_sido);

@@ -89,6 +89,22 @@
           >
           </sidebar-item>
         </div>
+
+        <!-- 관리자가 로그인(유저 코드가 0이면) 관리자 버튼 표시-->
+        <div @click="admin">
+          <sidebar-item
+            v-if="id != undefined && code == 0"
+            :link="{
+              name: '관리자',
+              path: '/admin',
+              icon: 'ni ni-circle-08 text-pink',
+              beforeEnter: (to, from, next) => {
+                alert('beforeEnter');
+              },
+            }"
+          >
+          </sidebar-item>
+        </div>
       </template>
 
       <template slot="links-after">
@@ -164,7 +180,8 @@ export default {
       //log_session: this.$session.isKey("loggedin"),
       // id: this.$cookies.get("loggedin"),
       // id: this.$session.get("loggedin"),
-      id: sessionStorage.getItem("loggedin"),
+      id: sessionStorage.getItem("id"),
+      code: sessionStorage.getItem("code"),
     };
   },
   components: {
@@ -184,13 +201,15 @@ export default {
     logout() {
       // this.$cookies.remove("loggedin");
       // this.$session.remove("loggedin");
-      sessionStorage.removeItem("loggedin");
+      sessionStorage.removeItem("id");
+      sessionStorage.removeItem("code");
       alert("로그아웃 완료\n새로고침합니다.");
       http.post("member/logout", null, {
         params: {},
       });
       location.reload();
     },
+    admin() {},
   },
   mounted() {
     this.initScrollbar();

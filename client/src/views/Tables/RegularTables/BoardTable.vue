@@ -49,7 +49,7 @@
       <b-pagination
         v-model="currentPage"
         :per-page="5"
-        :total-rows="50"
+        :total-rows="total"
       ></b-pagination>
     </b-card-footer>
   </b-card>
@@ -58,7 +58,6 @@
 <script>
 // import projects from "./../projects";
 import http from "@/api/http";
-
 import { Table, TableColumn } from "element-ui";
 export default {
   name: "board-table",
@@ -75,9 +74,16 @@ export default {
       // projects,
       boards: [],
       currentPage: 1,
+      total: null,
     };
   },
   created() {
+    http.get("board/getSize").then(({ data }) => {
+      console.log(data);
+      this.total = data;
+      // alert(this.boards[0].title);
+    });
+
     http
       .post("board/selectAll", null, {
         params: { pageNum: this.currentPage, pageSize: 5 },

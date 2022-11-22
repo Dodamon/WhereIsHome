@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.member.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -63,7 +64,9 @@ public class MemberService {
 		return memberMapper.update(new Member(0, id, encrypted_pw, encrypted_name, phone, address));
 	}
 	public void delete(String id) throws Exception {
-		memberMapper.delete(id);
+		
+		
+//		memberMapper.delete(id);
 		memberMapper.deleteSec(id);
 		
 	}
@@ -76,8 +79,34 @@ public class MemberService {
 	public void insertSecurity(SecVO secVo) {
 		memberMapper.insertSecurity(secVo);
 	}
+	
 	public int checkId(String id) throws Exception {
 		return memberMapper.checkId(id);
+	}
+	
+	public List<Member> getMembers() throws Exception {
+		List<Member> lst = memberMapper.getMembers();
+		for(int i=0; i<lst.size(); i++) {
+			String encrypted_name = lst.get(i).getName();
+			
+			SecVO sec=memberMapper.selectSecurity(lst.get(i).getId());
+	    	
+			lst.get(i).setName(OpenCrypt.aesDecrypt(encrypted_name, OpenCrypt.hexToByteArray(sec.getSecKey())));
+			
+		}
+		return lst;
+	}
+	public void updateMemberByAdmin(Member member) throws Exception {
+		SecVO sec=memberMapper.selectSecurity(member.getId());
+		String encrypted_name = OpenCrypt.aesEncrypt(member.getName(),OpenCrypt.hexToByteArray(sec.getSecKey()));
+		member.setName(encrypted_name);
+		
+		memberMapper.updateMemberByAdmin(member);
+		
+	}
+	public int getMemberSize() {
+		
+		return memberMapper.getMemberSize();
 	}
 	
 }

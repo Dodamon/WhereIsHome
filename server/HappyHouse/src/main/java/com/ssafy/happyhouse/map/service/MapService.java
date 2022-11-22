@@ -62,5 +62,25 @@ public class MapService {
 		mapMapper.updateCount(code);
 		
 	}
+	
+	public List<Site_gathering> getGatherings(){
+		return mapMapper.getGatherings();
+	}
+
+	public Site_gathering clickImjang(int code) {
+		return mapMapper.clickImjang(code);
+	}
+
+	public int modifyImjang(Site_gathering site_gathering) {
+		return mapMapper.modifyImjang(site_gathering);
+	}
+
+	public int deleteImjang(int code) {
+		return mapMapper.deleteImjang(code);
+	}
+
+	public int getImjangSize() {
+		return mapMapper.getImjangSize();
+	}
 
 }

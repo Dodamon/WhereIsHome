@@ -92,7 +92,7 @@ export default {
     // alert("after" + this.$session.get("id"));
     // alert(this.$session.get("id"));
     // this.cur_session = this.$session.get("loggedin");
-    this.cur_session = sessionStorage.getItem("loggedin");
+    this.cur_session = sessionStorage.getItem("id");
   },
   methods: {
     addTodo(item) {
