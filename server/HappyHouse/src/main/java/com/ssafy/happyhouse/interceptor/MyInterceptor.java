@@ -17,7 +17,6 @@ import com.ssafy.happyhouse.member.dto.Role;
 @Component
 public class MyInterceptor implements HandlerInterceptor{
 	
-	
 	@Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {

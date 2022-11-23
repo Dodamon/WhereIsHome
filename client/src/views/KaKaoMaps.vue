@@ -175,6 +175,11 @@
         </b-row>
 
         <b-row id="buttons">
+          <div>
+            <a href="http://localhost:9999/map/capcha">파일 다운로드</a>
+          </div>
+          <b-button type="success" @click="captcha">CHAPTCH</b-button>
+        <img :src="captcha_url">
           <b-button type="success" @click="findAddress">
             역삼동 멀티 캠퍼스</b-button
           >
@@ -214,6 +219,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import http from "@/api/http";
 import HouseListItem from "@/components/House/HouseListItem";
 
@@ -261,6 +267,7 @@ export default {
       imjang_sido: null,
       imjang_gugun: null,
       imjang_dong: null,
+      captcha_url: String,
 
       minP: [
         { value: null, text: "최소인원" },
@@ -567,6 +574,62 @@ export default {
       } else {
         alert("인원 초과!");
       }
+    },
+    captcha() {
+      // axios({
+      //   method: "get",
+      //   url: "http://localhost:9999/map/capcha",
+      //   responseType: "blob",
+      //   // data: paramter,
+      // })
+      //   .then((res) => {
+      //     alert("다운로드");
+      //     //header content-disposition에서 filename 추출.
+      //     const name = res.headers["content-disposition"].split("filename=")[1];
+
+      //     //IE11에서 blob처리 오류로 인해 분기처리
+      //     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      //       const blob = res.data;
+      //       window.navigator.msSaveOrOpenBlob(blob, name);
+      //     } else {
+      //       //IE 이외 다운로드 처리
+      //       const url = window.URL.createObjectURL(
+      //         new Blob([res.data], { type: res.headers["content-type"] })
+      //       );
+      //       const link = document.createElement("a");
+      //       link.href = url;
+      //       link.setAttribute("download", name);
+      //       document.body.appendChild(link);
+      //       link.click();
+      //       alert("다운로드");
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     //erroralert("다운로드");
+      //   });
+
+      const config = {
+        method: "GET",
+        headers: {
+          ContentType: "application/json",
+        },
+        responseType: "blob",
+      };
+      // console.log(window.URL.createObjectURL({ type: 'content-type' }));
+      
+      http.get("/map/capcha", config)
+      .then((res) => {
+        console.log(res.data);
+        const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
+        console.log(url);
+        this.captcha_url = url;
+        //callback(url);
+      })
+      .catch(e => {
+            console.log(`error === ${e}`)
+        })
+   
+      ;
     },
   },
   watch: {
