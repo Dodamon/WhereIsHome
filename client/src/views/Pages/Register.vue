@@ -128,14 +128,14 @@
                   </base-input>
 
                   <!-- 비밀번호 보안 등급 표시 구역 -->
-                  <div class="text-muted font-italic">
+                  <!-- <div class="text-muted font-italic">
                     <small
                       >password strength:
                       <span class="text-success font-weight-700"
                         >strong</span
                       ></small
                     >
-                  </div>
+                  </div> -->
                   <b-row class="my-4">
                     <b-col cols="12">
                       <base-input
@@ -144,8 +144,7 @@
                         Policy
                       >
                         <b-form-checkbox v-model="model.agree">
-                          <span class="text-muted"
-                            >I agree with the
+                          <span class="text-muted">
                             <a href="#!">약관 동의</a></span
                           >
                         </b-form-checkbox>
@@ -163,7 +162,7 @@
                       <vue-recaptcha ref="recaptcha" sitekey="6LdZlCkjAAAAAL8m_q3clTEd9SXUxAA9AAb4F04V" @verify="onVerify"
                         @expired="onExpired">
                       </vue-recaptcha>
-                      <v-spacer></v-spacer>
+                      <!-- <v-spacer></v-spacer> -->
                     </b-col>
                   </b-row>
 

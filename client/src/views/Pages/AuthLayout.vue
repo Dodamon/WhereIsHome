@@ -29,7 +29,7 @@
            </b-col>
          </b-row>
        </div>
-         <b-navbar-nav  class="align-items-lg-center ml-lg-auto">
+         <!-- <b-navbar-nav  class="align-items-lg-center ml-lg-auto">
            <b-nav-item to="/dashboard">
                <i class="ni ni-planet"></i>
                <span class="nav-link-inner--text">Dashboard</span>
@@ -46,7 +46,7 @@
                <i class="ni ni-single-02"></i>
                <span class="nav-link-inner--text">Profile</span>
            </b-nav-item>
-       </b-navbar-nav>
+       </b-navbar-nav> -->
      </template>
     </base-nav>
 
