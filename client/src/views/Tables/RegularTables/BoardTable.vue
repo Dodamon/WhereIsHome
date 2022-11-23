@@ -94,8 +94,22 @@ export default {
         // alert(this.boards[0].title);
       })
       .catch((err) => {
-        //alert(err);
-        this.$router.push({ name: "error" });
+        alert(err.response.status);
+        // this.$router.push({ name: "error" });
+        switch (err.response.status) {
+          case 501:
+            this.$router.push({ name: "error1" });
+            break;
+          case 502:
+            this.$router.push({ name: "error2" });
+            break;
+          case 503:
+            this.$router.push({ name: "error3" });
+            break;
+          default:
+            this.$router.push({ name: "error4" });
+            break;
+        }
       });
   },
   methods: {

@@ -5,15 +5,20 @@
       <b-container>
         <div class="header-body text-center mb-7">
           <b-row class="justify-content-center">
-            <b-col xl="5" lg="6" md="6" class="px-5">
-              <h1 class="text-light">Ooops!</h1>
-              <p class="text-lead text-white">
-                Page not found. Don't worry though, we have plenty of other
-                pages to explore
-              </p>
-
-              <router-link to="/" class="font-weight-bold text-white mt-5"
-                >Back to Home</router-link
+            <b-col xl="12" lg="12" md="12" class="px-5">
+              <i
+                class="ni ni-notification-70 text-white"
+                style="font-size: 5rem"
+              ></i>
+              <h1 style="font-size: 3rem" class="font-weight-bold text-white">
+                ERROR : 오류페이지
+              </h1>
+              <h2 style="font-size: 1.5rem">해당 페이지를 찾을 수 없습니다</h2>
+              <router-link
+                to="/"
+                class="font-weight-bold text-white mt-5"
+                style="text-decoration: underline"
+                >홈페이지로 돌아기기</router-link
               >
             </b-col>
           </b-row>

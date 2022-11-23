@@ -125,21 +125,21 @@ const routes = [
         component: () => import("../views/Pages/Register.vue"),
       },
       {
-        path: "/error",
-        name: "error",
-        component: () => import("../views/ErrorPage.vue"),
+        path: "/error1",
+        name: "error1",
+        component: () => import("../views/ErrorPage1.vue"),
       },
       {
         path: "/error2",
-        name: "error",
+        name: "error2",
         component: () => import("../views/ErrorPage2.vue"),
       },
       {
         path: "/error3",
-        name: "error",
+        name: "error3",
         component: () => import("../views/ErrorPage3.vue"),
       },
-      { path: "*", component: NotFound },
+      { path: "*", name: "error4", component: NotFound },
     ],
   },
 ];

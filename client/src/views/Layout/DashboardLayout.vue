@@ -16,7 +16,7 @@
 
         <b-media v-else no-body class="align-items-center">
           <span class="avatar avatar-xl rounded-circle">
-            <img alt="Image placeholder" src="img/theme/team-4.jpg" />
+            <img alt="Image placeholder" :src="src" />
           </span>
           <b-media-body class="ml-2 d-none d-lg-block">
             <span class="mb-0 text-sm font-weight-bold">
@@ -183,6 +183,7 @@ export default {
       // id: this.$session.get("loggedin"),
       id: sessionStorage.getItem("id"),
       code: sessionStorage.getItem("code"),
+      src: "",
     };
   },
   components: {
@@ -191,7 +192,13 @@ export default {
     DashboardContent,
     FadeTransition,
   },
-  // created() {},
+  created() {
+    if ("admin@admin.com" == this.id) {
+      this.src = "img/theme/team-7.png";
+    } else {
+      this.src = "img/theme/team-6.jpg";
+    }
+  },
   methods: {
     initScrollbar() {
       let isWindows = navigator.platform.startsWith("Win");

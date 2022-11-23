@@ -32,7 +32,7 @@ public class MyInterceptor implements HandlerInterceptor{
         // Case 1: 비회원도 이용가능한 기능
         // method에 @MySequred가 없는 경우, 즉 인증이 필요 없는 요청 비회원도 이용할 수 있는 경우
         if (mySecured == null) {
-        	System.out.println("case 1");
+        	System.out.println("case 0");
             return true;
         }
 
@@ -41,8 +41,8 @@ public class MyInterceptor implements HandlerInterceptor{
         HttpSession session = request.getSession(false);
         System.out.println("여기서 세션_________" + session);
         if (session == null) {
-        	response.sendError(502, "500 오류");
-        	System.out.println("case 2");
+        	response.sendError(501, "500 오류");
+        	System.out.println("case 1");
             return false;
         }
         System.out.println("Interceptor Session: " + session.getId());
@@ -52,9 +52,9 @@ public class MyInterceptor implements HandlerInterceptor{
         Member m = (Member) session.getAttribute("member");
         System.out.println("Interceptor Member:  " + m);
         if (m == null) {
-        	response.sendError(503, "500 오류");
+        	response.sendError(502, "500 오류");
             response.sendRedirect("/error");
-            System.out.println("case 3");
+            System.out.println("case 2");
             return false;
         }
        
@@ -69,8 +69,8 @@ public class MyInterceptor implements HandlerInterceptor{
         }
         System.out.println("Cookie JSESSIONID : " + JSESSIONID);
         if(!JSESSIONID.equals(session.getId())) {
-        	response.sendError(504, "500 오류");
-        	System.out.println("case 4");
+        	response.sendError(503, "500 오류");
+        	System.out.println("case 3");
         	return false;
         }
         
@@ -80,9 +80,8 @@ public class MyInterceptor implements HandlerInterceptor{
         if(role != null) {
             if ("ADMIN".equals(role)) {
                 if (m.getRole() != Role.ADMIN) {
-                	response.sendError(505, "500 오류");
-                    response.sendRedirect("/error");
-                    System.out.println("case 5");
+                	response.sendError(503, "500 오류");
+                    System.out.println("case 3");
                     return false;
                 }
             }

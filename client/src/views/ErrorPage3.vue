@@ -6,18 +6,19 @@
         <div class="header-body text-center mb-7">
           <b-row class="justify-content-center">
             <b-col xl="12" lg="12" md="12" class="px-5">
-              <i
-                class="ni ni-lock-circle-open text-white"
-                style="font-size: 5rem"
-              ></i>
+              <i class="ni ni-satisfied text-white" style="font-size: 5rem"></i>
               <h1 style="font-size: 3rem" class="font-weight-bold text-white">
                 ERROR : 오류페이지
               </h1>
-              <h2 style="font-size: 1.5rem">해킹갑지!!!!!1!!!!!</h2>
+              <h2 style="font-size: 1.5rem">해킹감지!!!!!!!!!!</h2>
               <div>
                 <img
-                  style="width: 50%"
+                  style="width: 50%; border-radius: 20px"
                   src="https://user-images.githubusercontent.com/62598865/203505744-cc13056b-8e4f-495d-a0d5-9d67cb301620.png"
+                />
+                <img
+                  style="width: 40%; border-radius: 20px"
+                  src="img/error.jpg"
                 />
               </div>
               <router-link
@@ -51,6 +52,6 @@
 
 <script>
 export default {
-  name: "not-found",
+  name: "error3",
 };
 </script>
