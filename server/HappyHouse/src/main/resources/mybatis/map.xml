@@ -15,12 +15,14 @@
 		SELECT DISTINCT gugunName
 		FROM dongcode
 		WHERE sidoName = #{sidoName} and gugunName is not null
+		ORDER BY gugunName
 	</select>
 	
 	<select id="getDong" parameterType="string" resultType="dongcode">
 		SELECT DISTINCT dongName
 		FROM dongcode
 		WHERE sidoName = #{sidoName} and gugunName = #{gugunName} and dongName is not null
+		ORDER BY dongName
 	</select>
 	
 	<select id="getDongcode" parameterType="string" resultType="string">
@@ -39,6 +41,7 @@
 		SELECT *
 		FROM housedeal
 		WHERE aptCode=#{aptCode}
+		ORDER BY dealYear DESC, dealMonth DESC
 	</select>
 	
 	<insert id="writeImjang" useGeneratedKeys="true" keyProperty="code" parameterType="site_gathering" >

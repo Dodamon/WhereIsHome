@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 // 네이버 캡차 API 예제 - 키발급, 키 비교
@@ -17,21 +18,33 @@ import org.springframework.stereotype.Component;
 public class ApiExamCaptchaNkeyResult {
 
 //    public static void main(String[] args) {
-//        String clientId = "YOUR_CLIENT_ID";//애플리케이션 클라이언트 아이디값";
-//        String clientSecret = "YOUR_CLIENT_SECRET";//애플리케이션 클라이언트 시크릿값";
-//
-//        String code = "1"; // 키 발급시 0,  캡차 이미지 비교시 1로 세팅
-//        String key = "YOUR_CAPTCHA_KEY"; // 캡차 키 발급시 받은 키값
-//        String value = "YOUR_INPUT"; // 사용자가 입력한 캡차 이미지 글자값
-//        String apiURL = "https://openapi.naver.com/v1/captcha/nkey?code=" + code + "&key=" + key + "&value=" + value;
-//
-//        Map<String, String> requestHeaders = new HashMap<>();
-//        requestHeaders.put("X-Naver-Client-Id", clientId);
-//        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-//        String responseBody = get(apiURL, requestHeaders);
-//
-//        System.out.println(responseBody);
+//        
 //    }
+	
+	@Autowired
+	static ApiExamCaptchaNkey apiExamCaptchaNkey;
+	
+    public static String ApiExamCaptchaNkeyResult_main(String value) {
+    	String clientId = "oEeHZNIsPZi_8lQPEQ6G";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "QRhBraRXBg";//애플리케이션 클라이언트 시크릿값";
+
+        String code = "1"; // 키 발급시 0,  캡차 이미지 비교시 1로 세팅
+//        key = "YOUR_CAPTCHA_KEY"; // 캡차 키 발급시 받은 키값
+//        value = "YOUR_INPUT"; // 사용자가 입력한 캡차 이미지 글자값
+        
+        String key = apiExamCaptchaNkey.getKey();
+        
+        String apiURL = "https://openapi.naver.com/v1/captcha/nkey?code=" + code + "&key=" + key + "&value=" + value;
+
+        Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("X-Naver-Client-Id", clientId);
+        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
+        String responseBody = get(apiURL, requestHeaders);
+
+        System.out.println(responseBody);
+        
+        return responseBody;
+    }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders){
         HttpURLConnection con = connect(apiUrl);

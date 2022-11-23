@@ -36,7 +36,7 @@
       <b-row class="justify-content-center">
         <b-col lg="5" md="7">
           <b-card no-body class="bg-secondary border-0 mb-0">
-            <b-card-header class="bg-transparent pb-5">
+            <!-- <b-card-header class="bg-transparent pb-5">
               <div class="text-muted text-center mt-2 mb-3">
                 <small>Sign in with</small>
               </div>
@@ -54,10 +54,10 @@
                   <span class="btn-inner--text">Google</span>
                 </a>
               </div>
-            </b-card-header>
+            </b-card-header> -->
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>Or sign in with credentials</small>
+                <small>로그인</small>
               </div>
               <validation-observer
                 v-slot="{ handleSubmit }"
@@ -70,7 +70,7 @@
                     name="Email"
                     :rules="{ required: true, email: true }"
                     prepend-icon="ni ni-email-83"
-                    placeholder="Email"
+                    placeholder="이메일을 입력하세요"
                     v-model="model.email"
                   >
                   </base-input>
@@ -82,20 +82,27 @@
                     :rules="{ required: true, min: 6 }"
                     prepend-icon="ni ni-lock-circle-open"
                     type="password"
-                    placeholder="Password"
+                    placeholder="비밀번호를 입력하세요"
                     v-model="model.password"
                   >
                   </base-input>
 
                   <b-form-checkbox v-model="model.rememberMe"
-                    >Remember me</b-form-checkbox
+                    >로그인 유지</b-form-checkbox
                   >
+                  <br>
+
+                  <img :src="captcha_url">
+                  <b-button type="success" @click="captcha"> 새로고침</b-button>
+                  <base-input alternative class="mb-3" name="Capcha" :rules="{ required: true }"
+                    prepend-icon="ni ni-key-25" type="text" placeholder="위의 코드를 입력하세요." v-model="model.capcha_code">
+                  </base-input>
                   <div class="text-center">
                     <base-button
                       type="primary"
                       native-type="submit"
                       class="my-4"
-                      >Sign in</base-button
+                      >로그인</base-button
                     >
                   </div>
                 </b-form>
@@ -136,7 +143,9 @@ export default {
         email: "",
         password: "",
         rememberMe: false,
+        capcha_code:"",
       },
+      captcha_url: String,
     };
   },
   methods: {
@@ -154,27 +163,85 @@ export default {
     //   // this will be called only after form is valid. You can do api call here to login
     // },
     login() {
-      http
-        .post("member/login", null, {
-          params: {
-            id: this.model.email,
-            pw: this.model.password,
-          },
-        })
+      http.post("/member/checkCapcha", null, {
+        params: {
+          code: this.model.capcha_code,
+        }
+      })
         .then(({ data }) => {
-          console.log(data);
-          if (data.name != null) {
-            alert("로그인 성공\n홈 화면으로 이동합니다.");
-            // this.$cookies.set("loggedin", this.model.email, "60");
-            // this.$session.set("loggedin", this.model.email, "60");
-            sessionStorage.setItem("code", data.code);
-            sessionStorage.setItem("id", data.id);
-            this.$router.push({ name: "maps" }).catch(() => {});
+          if (data["result"] == true) {
+            http
+              .post("member/login", null, {
+                params: {
+                  id: this.model.email,
+                  pw: this.model.password,
+                },
+              })
+              .then(({ data }) => {
+                console.log(data);
+                if (data.name != null) {
+                  alert("로그인 성공\n홈 화면으로 이동합니다.");
+                  // this.$cookies.set("loggedin", this.model.email, "60");
+                  // this.$session.set("loggedin", this.model.email, "60");
+                  sessionStorage.setItem("code", data.code);
+                  sessionStorage.setItem("id", data.id);
+                  this.$router.push({ name: "maps" }).catch(() => { });
+                } else {
+                  alert("로그인 실패\n이메일 및 비밀번호를 다시 입력하세요.");
+                }
+              });
           } else {
-            alert("로그인 실패\n이메일 및 비밀번호를 다시 입력하세요.");
+            alert("자동입력 방지 코드가 틀렸습니다.");
+            this.captcha();
           }
+        })
+        .catch(e => {
+          console.log(`error === ${e}`)
+        });
+
+      
+    },
+    captcha() {
+      const config = {
+        method: "GET",
+        headers: {
+          ContentType: "application/json",
+        },
+        responseType: "blob",
+      };
+
+      http.get("/member/getCapcha", config)
+        .then((res) => {
+          console.log(res.data);
+          const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] }));
+          console.log(url);
+          this.captcha_url = url;
+        })
+        .catch(e => {
+          console.log(`error === ${e}`)
         });
     },
+  },
+  created() {
+    const config = {
+      method: "GET",
+      headers: {
+        ContentType: "application/json",
+      },
+      responseType: "blob",
+    };
+
+    http.get("/member/getCapcha", config)
+      .then((res) => {
+        console.log(res.data);
+        const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] }));
+        console.log(url);
+        this.captcha_url = url;
+      })
+      .catch(e => {
+        console.log(`error === ${e}`)
+      })
+      ;
   },
 };
 </script>

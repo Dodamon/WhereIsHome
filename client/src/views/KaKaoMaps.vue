@@ -57,19 +57,20 @@
                     ><h3>{{ marker.apartName }}</h3></b-col
                   >
                 </b-row>
-                <b-row class="mb-2 mt-1">
+                <b-row class="mb-2 mt-1 text-center">
                   <b-col>
                     <b-img
-                      thumbnail
-                      src="https://picsum.photos/250/250/?image=58"
+                      
+                      src="https://user-images.githubusercontent.com/62598865/203477086-090b1a2c-4993-4863-92ae-c0447cf02bc5.png"
                       alt="Image 1"
+                      height="300"
                     ></b-img>
                   </b-col>
                 </b-row>
                 <b-row>
                   <b-col>
                     <b-alert show variant="secondary"
-                      >일련번호 : {{ selected_house.aptCode }}</b-alert
+                      >일련번호 : {{ marker.aptCode }}</b-alert
                     >
                   </b-col>
                 </b-row>
@@ -83,7 +84,7 @@
                 <b-row>
                   <b-col>
                     <b-alert show variant="secondary"
-                      >법정동 : {{ marker.dongName }}
+                      >법정동 : {{ marker.dong }}
                     </b-alert>
                   </b-col>
                 </b-row>
@@ -98,7 +99,7 @@
                   <b-col>
                     <b-alert show variant="danger"
                       >거래금액 :
-                      {{ parseInt(selected_house.dealAmount) }}원</b-alert
+                      {{ selected_house.dealAmount }} 만원</b-alert
                     >
                   </b-col>
                 </b-row>
@@ -175,42 +176,37 @@
         </b-row>
 
         <b-row id="buttons">
-          <div>
-            <a href="http://localhost:9999/map/capcha">파일 다운로드</a>
-          </div>
-          <b-button type="success" @click="captcha">CHAPTCH</b-button>
-        <img :src="captcha_url">
-          <b-button type="success" @click="findAddress">
-            역삼동 멀티 캠퍼스</b-button
-          >
+          
+          <b-button type="success" @click="findAddress">역삼동 멀티 캠퍼스</b-button>
           <div id="location_select">
-            <b-form-select v-model="selected_sido" class="w-25">
-              <option
-                v-for="(item, index) in sidos"
-                :key="index"
-                :value="item.sidoName"
-              >
-                {{ item.sidoName }}
-              </option>
-            </b-form-select>
-            <b-form-select v-model="selected_gugun" class="w-25">
-              <option
-                v-for="(item, index) in guguns"
-                :key="index"
-                :value="item.gugunName"
-              >
-                {{ item.gugunName }}
-              </option>
-            </b-form-select>
-            <b-form-select v-model="selected_dong" class="w-25">
-              <option
-                v-for="(item, index) in dongs"
-                :key="index"
-                :value="item.dongName"
-              >
-                {{ item.dongName }}
-              </option>
-            </b-form-select>
+            <b-container>
+              <b-row>
+                <b-col>
+                  <b-form-select v-model="selected_sido">
+                    <option v-for="(item, index) in sidos" :key="index" :value="item.sidoName">
+                      {{ item.sidoName }}
+                    </option>
+                  </b-form-select>
+                </b-col>
+                <b-col>
+                  <b-form-select v-model="selected_gugun">
+                    <option v-for="(item, index) in guguns" :key="index" :value="item.gugunName">
+                      {{ item.gugunName }}
+                    </option>
+                  </b-form-select>
+                </b-col>
+                <b-col>
+                  <b-form-select v-model="selected_dong">
+                    <option v-for="(item, index) in dongs" :key="index" :value="item.dongName">
+                      {{ item.dongName }}
+                    </option>
+                  </b-form-select>
+                </b-col>
+              </b-row>
+            </b-container>
+            
+            
+            
           </div>
           <b-button @click="showImjang">임장 모임 등록</b-button>
         </b-row>
@@ -246,9 +242,9 @@ export default {
       selected_sido: "시도 선택",
       selected_gugun: "구군 선택",
       selected_dong: "동 선택",
-      sidos: [],
-      guguns: [],
-      dongs: [],
+      sidos: [{value: null, sidoName:"시도 선택"}],
+      guguns: [{ value: null, gugunName: "구군 선택" }],
+      dongs: [{ value: null, dongName: "동 선택" }],
 
       houseinfos: [],
       housedeals: [],
@@ -575,62 +571,6 @@ export default {
         alert("인원 초과!");
       }
     },
-    captcha() {
-      // axios({
-      //   method: "get",
-      //   url: "http://localhost:9999/map/capcha",
-      //   responseType: "blob",
-      //   // data: paramter,
-      // })
-      //   .then((res) => {
-      //     alert("다운로드");
-      //     //header content-disposition에서 filename 추출.
-      //     const name = res.headers["content-disposition"].split("filename=")[1];
-
-      //     //IE11에서 blob처리 오류로 인해 분기처리
-      //     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      //       const blob = res.data;
-      //       window.navigator.msSaveOrOpenBlob(blob, name);
-      //     } else {
-      //       //IE 이외 다운로드 처리
-      //       const url = window.URL.createObjectURL(
-      //         new Blob([res.data], { type: res.headers["content-type"] })
-      //       );
-      //       const link = document.createElement("a");
-      //       link.href = url;
-      //       link.setAttribute("download", name);
-      //       document.body.appendChild(link);
-      //       link.click();
-      //       alert("다운로드");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     //erroralert("다운로드");
-      //   });
-
-      const config = {
-        method: "GET",
-        headers: {
-          ContentType: "application/json",
-        },
-        responseType: "blob",
-      };
-      // console.log(window.URL.createObjectURL({ type: 'content-type' }));
-      
-      http.get("/map/capcha", config)
-      .then((res) => {
-        console.log(res.data);
-        const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
-        console.log(url);
-        this.captcha_url = url;
-        //callback(url);
-      })
-      .catch(e => {
-            console.log(`error === ${e}`)
-        })
-   
-      ;
-    },
   },
   watch: {
     selected_sido: {
@@ -642,7 +582,8 @@ export default {
           .get("map/gugun", { params: { sidoName: this.selected_sido } })
           .then(({ data }) => {
             console.log(data);
-            this.guguns = data.list;
+            // this.guguns = data.list;
+            this.guguns = [...this.guguns, ...data.list]
             // console.log(this.guguns);
           });
       },
@@ -660,7 +601,8 @@ export default {
           })
           .then(({ data }) => {
             console.log(data);
-            this.dongs = data.list;
+            // this.dongs = data.list;
+            this.dongs = [...this.dongs, ...data.list]
             console.log(this.dongs);
           });
       },
@@ -714,7 +656,8 @@ export default {
     http.get("map/sido").then(({ data }) => {
       // alert("sido 포스트 끝");
       console.log(data);
-      this.sidos = data.list;
+      this.sidos = [...this.sidos, ...data.list]
+      
       // console.log(typeof data.list);
     });
   },

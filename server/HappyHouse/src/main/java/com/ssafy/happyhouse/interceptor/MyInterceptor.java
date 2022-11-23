@@ -32,14 +32,17 @@ public class MyInterceptor implements HandlerInterceptor{
         // Case 1: 비회원도 이용가능한 기능
         // method에 @MySequred가 없는 경우, 즉 인증이 필요 없는 요청 비회원도 이용할 수 있는 경우
         if (mySecured == null) {
+        	System.out.println("case 1");
             return true;
         }
 
         // Case 2: 회원만 이용할 수 있는 기능 (비회원이 접근)
         // @MySequred가 있는 경우이므로, 세션이 있는지 체크
         HttpSession session = request.getSession(false);
+        System.out.println("여기서 세션_________" + session);
         if (session == null) {
         	response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "500 오류");
+        	System.out.println("case 2");
             return false;
         }
         System.out.println("Interceptor Session: " + session.getId());
@@ -51,6 +54,7 @@ public class MyInterceptor implements HandlerInterceptor{
         if (m == null) {
         	response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "500 오류");
             response.sendRedirect("/error");
+            System.out.println("case 3");
             return false;
         }
        
@@ -66,6 +70,7 @@ public class MyInterceptor implements HandlerInterceptor{
         System.out.println("Cookie JSESSIONID : " + JSESSIONID);
         if(!JSESSIONID.equals(session.getId())) {
         	response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "500 오류");
+        	System.out.println("case 4");
         	return false;
         }
         
@@ -77,6 +82,7 @@ public class MyInterceptor implements HandlerInterceptor{
                 if (m.getRole() != Role.ADMIN) {
                 	response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "500 오류");
                     response.sendRedirect("/error");
+                    System.out.println("case 5");
                     return false;
                 }
             }

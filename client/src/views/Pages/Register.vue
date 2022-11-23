@@ -38,7 +38,7 @@
       <b-row class="justify-content-center">
         <b-col lg="6" md="8">
           <b-card no-body class="bg-secondary border-0">
-            <b-card-header class="bg-transparent pb-5">
+            <!-- <b-card-header class="bg-transparent pb-5">
               <div class="text-muted text-center mt-2 mb-4">
                 <small>Sign up with</small>
               </div>
@@ -56,10 +56,10 @@
                   <span class="btn-inner--text">Google</span>
                 </a>
               </div>
-            </b-card-header>
+            </b-card-header> -->
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>Or sign up with credentials</small>
+                <small>회원가입</small>
               </div>
               <validation-observer
                 v-slot="{ handleSubmit }"
@@ -70,7 +70,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-hat-3"
+                    prepend-icon="ni ni-circle-08"
                     placeholder="Name"
                     name="Name"
                     :rules="{ required: true }"
@@ -82,7 +82,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-hat-3"
+                    prepend-icon="ni ni-building"
                     placeholder="Address"
                     name="Address"
                     :rules="{ required: true }"
@@ -94,7 +94,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-hat-3"
+                    prepend-icon="ni ni-mobile-button"
                     placeholder="Phone"
                     name="Phone"
                     :rules="{ required: true }"
@@ -146,15 +146,31 @@
                         <b-form-checkbox v-model="model.agree">
                           <span class="text-muted"
                             >I agree with the
-                            <a href="#!">Privacy Policy</a></span
+                            <a href="#!">약관 동의</a></span
                           >
                         </b-form-checkbox>
                       </base-input>
                     </b-col>
                   </b-row>
+                  <!-- <b-row>
+                    <b-col>
+                      <vue-recaptcha sitekey="6LdZlCkjAAAAAL8m_q3clTEd9SXUxAA9AAb4F04V"></vue-recaptcha>
+                    </b-col>
+                  </b-row> -->
+
+                  <b-row>
+                    <b-col>
+                      <vue-recaptcha ref="recaptcha" sitekey="6LdZlCkjAAAAAL8m_q3clTEd9SXUxAA9AAb4F04V" @verify="onVerify"
+                        @expired="onExpired">
+                      </vue-recaptcha>
+                      <v-spacer></v-spacer>
+                    </b-col>
+                  </b-row>
+
+
                   <div class="text-center">
-                    <b-button type="submit" variant="primary" class="mt-4"
-                      >Create account</b-button
+                    <b-button @click="checkRobot" variant="primary" class="mt-4"
+                      >회원가입</b-button
                     >
                   </div>
                 </b-form>
@@ -168,9 +184,13 @@
 </template>
 <script>
 import http from "@/api/http";
+import { VueRecaptcha } from 'vue-recaptcha';
 
 export default {
   name: "register",
+  components: {
+    VueRecaptcha,
+  },
   data() {
     return {
       model: {
@@ -180,6 +200,7 @@ export default {
         address: "",
         phone: "",
         agree: false,
+        response:"",
       },
     };
   },
@@ -234,6 +255,22 @@ export default {
           }
           // alert(this.boards[0].title);
         });
+    },
+    onVerify(r) {
+      this.response = r;
+    },
+    onExpired() {
+      this.response = ''
+      this.$refs.recaptcha.reset()
+    },
+    checkRobot() {
+      if (this.response) {
+        this.onSubmit();
+      }
+      else {
+        alert("로봇이 아님을 확인해주세요");
+        this.$refs.recaptcha.execute();
+      }
     },
   },
 };

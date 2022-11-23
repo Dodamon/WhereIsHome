@@ -41,17 +41,12 @@ import com.ssafy.happyhouse.member.dto.Member;
 
 
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = {"http://localhost:8080", "http://127.0.0.1:8080"})
 @Controller
 @RequestMapping("/map")
 public class MapController {
 	@Autowired
 	MapService mapService;
-	
-	@Autowired ApiExamCaptchaNkey apiExamCaptchaNkey;
-	@Autowired
-	 ApiExamCaptchaImage apiExamCaptchaImage;
-
 	
 	@GetMapping("/sido")
 	@ResponseBody
@@ -232,77 +227,6 @@ public class MapController {
 //		return result;
 	}
 	
-	@GetMapping("/capcha")
-	@ResponseBody
-	public void  capcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("capcha controller");
-		
-//		ApiExamCaptchaNkey apiExamCaptchaNkey = new ApiExamCaptchaNkey();
-		
-		String result = apiExamCaptchaNkey.ApiExamCaptchaNkey_main();
-		
-		String file_name = apiExamCaptchaImage.getFile_name();
-		
-		System.out.println("파일 이름 " + file_name);
-		
-		//String path = "C:/Users/multicampus/git/1123/pair08_leeyeeun_jisunho/server/HappyHouse/";
-		System.out.println("context ::" + request.getContextPath());
-	    
-	    byte[] fileByte = FileUtils.readFileToByteArray(apiExamCaptchaImage.getFile());
-
-//	    response.setContentType("application/octet-stream");
-//	    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode("tistory.png", "UTF-8")+"\";");
-	    response.setHeader("Content-Transfer-Encoding", "binary");
-
-	    response.getOutputStream().write(fileByte);
-	    response.getOutputStream().flush();
-	    response.getOutputStream().close();
-		
-//		try {
-//            String path = "C:/Users/j/Desktop/capcha/HappyHouse/";
-//            FileSystemResource resource = new FileSystemResource(path+file_name + ".jpg");
-//            if (!resource.exists()) {
-//                throw new Exception();
-//            }
-//            HttpHeaders header = new HttpHeaders();
-//            Path filePath = null;
-//            filePath = Paths.get(path+file_name);
-//            header.add("Content-Type", Files.probeContentType(filePath));
-//            
-//            File f = apiExamCaptchaImage.getFile();
-//            
-//            response.setHeader("Content-Length", Long.toString(f.length()));
-//            response.setHeader("Content-Transfer-Encoding", "binary");
-//            response.setHeader("Content-Disposition", "attachment; filename=\"" + file_name + "\";");
-//            return f;
-            
-            
-            
-            
-//            response.setContentType("application/octet-stream");
-//
-//			response.setHeader("Content-Length", Long.toString(f.length()));
-//			
-//			response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("download", "UTF-8") + ";");
-//			
-//			response.setHeader("Content-Transfer-Encoding", "binary");
-//			
-//			response.setHeader("Content-Type", "application/octet-stream");
-//			
-//			response.setHeader("filename", URLEncoder.encode(originalName, "UTF-8"));
-//			
-//			response.getOutputStream().write(fileByte);
-//			
-//			response.getOutputStream().flush();
-//			
-//			response.getOutputStream().close();
-            
-//            return new ResponseEntity<Resource>(resource, HttpStatus.OK);
-//        } catch (Exception e) {
-//            throw new Exception();
-//        }
-
-//		return result;
-	}
+	
 
 }

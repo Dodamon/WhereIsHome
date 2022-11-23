@@ -9,12 +9,12 @@
     <b-col cols="2" class="text-center align-self-center">
       <b-img
         thumbnail
-        src="https://picsum.photos/250/250/?image=58"
+        src="https://cdn-icons-png.flaticon.com/512/195/195492.png"
         alt="Image 1"
       ></b-img>
     </b-col>
     <b-col cols="10" class="align-self-center">
-      [{{ house.aptCode }}] {{ marker.apartmentName }}
+      [{{ house.dealYear }}년 {{house.dealMonth}}월] &nbsp;&nbsp;&nbsp;&nbsp; {{house.area}} m<sup>2</sup> &nbsp;&nbsp;&nbsp;&nbsp;{{ house.dealAmount }} 만원
     </b-col>
   </b-row>
 </template>

@@ -3,28 +3,41 @@ package com.ssafy.happyhouse.member.controller;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ssafy.happyhouse.capcha.ApiExamCaptchaImage;
+import com.ssafy.happyhouse.capcha.ApiExamCaptchaNkey;
+import com.ssafy.happyhouse.capcha.ApiExamCaptchaNkeyResult;
 import com.ssafy.happyhouse.member.dto.Member;
+import com.ssafy.happyhouse.member.dto.MySecured;
 import com.ssafy.happyhouse.member.dto.Role;
 import com.ssafy.happyhouse.member.service.MemberService;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = {"http://localhost:8080", "http://127.0.0.1:8080"})
 @Controller
 @RequestMapping("/member")
 public class MemberController {
     
     @Autowired
     MemberService memberService;
+    
+    @Autowired ApiExamCaptchaNkey apiExamCaptchaNkey;
+	@Autowired ApiExamCaptchaImage apiExamCaptchaImage;
+	@Autowired ApiExamCaptchaNkeyResult apiExamCaptchaNkeyResult;
     
     @Transactional
     @PostMapping("/register")
@@ -81,8 +94,10 @@ public class MemberController {
             // 관리자일 경우 임의로 설정
             // 나중에 무조건 지워야하는 코드!!!!!!!!!!!!!!!!!!
             if("admin@admin.com".equals(id)) {
+            	System.out.println(":::::::::::::::::::admin에게 권한을 준다");
             	m.setRole(Role.ADMIN);
             } else {
+            	System.out.println("::::::::::::::::::::::user에게 권한을 준다");
             	m.setRole(Role.USER);
             }
             
@@ -109,6 +124,7 @@ public class MemberController {
         return "로그아웃 되었습니다.";
     }
     
+    @MySecured(role = Role.USER)
     @PostMapping("/userinfo")
     @ResponseBody
     public Member userInfo(HttpServletRequest request) {
@@ -143,6 +159,7 @@ public class MemberController {
         
     }
     
+    @MySecured(role = Role.USER)
     @PostMapping("/update")
     @ResponseBody
     public Member update(String id, String password, String name, String address, String phone, HttpServletRequest request) {
@@ -163,7 +180,7 @@ public class MemberController {
         return null;
     }
     
-    
+    @MySecured(role = Role.USER)
     @PostMapping("/delete")
     @ResponseBody
     public Boolean delete(@RequestParam String id, HttpServletRequest request) {
@@ -191,5 +208,58 @@ public class MemberController {
 //        System.out.println("해킹 시도감지!!!!");
         return false;
     }
+    
+    @GetMapping("/getCapcha")
+	@ResponseBody
+	public void  capcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("capcha controller");
+		
+		String result = apiExamCaptchaNkey.ApiExamCaptchaNkey_main();
+		
+		String file_name = apiExamCaptchaImage.getFile_name();
+		
+	    
+	    byte[] fileByte = FileUtils.readFileToByteArray(apiExamCaptchaImage.getFile());
+
+	    response.setHeader("Content-Transfer-Encoding", "binary");
+
+	    response.getOutputStream().write(fileByte);
+	    response.getOutputStream().flush();
+	    response.getOutputStream().close();
+		
+	}
+    
+    @PostMapping("/checkCapcha")
+	@ResponseBody
+	public String  checkCapcha(String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("checkCapcha controller");
+		
+		String original_key = apiExamCaptchaNkey.getKey();
+		String sended_key = code;
+		
+		System.out.println("비교하는 키 -> " + original_key + " : " + sended_key);
+		
+		String responseBody = apiExamCaptchaNkeyResult.ApiExamCaptchaNkeyResult_main(code);
+		
+		JSONParser jsonParser = new JSONParser();
+        
+        //3. To Object
+        Object obj = jsonParser.parse(responseBody);
+        
+        //4. To JsonObject
+        JSONObject jsonObj = (JSONObject) obj;
+        
+        Boolean result = (Boolean) jsonObj.get("result");
+		System.out.println(responseBody);
+		return responseBody;
+		
+//		String result = apiExamCaptchaNkey.ApiExamCaptchaNkey_main();
+		
+//		String file_name = apiExamCaptchaImage.getFile_name();
+
+		
+	}
+    
+    
     
 }

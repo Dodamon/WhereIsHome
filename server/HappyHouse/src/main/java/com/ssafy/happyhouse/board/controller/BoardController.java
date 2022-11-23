@@ -23,7 +23,7 @@ import com.ssafy.happyhouse.member.dto.Member;
 import com.ssafy.happyhouse.member.dto.MySecured;
 import com.ssafy.happyhouse.member.dto.Role;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = {"http://localhost:8080", "http://127.0.0.1:8080"})
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -106,6 +106,8 @@ public class BoardController {
 		} 
 		return "fail";
 	}
+	
+	@MySecured(role = Role.USER)
 	@GetMapping("/getSize")
     @ResponseBody
     public int getSize(HttpServletRequest request) {

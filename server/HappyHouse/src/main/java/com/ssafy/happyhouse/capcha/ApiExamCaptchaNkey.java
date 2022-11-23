@@ -20,12 +20,20 @@ import org.springframework.stereotype.Component;
 // 네이버 캡차 API 예제 - 키발급
 @Component
 public class ApiExamCaptchaNkey {
+	
+	public static String key;
+	
+	
 
 //    public static void main(String[] args) throws ParseException {
 //    	
 //    	
 //    }
 	
+	public static String getKey() {
+		return key;
+	}
+
 	@Autowired
 	static ApiExamCaptchaImage apiExamCaptchaImage;
     
@@ -67,6 +75,8 @@ public class ApiExamCaptchaNkey {
         JSONObject jsonObj = (JSONObject) obj;
         
         responseBody = (String) jsonObj.get("key");
+        
+        key = responseBody;
         
         //print
         System.out.println("변경 후 : " + responseBody); //sim

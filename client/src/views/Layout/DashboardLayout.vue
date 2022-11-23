@@ -45,7 +45,7 @@
 
         <sidebar-item
           :link="{
-            name: 'User Profile',
+            name: '회원 정보',
             path: '/profile',
             icon: 'ni ni-single-02 text-yellow',
           }"
@@ -56,7 +56,7 @@
         <sidebar-item
           v-if="id == undefined"
           :link="{
-            name: 'Login',
+            name: '로그인',
             path: '/login',
             icon: 'ni ni-key-25 text-info',
           }"
@@ -67,7 +67,7 @@
         <sidebar-item
           v-if="id == undefined"
           :link="{
-            name: 'Register',
+            name: '회원가입',
             path: '/register',
             icon: 'ni ni-circle-08 text-pink',
           }"
@@ -107,7 +107,7 @@
         </div>
       </template>
 
-      <template slot="links-after">
+      <!-- <template slot="links-after">
         <hr class="my-3" />
         <h6 class="navbar-heading p-0 text-muted">Documentation</h6>
 
@@ -131,7 +131,7 @@
             <b-nav-text class="p-0">Components</b-nav-text>
           </b-nav-item>
         </b-nav>
-      </template>
+      </template> -->
     </side-bar>
     <div class="main-content">
       <!-- <dashboard-navbar :type="$route.meta.navbarType"></dashboard-navbar> -->

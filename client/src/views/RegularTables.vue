@@ -24,8 +24,6 @@
     <b-container fluid class="mt--7">
       <b-row>
         <b-col>
-          <b-button @click="clr">세션 clear</b-button>
-          <b-button>현재 로그인한 사용자 : {{ cur_session }}</b-button>
           <router-view></router-view>
         </b-col>
       </b-row>
