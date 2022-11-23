@@ -12,19 +12,19 @@
         @row-click="rowClickMember"
       >
         <!-- 회원 번호 -->
-        <el-table-column label="회원 번호" prop="code" min-width="60px">
+        <el-table-column label="회원 번호" prop="code" min-width="30px">
         </el-table-column>
 
         <!-- 아이디 -->
-        <el-table-column label="아이디" prop="id" min-width="100px">
+        <el-table-column label="아이디" prop="id" min-width="60px">
         </el-table-column>
 
         <!-- 이름 -->
-        <el-table-column label="이름" prop="name" min-width="100px">
+        <el-table-column label="이름" prop="name" min-width="30px">
         </el-table-column>
 
         <!-- 주소  -->
-        <el-table-column label="주소" prop="address" min-width="60px">
+        <el-table-column label="주소" prop="address" min-width="100px">
         </el-table-column>
 
         <!-- 전화번호  -->
@@ -59,11 +59,11 @@
         @row-click="rowClickBoard"
       >
         <!-- 글번호 -->
-        <el-table-column label="글번호" prop="code" min-width="60px">
+        <el-table-column label="글번호" prop="code" min-width="30px">
         </el-table-column>
 
         <!-- 제목 -->
-        <el-table-column label="제목" prop="title" min-width="100px">
+        <el-table-column label="제목" prop="title" min-width="60px">
         </el-table-column>
 
         <!-- 내용 -->
@@ -71,16 +71,16 @@
         </el-table-column>
 
         <!-- 작성자  -->
-        <el-table-column label="작성자" prop="writer" min-width="60px">
+        <el-table-column label="작성자" prop="writer" min-width="30px">
         </el-table-column>
 
         <!-- 작성일시  -->
-        <el-table-column label="작성일시" prop="reg_datetime" min-width="100px">
+        <el-table-column label="작성일시" prop="reg_datetime" min-width="60px">
         </el-table-column>
 
         <!-- 조회수  -->
-        <el-table-column label="유저코드" prop="user_code" min-width="50px">
-        </el-table-column>
+        <!-- <el-table-column label="유저코드" prop="user_code" min-width="50px">
+        </el-table-column> -->
       </el-table>
       <b-container class="bv-example-row bv-example-row-flex-cols">
         <b-row align-self="end">
@@ -205,7 +205,6 @@ export default {
         // alert(this.boards[0].title);
       })
       .catch((err) => {
-        //alert(err);
         this.$router.push({ name: "error" });
       });
 

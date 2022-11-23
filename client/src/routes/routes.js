@@ -129,6 +129,16 @@ const routes = [
         name: "error",
         component: () => import("../views/ErrorPage.vue"),
       },
+      {
+        path: "/error2",
+        name: "error",
+        component: () => import("../views/ErrorPage2.vue"),
+      },
+      {
+        path: "/error3",
+        name: "error",
+        component: () => import("../views/ErrorPage3.vue"),
+      },
       { path: "*", component: NotFound },
     ],
   },

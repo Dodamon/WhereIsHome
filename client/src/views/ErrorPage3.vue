@@ -13,14 +13,13 @@
               <h1 style="font-size: 3rem" class="font-weight-bold text-white">
                 ERROR : 오류페이지
               </h1>
-              <h2 style="font-size: 1.5rem">
-                세션이 만료되었습니다. 다시 로그인 해주세요
-              </h2>
-              <img
-                style="width: 50%"
-                src="https://user-images.githubusercontent.com/62598865/203505744-cc13056b-8e4f-495d-a0d5-9d67cb301620.png"
-              />
-
+              <h2 style="font-size: 1.5rem">해킹갑지!!!!!1!!!!!</h2>
+              <div>
+                <img
+                  style="width: 50%"
+                  src="https://user-images.githubusercontent.com/62598865/203505744-cc13056b-8e4f-495d-a0d5-9d67cb301620.png"
+                />
+              </div>
               <router-link
                 to="/"
                 class="font-weight-bold text-white mt-5"

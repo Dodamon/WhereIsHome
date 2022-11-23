@@ -2,7 +2,7 @@
   <div>
     <!-- Header -->
     <div class="header bg-gradient-success py-7 py-lg-8 pt-lg-9">
-      <b-container>
+      <!-- <b-container>
         <div class="header-body text-center mb-7">
           <b-row class="justify-content-center">
             <b-col xl="5" lg="6" md="8" class="px-5">
@@ -14,7 +14,7 @@
             </b-col>
           </b-row>
         </div>
-      </b-container>
+      </b-container> -->
       <div class="separator separator-bottom separator-skew zindex-100">
         <svg
           x="0"
@@ -90,12 +90,20 @@
                   <b-form-checkbox v-model="model.rememberMe"
                     >로그인 유지</b-form-checkbox
                   >
-                  <br>
+                  <br />
 
-                  <img :src="captcha_url">
+                  <img :src="captcha_url" />
                   <b-button type="success" @click="captcha"> 새로고침</b-button>
-                  <base-input alternative class="mb-3" name="Capcha" :rules="{ required: true }"
-                    prepend-icon="ni ni-key-25" type="text" placeholder="위의 코드를 입력하세요." v-model="model.capcha_code">
+                  <base-input
+                    alternative
+                    class="mb-3"
+                    name="Capcha"
+                    :rules="{ required: true }"
+                    prepend-icon="ni ni-key-25"
+                    type="text"
+                    placeholder="위의 코드를 입력하세요."
+                    v-model="model.capcha_code"
+                  >
                   </base-input>
                   <div class="text-center">
                     <base-button
@@ -109,7 +117,7 @@
               </validation-observer>
             </b-card-body>
           </b-card>
-          <b-row class="mt-3">
+          <!-- <b-row class="mt-3">
             <b-col cols="6">
               <router-link to="/dashboard" class="text-light"
                 ><small>Forgot password?</small></router-link
@@ -120,7 +128,7 @@
                 ><small>Create new account</small></router-link
               >
             </b-col>
-          </b-row>
+          </b-row> -->
         </b-col>
       </b-row>
     </b-container>
@@ -143,7 +151,7 @@ export default {
         email: "",
         password: "",
         rememberMe: false,
-        capcha_code:"",
+        capcha_code: "",
       },
       captcha_url: String,
     };
@@ -163,11 +171,12 @@ export default {
     //   // this will be called only after form is valid. You can do api call here to login
     // },
     login() {
-      http.post("/member/checkCapcha", null, {
-        params: {
-          code: this.model.capcha_code,
-        }
-      })
+      http
+        .post("/member/checkCapcha", null, {
+          params: {
+            code: this.model.capcha_code,
+          },
+        })
         .then(({ data }) => {
           if (data["result"] == true) {
             http
@@ -185,7 +194,7 @@ export default {
                   // this.$session.set("loggedin", this.model.email, "60");
                   sessionStorage.setItem("code", data.code);
                   sessionStorage.setItem("id", data.id);
-                  this.$router.push({ name: "maps" }).catch(() => { });
+                  this.$router.push({ name: "maps" }).catch(() => {});
                 } else {
                   alert("로그인 실패\n이메일 및 비밀번호를 다시 입력하세요.");
                 }
@@ -195,11 +204,9 @@ export default {
             this.captcha();
           }
         })
-        .catch(e => {
-          console.log(`error === ${e}`)
+        .catch((e) => {
+          console.log(`error === ${e}`);
         });
-
-      
     },
     captcha() {
       const config = {
@@ -210,15 +217,18 @@ export default {
         responseType: "blob",
       };
 
-      http.get("/member/getCapcha", config)
+      http
+        .get("/member/getCapcha", config)
         .then((res) => {
           console.log(res.data);
-          const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] }));
+          const url = window.URL.createObjectURL(
+            new Blob([res.data], { type: res.headers["content-type"] })
+          );
           console.log(url);
           this.captcha_url = url;
         })
-        .catch(e => {
-          console.log(`error === ${e}`)
+        .catch((e) => {
+          console.log(`error === ${e}`);
         });
     },
   },
@@ -231,17 +241,19 @@ export default {
       responseType: "blob",
     };
 
-    http.get("/member/getCapcha", config)
+    http
+      .get("/member/getCapcha", config)
       .then((res) => {
         console.log(res.data);
-        const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] }));
+        const url = window.URL.createObjectURL(
+          new Blob([res.data], { type: res.headers["content-type"] })
+        );
         console.log(url);
         this.captcha_url = url;
       })
-      .catch(e => {
-        console.log(`error === ${e}`)
-      })
-      ;
+      .catch((e) => {
+        console.log(`error === ${e}`);
+      });
   },
 };
 </script>

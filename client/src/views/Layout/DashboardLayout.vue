@@ -44,6 +44,7 @@
         </sidebar-item>
 
         <sidebar-item
+          v-if="id != undefined"
           :link="{
             name: '회원 정보',
             path: '/profile',

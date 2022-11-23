@@ -2,7 +2,7 @@
   <div>
     <!-- Header -->
     <div class="header bg-gradient-success py-7 py-lg-8 pt-lg-9">
-      <b-container class="container">
+      <!-- <b-container class="container">
         <div class="header-body text-center mb-7">
           <b-row class="justify-content-center">
             <b-col xl="5" lg="6" md="8" class="px-5">
@@ -14,7 +14,7 @@
             </b-col>
           </b-row>
         </div>
-      </b-container>
+      </b-container> -->
       <div class="separator separator-bottom separator-skew zindex-100">
         <svg
           x="0"
@@ -159,13 +159,16 @@
 
                   <b-row>
                     <b-col>
-                      <vue-recaptcha ref="recaptcha" sitekey="6LdZlCkjAAAAAL8m_q3clTEd9SXUxAA9AAb4F04V" @verify="onVerify"
-                        @expired="onExpired">
+                      <vue-recaptcha
+                        ref="recaptcha"
+                        sitekey="6LdZlCkjAAAAAL8m_q3clTEd9SXUxAA9AAb4F04V"
+                        @verify="onVerify"
+                        @expired="onExpired"
+                      >
                       </vue-recaptcha>
                       <!-- <v-spacer></v-spacer> -->
                     </b-col>
                   </b-row>
-
 
                   <div class="text-center">
                     <b-button @click="checkRobot" variant="primary" class="mt-4"
@@ -183,7 +186,7 @@
 </template>
 <script>
 import http from "@/api/http";
-import { VueRecaptcha } from 'vue-recaptcha';
+import { VueRecaptcha } from "vue-recaptcha";
 
 export default {
   name: "register",
@@ -199,7 +202,7 @@ export default {
         address: "",
         phone: "",
         agree: false,
-        response:"",
+        response: "",
       },
     };
   },
@@ -259,14 +262,13 @@ export default {
       this.response = r;
     },
     onExpired() {
-      this.response = ''
-      this.$refs.recaptcha.reset()
+      this.response = "";
+      this.$refs.recaptcha.reset();
     },
     checkRobot() {
       if (this.response) {
         this.onSubmit();
-      }
-      else {
+      } else {
         alert("로봇이 아님을 확인해주세요");
         this.$refs.recaptcha.execute();
       }
