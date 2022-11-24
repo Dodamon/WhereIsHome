@@ -79,6 +79,8 @@ export default {
         })
         .catch();
       this.$router.push({ name: "list" });
+      this.$router.go();
+      this.$router.go();
     },
     gotoList() {
       this.$router.push({ name: "list" });

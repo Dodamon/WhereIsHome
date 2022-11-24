@@ -5,7 +5,10 @@
       <template slot="links">
         <b-media v-if="id == undefined" no-body class="align-items-center">
           <span class="avatar avatar-xl rounded-circle">
-            <img alt="Image placeholder" src="img/theme/team-0.png" />
+            <img
+              alt="Image placeholder"
+              src="https://user-images.githubusercontent.com/62598865/203680255-f7352a15-8050-40d9-8f77-2066b97d4b09.png"
+            />
           </span>
           <b-media-body class="ml-2 d-none d-lg-block">
             <span class="mb-0 text-sm font-weight-bold"
@@ -194,9 +197,11 @@ export default {
   },
   created() {
     if ("admin@admin.com" == this.id) {
-      this.src = "img/theme/team-7.png";
+      this.src =
+        "https://user-images.githubusercontent.com/62598865/203680461-20dabb58-7199-4bbb-9e2a-58e278da0511.png";
     } else {
-      this.src = "img/theme/team-6.jpg";
+      this.src =
+        "https://user-images.githubusercontent.com/62598865/203680458-423b4c1b-9dac-4d91-9b89-85b7451c070f.jpg";
     }
   },
   methods: {

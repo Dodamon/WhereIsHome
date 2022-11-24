@@ -141,7 +141,8 @@ export default {
   props: {
     logo: {
       type: String,
-      default: "img/brand/green.png",
+      default:
+        "https://user-images.githubusercontent.com/62598865/203680643-d8f5ddd5-6971-4ccc-9183-9baae2fe3b7c.png",
       description: "Sidebar app logo",
     },
     autoClose: {

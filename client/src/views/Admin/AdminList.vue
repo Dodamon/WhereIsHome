@@ -205,10 +205,22 @@ export default {
         // alert(this.boards[0].title);
       })
       .catch((err) => {
-        // alert(err.response.status);
-        // this.$router.push({ name: "error" });
         switch (err.response.status) {
           case 501:
+            // CASE 1: 로그인을 한적인 있는 사용자 일경우 -> 502 세션만료 오류
+            let id = sessionStorage.getItem("id");
+            if (id != null) {
+              sessionStorage.removeItem("id");
+              sessionStorage.removeItem("code");
+              alert("세션만료 재로그인 필요");
+
+              http.post("member/logout", null, {
+                params: {},
+              });
+              this.$router.push({ name: "error2" });
+              break;
+            }
+            // CASE 2: 로그인을 한적이 없는 사용자 일경우 -> 501
             this.$router.push({ name: "error1" });
             break;
           case 502:
@@ -231,10 +243,22 @@ export default {
         // alert(this.boards[0].title);
       })
       .catch((err) => {
-        // alert(err.response.status);
-        // this.$router.push({ name: "error" });
         switch (err.response.status) {
           case 501:
+            // CASE 1: 로그인을 한적인 있는 사용자 일경우 -> 502 세션만료 오류
+            let id = sessionStorage.getItem("id");
+            if (id != null) {
+              sessionStorage.removeItem("id");
+              sessionStorage.removeItem("code");
+              alert("세션만료 재로그인 필요");
+
+              http.post("member/logout", null, {
+                params: {},
+              });
+              this.$router.push({ name: "error2" });
+              break;
+            }
+            // CASE 2: 로그인을 한적이 없는 사용자 일경우 -> 501
             this.$router.push({ name: "error1" });
             break;
           case 502:
@@ -259,20 +283,6 @@ export default {
       .catch((err) => {
         // alert(err.response.status);
         // this.$router.push({ name: "error" });
-        switch (err.response.status) {
-          case 501:
-            this.$router.push({ name: "error1" });
-            break;
-          case 502:
-            this.$router.push({ name: "error2" });
-            break;
-          case 503:
-            this.$router.push({ name: "error3" });
-            break;
-          default:
-            this.$router.push({ name: "error4" });
-            break;
-        }
       });
 
     http
@@ -287,20 +297,6 @@ export default {
       .catch((err) => {
         // alert(err.response.status);
         // this.$router.push({ name: "error" });
-        switch (err.response.status) {
-          case 501:
-            this.$router.push({ name: "error1" });
-            break;
-          case 502:
-            this.$router.push({ name: "error2" });
-            break;
-          case 503:
-            this.$router.push({ name: "error3" });
-            break;
-          default:
-            this.$router.push({ name: "error4" });
-            break;
-        }
       });
 
     http
@@ -313,10 +309,22 @@ export default {
         // alert(this.boards[0].title);
       })
       .catch((err) => {
-        // alert(err.response.status);
-        // this.$router.push({ name: "error" });
         switch (err.response.status) {
           case 501:
+            // CASE 1: 로그인을 한적인 있는 사용자 일경우 -> 502 세션만료 오류
+            let id = sessionStorage.getItem("id");
+            if (id != null) {
+              sessionStorage.removeItem("id");
+              sessionStorage.removeItem("code");
+              alert("세션만료 재로그인 필요");
+
+              http.post("member/logout", null, {
+                params: {},
+              });
+              this.$router.push({ name: "error2" });
+              break;
+            }
+            // CASE 2: 로그인을 한적이 없는 사용자 일경우 -> 501
             this.$router.push({ name: "error1" });
             break;
           case 502:
@@ -341,10 +349,22 @@ export default {
         // alert(this.boards[0].title);
       })
       .catch((err) => {
-        // alert(err.response.status);
-        // this.$router.push({ name: "error" });
         switch (err.response.status) {
           case 501:
+            // CASE 1: 로그인을 한적인 있는 사용자 일경우 -> 502 세션만료 오류
+            let id = sessionStorage.getItem("id");
+            if (id != null) {
+              sessionStorage.removeItem("id");
+              sessionStorage.removeItem("code");
+              alert("세션만료 재로그인 필요");
+
+              http.post("member/logout", null, {
+                params: {},
+              });
+              this.$router.push({ name: "error2" });
+              break;
+            }
+            // CASE 2: 로그인을 한적이 없는 사용자 일경우 -> 501
             this.$router.push({ name: "error1" });
             break;
           case 502:

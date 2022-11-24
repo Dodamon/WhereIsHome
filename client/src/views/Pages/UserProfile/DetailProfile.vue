@@ -12,47 +12,109 @@
       <div class="pl-lg-4">
         <b-row>
           <b-col lg="8">
-            <b-form-group label-cols="4" label-cols-lg="2" label="이름" label-for="input-default">
-              <b-form-input id="input-default" v-model="user.name" disabled></b-form-input>
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label="이름"
+              label-for="input-default"
+            >
+              <b-form-input
+                id="input-default"
+                v-model="user.name"
+                disabled
+              ></b-form-input>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
           <b-col lg="8">
-            <b-form-group label-cols="4" label-cols-lg="2" label="이메일" label-for="input-default">
-              <b-form-input id="input-default" v-model="user.id" disabled></b-form-input>
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label="이메일"
+              label-for="input-default"
+            >
+              <b-form-input
+                id="input-default"
+                v-model="user.id"
+                disabled
+              ></b-form-input>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
           <b-col lg="8">
-            <b-form-group label-cols="4" label-cols-lg="2" label="비밀번호" label-for="input-default">
-              <b-form-input id="input-default" v-model="user.password" disabled></b-form-input>
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label="비밀번호"
+              label-for="input-default"
+            >
+              <b-form-input
+                id="input-default"
+                v-model="user.password"
+                disabled
+              ></b-form-input>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
           <b-col lg="8">
-            <b-form-group label-cols="4" label-cols-lg="2" label="비밀번호 확인" label-for="input-default">
-              <b-form-input id="input-default" v-model="user.password_check" disabled></b-form-input>
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label="비밀번호 확인"
+              label-for="input-default"
+            >
+              <b-form-input
+                id="input-default"
+                v-model="user.password_check"
+                disabled
+              ></b-form-input>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
           <b-col lg="8">
-            <b-form-group label-cols="4" label-cols-lg="2" label="주소" label-for="input-default">
-              <b-form-input id="input-default" v-model="user.address" disabled></b-form-input>
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label="주소"
+              label-for="input-default"
+            >
+              <b-form-input
+                id="input-default"
+                v-model="user.address"
+                disabled
+              ></b-form-input>
             </b-form-group>
           </b-col>
           <b-col lg="8">
-            <b-form-group label-cols="4" label-cols-lg="2" label="전화번호" label-for="input-default">
-              <b-form-input id="input-default" v-model="user.phone" disabled></b-form-input>
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label="전화번호"
+              label-for="input-default"
+            >
+              <b-form-input
+                id="input-default"
+                v-model="user.phone"
+                disabled
+              ></b-form-input>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
-          <b-button type="button" class="m-1" variant="primary" @click="modify">수정하기</b-button>
-          <b-button type="button" class="m-1" variant="primary" @click="del_account">탈퇴하기</b-button>
+          <b-button type="button" class="m-1" variant="primary" @click="modify"
+            >수정하기</b-button
+          >
+          <b-button
+            type="button"
+            class="m-1"
+            variant="primary"
+            @click="del_account"
+            >탈퇴하기</b-button
+          >
         </b-row>
       </div>
       <hr class="my-4" />
@@ -80,7 +142,6 @@ export default {
   },
   methods: {
     modify() {
-
       swal({
         title: "정보를 수정하시려면 비밀번호를 입력해 주세요.",
         content: {
@@ -97,8 +158,7 @@ export default {
         .then((value) => {
           if (value) {
             http
-              .post(
-                "/member/login", null, {
+              .post("/member/login", null, {
                 params: {
                   id: this.user.id,
                   pw: value,
@@ -117,8 +177,6 @@ export default {
           }
         })
         .catch();
-
-
     },
     del_account() {
       swal({
@@ -138,8 +196,7 @@ export default {
         .then((value) => {
           if (value) {
             http
-              .post(
-                "/member/login", null, {
+              .post("/member/login", null, {
                 params: {
                   id: this.user.id,
                   pw: value,
@@ -156,7 +213,6 @@ export default {
 
                   this.$router.push({ name: "maps" });
                   this.$router.go();
-
                 } else {
                   swal("잘못된 비밀번호입니다.", { icon: "error" });
                 }
@@ -165,10 +221,6 @@ export default {
           }
         })
         .catch();
-
-
-
-
     },
   },
   created() {
@@ -183,13 +235,38 @@ export default {
         this.user.id = data.id;
         this.user.address = data.address;
         this.user.phone = data.phone;
-      }).catch((err) => {
-        //alert(err);
-        this.$router.push({ name: "error" });
+      })
+      .catch((err) => {
+        switch (err.response.status) {
+          case 501:
+            // CASE 1: 로그인을 한적인 있는 사용자 일경우 -> 502 세션만료 오류
+            let id = sessionStorage.getItem("id");
+            if (id != null) {
+              sessionStorage.removeItem("id");
+              sessionStorage.removeItem("code");
+              alert("세션만료 재로그인 필요");
+
+              http.post("member/logout", null, {
+                params: {},
+              });
+              this.$router.push({ name: "error2" });
+              break;
+            }
+            // CASE 2: 로그인을 한적이 없는 사용자 일경우 -> 501
+            this.$router.push({ name: "error1" });
+            break;
+          case 502:
+            this.$router.push({ name: "error2" });
+            break;
+          case 503:
+            this.$router.push({ name: "error3" });
+            break;
+          default:
+            this.$router.push({ name: "error4" });
+            break;
+        }
       });
   },
 };
 </script>
-<style>
-
-</style>
+<style></style>

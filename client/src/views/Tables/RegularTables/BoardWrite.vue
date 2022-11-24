@@ -84,7 +84,9 @@ export default {
           alert(data);
         })
         .catch();
-      this.$router.push({ name: "list" });
+      this.gotoList();
+      this.$router.go();
+      // this.$router.push({ name: "list" });
     },
     gotoList() {
       this.$router.push({ name: "list" });

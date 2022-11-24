@@ -8,6 +8,7 @@
 	<select id="selectAll"  resultType="board">
 		SELECT code, title, content, writer, reg_datetime, user_code 
 		FROM board 
+		ORDER BY code DESC
 	<!-- 	ORDER BY originNo DESC, groupOrd ASC -->
 	</select>
 	

@@ -9,7 +9,9 @@
     >
       <div slot="brand" class="navbar-wrapper">
         <b-navbar-brand to="/">
-          <img src="img/brand/green.png" />
+          <img
+            src="https://user-images.githubusercontent.com/62598865/203680643-d8f5ddd5-6971-4ccc-9183-9baae2fe3b7c.png"
+          />
         </b-navbar-brand>
       </div>
 
@@ -18,7 +20,9 @@
           <b-row>
             <b-col cols="6" class="collapse-brand">
               <router-link to="/">
-                <img src="img/brand/green.png" />
+                <img
+                  src="https://user-images.githubusercontent.com/62598865/203680643-d8f5ddd5-6971-4ccc-9183-9baae2fe3b7c.png"
+                />
               </router-link>
             </b-col>
             <b-col cols="6" class="collapse-close">

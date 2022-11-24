@@ -115,7 +115,7 @@ export default {
         },
       });
       alert("회원 정보 수정 완료");
-      this.$router.push({ name: "maps" });
+      this.$router.push({ name: "admin" });
     },
     delete_member() {
       http.post(`member/delete`, null, {
