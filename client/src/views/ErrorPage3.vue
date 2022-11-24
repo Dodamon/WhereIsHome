@@ -12,10 +12,10 @@
               </h1>
               <h2 style="font-size: 1.5rem">해킹감지!!!!!!!!!!</h2>
               <div>
-                <img
+                <!-- <img
                   style="width: 50%; border-radius: 20px"
                   src="https://user-images.githubusercontent.com/62598865/203505744-cc13056b-8e4f-495d-a0d5-9d67cb301620.png"
-                />
+                /> -->
                 <img
                   style="width: 40%; border-radius: 20px"
                   src="img/error.jpg"

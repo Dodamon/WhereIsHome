@@ -94,7 +94,7 @@ export default {
         // alert(this.boards[0].title);
       })
       .catch((err) => {
-        alert(err.response.status);
+        //alert(err.response.status);
         // this.$router.push({ name: "error" });
         switch (err.response.status) {
           case 501:
